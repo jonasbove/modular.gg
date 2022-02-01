@@ -1,2 +1,2 @@
-# modular
+# Modular
 Discord Bot Framework
