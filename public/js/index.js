@@ -14,27 +14,23 @@ async function handleRequest(event) {
   fetch(`http://localhost:3000/${formID}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify(Object.fromEntries(formData)) // skide smart
+    body: JSON.stringify(Object.fromEntries(formData)), // skide smart
   })
     .then(async (res) => {
       const resJSON = await res.json()
       if (!res.ok) throw new Error(resJSON.message)
       return resJSON
-    }).then(res => {
-      if (formID === 'login') setUserAuthenticationToken(res.token)
-      
-      window.location.pathname = ('/index.html')
-    }).catch(err => {
+    })
+    .then((res) => {
+      window.location.pathname = '/'
+    })
+    .catch((err) => {
       setResponse(err)
     })
 }
 
 function setResponse(message) {
   document.querySelector('#errorMessage').innerHTML = message
-}
-
-function setUserAuthenticationToken(token) {
-  localStorage.setItem('authorization', token)
 }

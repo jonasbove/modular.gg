@@ -3,6 +3,7 @@ import MongoDB from './db/db.mjs'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 const userAuth = express.Router()
 
@@ -11,6 +12,7 @@ const db = new MongoDB('Cluster0')
 userAuth.use(cors())
 userAuth.use(express.urlencoded({ extended: true }))
 userAuth.use(express.json())
+userAuth.use(cookieParser())
 
 userAuth.post('/login', async function (req, res) {
   let invalidPassword = false
@@ -25,18 +27,12 @@ userAuth.post('/login', async function (req, res) {
   if (formPasswordHashed !== userFound?.hash) invalidPassword = true
 
   if (!userFound || invalidPassword) {
-    return res.status(401).json({message: 'Username or password are wrong.' })
+    return res.status(401).json({ message: 'Username or password are wrong.' })
   }
 
   // Yes, user is authenticated with correct email and password
 
-  jwt.sign(userFound, process.env.JWT_PRIVATE_KEY, (err, token) => {
-    if (err) {
-      return res.sendStatus(403)
-    }
-    return res.status(200).json({ message: 'You are authenticated', token: `Bearer ${token}` })
-  })
-
+  authenticateUser(res, userFound)
 })
 
 userAuth.post('/register', async function (req, res) {
@@ -61,17 +57,21 @@ userAuth.post('/register', async function (req, res) {
     name: formData.name,
     email: formData.email,
     hash: hash,
-    salt: salt
+    salt: salt,
   }
 
   try {
-    await db.insertOne('users', confirmedData)
+    const user = await db.insertOne('users', confirmedData)
+
+    authenticateUser(res, user)
 
     return res.status(201).json({ message: 'Succesfully created an account' })
   } catch (err) {
     res.sendStatus(403)
 
-    return res.status(500).json({ message: 'Something very bad happenend. Errorcode: 20394' })
+    return res
+      .status(500)
+      .json({ message: 'Something very bad happenend. Errorcode: 20394' })
   }
 })
 
@@ -81,13 +81,10 @@ function hashPassword(password, salt) {
 }
 
 function verifyJWT(req, res, next) {
-  const bearerHeader = req.headers['authorization']
+  const token = req.cookies['authorization']
 
-  if (typeof bearerHeader !== 'undefined') {
-    const bearer = bearerHeader.split(' ')
-    const bearerToken = bearer[1]
-
-    jwt.verify(bearerToken, process.env.JWT_PRIVATE_KEY, (err, authData) => {
+  if (token) {
+    jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, authData) => {
       if (err) {
         res.sendStatus(401)
       } else {
@@ -99,6 +96,20 @@ function verifyJWT(req, res, next) {
   } else {
     res.sendStatus(401)
   }
+}
+
+function authenticateUser(res, user) {
+  jwt.sign(user, process.env.JWT_PRIVATE_KEY, (err, token) => {
+    if (err) {
+      return res.sendStatus(403)
+    }
+
+    res.cookie('authorization', token)
+
+    return res
+      .status(200)
+      .json({ message: 'You are authenticated', token: `Bearer ${token}` })
+  })
 }
 
 export { userAuth, verifyJWT }
