@@ -2,8 +2,6 @@ import { MongoClient } from "mongodb"
 import dotenv from 'dotenv'
 dotenv.config()
 
-const uri = `mongodb+srv://admin:${process.env.DB_PASSWORD}@cluster0.jh1dz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
-
 export default class MongoDB {
   constructor() {
     this.connectToMongoDB()
@@ -11,9 +9,10 @@ export default class MongoDB {
 
   async connectToMongoDB() {
     try {
-      const client = new MongoClient(uri)
+      const client = new MongoClient(`${process.env.DB_URI}`)
       await client.connect()
-      this.db = client.db('Cluster0')
+      console.log(`Successful connection to the database: ${process.env.DB_URI}`)
+      this.db = client.db(process.env.DB_NAME)
     } catch (err) {
       throw new Error(err)
     }

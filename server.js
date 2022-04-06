@@ -1,5 +1,7 @@
 import express from 'express'
 import { userAuth, verifyJWT } from './userAuth.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 const app = express()
 const publicResources = './public'
@@ -28,6 +30,6 @@ app.use('/assets', express.static('public/assets'));
 
 //app.use(express.static("public"));
 
-app.listen(3000, () => {
-  console.log('UserAuth started')
+app.listen(process.env.PORT, () => {
+  console.log(`The server has started on port ${process.env.PORT}`)
 })
