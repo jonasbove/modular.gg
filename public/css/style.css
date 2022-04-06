@@ -44,6 +44,12 @@ header nav ul li a {
   border: solid 2px white;
   border-radius: 1rem;
   padding: 0.8rem;
+  transition: ease-in-out 0.1s;
+}
+
+.createaccount:hover {
+  background-color: white;
+  color: black;
 }
 
 img.dots {
@@ -66,6 +72,10 @@ main h1 {
 
 .green {
   color: #50fa7b;
+}
+
+.bold {
+  font-weight: bold;
 }
 
 .getstarted {
@@ -133,9 +143,9 @@ img.dots {
 }*/
 
 #team {
+  display: flex;
   grid-row-start: 5;
   grid-row-end: 6;
-  display: flex;
   box-sizing: border-box;
   justify-self: center;
   justify-content: space-between;
