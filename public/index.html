@@ -40,23 +40,27 @@
       <button class="getstarted">Get started today</button>
 
       <section id="description">
-        <article class="tabs">
-          <h2 class="tabs-item active" for="functionality">Functionality</h2>
-          <h2 class="tabs-item" for="visual_scripting">Visual scripting</h2>
-          <h2 class="tabs-item" for="open_source">Open source</h2>
-        </article>
+        <nav class="tabs">
+          <input type="radio" name="description" id="functionality" checked>
+          <input type="radio" name="description" id="visual_scripting">
+          <input type="radio" name="description" id="open_source">
+          <div class="slider"></div>
+          <label class="functionality" for="functionality">Functionality</label>
+          <label class="visual_scripting" for="visual_scripting">Visual scripting</label>
+          <label class="open_source" for="open_source">Open source</label>
+        </nav>
         <div class="tabs-content">
-          <p id="functionality" class="tab-pane">
+          <p id="functionality-pane" class="tab-pane">
             Modular is one of the most feature-rich general purpose Discord bots
             out there. You can create, update and delete messages, categories,
             channels, permissions, emoji, reactions, roles and commands. We offer
             modules for embeds, buttons, and much more.
           </p>
-          <p id="visual_scripting" class="tab-pane">
-            test
+          <p id="visual_scripting-pane" class="tab-pane">
+            Visual scripting...
           </p>
-          <p id="open_source" class="tab-pane">
-            test
+          <p id="open_source-pane" class="tab-pane">
+            Open source...
           </p>
         </div>
         <p>
@@ -117,7 +121,7 @@
     <footer id="footer">
       <p>Send nudes</p>
     </footer>
-
+    
     <script src="./js/index.js"></script>
   </body>
 </html>

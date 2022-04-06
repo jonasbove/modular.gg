@@ -119,14 +119,49 @@ img.dots {
 }
 
 #description .tabs {
+  font-family: 'Montserrat', sans-serif;
   display: flex;
   width: 100%;
-  justify-content: space-between;
   cursor: pointer;
+  width: 100%;
+  position: relative;
 }
 
-#descriptionheader1 {
-  border-bottom: 5px solid white;
+#description .tabs label {
+  font-weight: 700;
+  border-bottom: 5px solid #444444;
+  flex-grow: 1;
+  padding-bottom: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+#description .slider {
+  position: absolute;
+  height: 5px;
+  background: white;
+  bottom: 0px;
+  transition: 0.45s ease;
+}
+
+#functionality:checked > .tabs-content p#functionality-pane {
+  background-color: red;
+}
+
+#functionality:checked ~ .slider {
+  left: 0;
+  width: 32%;
+}
+
+#visual_scripting:checked ~ .slider {
+  left: 32%;
+  width: 35%;
+}
+
+#open_source:checked ~ .slider {
+  left: 67%;
+  width: 33%;
 }
 
 #description p {
@@ -134,13 +169,6 @@ img.dots {
   font-size: 1.25rem;
   padding: 1rem 0;
 }
-
-/*#description p:last-child {
-  font-weight: 600;
-  padding-top: 3rem;
-  box-sizing: border-box;
-  font-size: 1.5rem;
-}*/
 
 #team {
   display: flex;
@@ -182,10 +210,6 @@ footer {
   padding: 1rem;
 }
 
-.tab-pane {
+nav.tabs input[type=radio] {
   display: none;
-}
-
-.tab-pane.active {
-  display: block;
 }

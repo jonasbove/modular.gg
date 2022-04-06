@@ -34,16 +34,3 @@ async function handleRequest(event) {
 function setResponse(message) {
   document.querySelector('#errorMessage').innerHTML = message
 }
-
-const tabs = document.querySelectorAll('.tabs .tabs-item')
-const tabs_content = document.querySelectorAll('.tabs-content .tab-pane')
-
-tabs.forEach(item => {
-  item.addEventListener('click', e => {
-    tabs_content.forEach(item => item.classList.remove('active'))
-
-    const forID = item.getAttribute('for')
-    const tabPane = document.querySelector(`#${forID}`)
-    tabPane.classList.add('active')
-  })
-})
