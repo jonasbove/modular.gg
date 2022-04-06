@@ -52,9 +52,13 @@ header nav ul li a {
   color: black;
 }
 
-img.dots {
-  width: auto;
-  height: auto;
+.dots {
+  width: 50%;
+  height: 7rem;
+  background-color: transparent;
+  background-image: radial-gradient(circle, white 15%, transparent 10%), radial-gradient(circle, white 15%, transparent 10%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 0;
 }
 
 main {
