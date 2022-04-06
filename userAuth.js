@@ -1,5 +1,5 @@
 import express from 'express'
-import MongoDB from './db/db.mjs'
+import MongoDB from './db/db.js'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import cors from 'cors'
