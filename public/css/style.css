@@ -54,6 +54,7 @@ header nav ul li a {
 
 img.dots {
   width: auto;
+  height: auto;
 }
 
 main {
@@ -108,10 +109,10 @@ img.dots {
   grid-row-start: 4;
   grid-row-end: 5;
   box-sizing: border-box;
-  padding: 3rem 0;
+  padding: 5rem 0;
 }
 
-#description h2 {
+#description label {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 1.75rem;
@@ -123,7 +124,6 @@ img.dots {
   display: flex;
   width: 100%;
   cursor: pointer;
-  width: 100%;
   position: relative;
 }
 
@@ -145,24 +145,46 @@ img.dots {
   transition: 0.45s ease;
 }
 
-#functionality:checked > .tabs-content p#functionality-pane {
-  background-color: red;
-}
-
-#functionality:checked ~ .slider {
+#functionality:checked ~ .tabs .slider {
   left: 0;
   width: 32%;
 }
 
-#visual_scripting:checked ~ .slider {
+#visual_scripting:checked ~ .tabs .slider {
   left: 32%;
   width: 35%;
 }
 
-#open_source:checked ~ .slider {
+#open_source:checked ~ .tabs .slider {
   left: 67%;
   width: 33%;
+  animation: fadeout 2s;
 }
+
+.tabs-content {
+  display: grid;
+  margin-bottom: 6rem;
+}
+
+.tabs-content p.tab-pane {
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity .45s ease;
+  opacity: 0;
+  white-space: pre-line;
+}
+
+#functionality:checked ~ .tabs-content p#functionality-pane {
+  opacity: 1;
+}
+#visual_scripting:checked ~ .tabs-content p#visual_scripting-pane {
+  opacity: 1;
+}
+#open_source:checked ~ .tabs-content p#open_source-pane {
+  opacity: 1;
+}
+
+
 
 #description p {
   font-family: 'Raleway', sans-serif;
@@ -210,6 +232,6 @@ footer {
   padding: 1rem;
 }
 
-nav.tabs input[type=radio] {
+input[type=radio] {
   display: none;
 }
