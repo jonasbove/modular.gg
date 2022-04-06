@@ -1,15 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modular.gg</title>
-</head>
-<body>
-  <h1>Welcome to Modular.gg</h1>
-  <a href="/register">Register now!</a>
-  <a href="/login">Login now!</a>
-  <a href="/protected">Protected!</a>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modular</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <header>
+      <a href="#" class="logolink"
+        ><img src="./assets/modular-logo-full.png" alt="Modular Logo" class="logo"
+      /></a>
+      <img src="./assets/dots.png" alt="Decorational dots" class="dots" />
+      <nav class="navigation">
+        <ul>
+          <li><a href="/login" class="login">Log in</a></li>
+          <li><a href="/register" class="createaccount">Create account</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>
+        Modular is a <span class="green">cutting-edge</span> framework for
+        creating highly customizable <span class="green">Discord bots</span>
+      </h1>
+      <img src="./assets/wires.png" alt="Decorational wires" class="wires" />
+      <button class="getstarted">Get started today</button>
+
+      <section id="description">
+        <article class="tabs">
+          <h2 class="tabs-item" for="functionality">Functionality</h2>
+          <h2 class="tabs-item" for="visual_scripting">Visual scripting</h2>
+          <h2 class="tabs-item" for="open_source">Open source</h2>
+        </article>
+        <div class="tabs-content">
+          <p id="functionality" class="tab-pane active">
+            Modular is one of the most feature-rich general purpose Discord bots
+            out there. You can create, update and delete messages, categories,
+            channels, permissions, emoji, reactions, roles and commands. We offer
+            modules for embeds, buttons, and much more.
+          </p>
+          <p id="visual_scripting" class="tab-pane">
+            test
+          </p>
+          <p id="open_source" class="tab-pane">
+            test
+          </p>
+        </div>
+        <p>
+          Modular started out as a university project at Aalborg University,
+          february 1st 2022, and was open sourced four months later.
+        </p>
+        <p><span class="green">Meet the team!</span></p>
+      </section>
+
+      <section id="team">
+        <article class="person">
+          <img
+            src="./assets/portrait.png"
+            alt="Headshot of Tobias Buch"
+            class="headshot"
+          />
+          <h3>Tobias Buch</h3>
+          <p>Developer</p>
+        </article>
+        <article class="person">
+          <img
+            src="./assets/portrait.png"
+            alt="Headshot of Magnus Starup"
+            class="headshot"
+          />
+          <h3>Magnus Starup</h3>
+          <p>Developer</p>
+        </article>
+        <article class="person">
+          <img
+            src="./assets/portrait.png"
+            alt="Headshot of Mikkel Iversen"
+            class="headshot"
+          />
+          <h3>Mikkel Iversen</h3>
+          <p>Developer</p>
+        </article>
+        <article class="person">
+          <img
+            src="./assets/portrait.png"
+            alt="Headshot of Sebastian Livoni"
+            class="headshot"
+          />
+          <h3>Sebastian Livoni</h3>
+          <p>Developer</p>
+        </article>
+        <article class="person">
+          <img
+            src="./assets/portrait.png"
+            alt="Headshot of Jonas Bové"
+            class="headshot"
+          />
+          <h3>Jonas Bové</h3>
+          <p>Developer</p>
+        </article>
+      </section>
+    </main>
+    <footer id="footer">
+      <p>Send nudes</p>
+    </footer>
+
+    <script src="./js/index.js"></script>
+  </body>
 </html>
