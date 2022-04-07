@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+body {
+  background: black;
+  color: white;
+}
+
+main {
+width: 100%;
+display: grid;
+justify-content: center;
+padding: 25vh 0;
+}
+
+.heading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 3rem;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+form {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: grid;
+    width: 50vw;
+    height: 50vh;
+    justify-content: center;
+    grid-template-columns: 2fr 4fr;
+}
+
+.notifier, .alreadyregistered {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: flex-start;
+    padding: 0 2rem;
+}
+
+label, input {
+    font-size: 2rem;
+    font-family: 'Raleway', sans-serif;
+    margin: 2rem;
+}
+
+label, h3, p {
+    justify-self: flex-end;
+}
+
+p, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+}
+
+a{
+    color: #50FA7B;
+}
+.submitbutton {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    padding: 1rem;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
