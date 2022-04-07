@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modular.gg | Register</title>
+</head>
+<body>
+  <form id="register">
+
+    <label for="name">What's would you liked to be called?</label>
+    <input type="text" name="name" required />
+
+    <br />
+
+    <label for="email">What's your email?</label>
+    <input type="email" name="email" required />
+
+    <br />
+    <h3>we did NOT spend a lot of time on security, please don't use a password you use elsewhere!</h3>
+    <label for="password">Enter a password?</label>
+    <input type="password" name="password" required />
+
+    <br />
+
+    <label for="confirmPassword">Confirm the password?</label>
+    <input type="password" name="confirmPassword" required />
+
+    <br />
+
+    <p>Already have a account? <a href="/login">Click here</a> to login</p>
+
+    <input type="submit" value="Register" />
+
+    <p style="color: red; font-weight: bold;" id="errorMessage"></p>
+
+  </form>
+
+  <script src="./js/index.js"></script>
+</body>
+</html>
