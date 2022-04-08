@@ -9,7 +9,7 @@ const publicResources = './public'
 app.use(userAuth)
 
 app.get('/', (req, res) => {
-  res.sendFile('index.html', { root: publicResources })
+  res.sendFile('frontpage.html', { root: publicResources })
 })
 
 app.get('/register', (req, res) => {
@@ -20,8 +20,8 @@ app.get('/login', (req, res) => {
   res.sendFile('login.html', { root: publicResources })
 })
 
-app.get('/protected', verifyJWT, (req, res) => {
-  res.sendFile('protected.html', { root: publicResources })
+app.get('/settings', verifyJWT, (req, res) => {
+  res.sendFile('settings.html', { root: publicResources })
 })
 
 app.use('/js', express.static('public/js'));
