@@ -78,6 +78,7 @@ async function authenticateDiscordLogin(res, userInfo) {
 
   if (alreadyExisting) {
     return authenticateUser(res, alreadyExisting)
+      .then(res => res.redirect('/settings'))
   }
 
   const dbData = {
@@ -97,10 +98,13 @@ async function authenticateDiscordLogin(res, userInfo) {
       await db.updateOne('users', { email: userInfo.email }, { $set: dbData })
 
       return authenticateUser(res, userExistingMail)
+        .then(res => res.redirect('/settings'))
     } else {
       const user = await db.insertOne('users', dbData)
       return authenticateUser(res, user)
+        .then(res => res.redirect('/settings'))
     }
+
   } catch (err) {
     return res
       .status(500)

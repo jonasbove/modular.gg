@@ -24,7 +24,8 @@ userAuth.post('/login', async function (req, res) {
 
   // Yes, user is authenticated with correct email and password
 
-  authenticateUser(res, userFound)
+  return authenticateUser(res, userFound)
+      .then(res => res.json({ message: 'Succesfully logged into your account' }))
 })
 
 userAuth.post('/register', async function (req, res) {
@@ -55,9 +56,8 @@ userAuth.post('/register', async function (req, res) {
   try {
     const user = await db.insertOne('users', confirmedData)
 
-    authenticateUser(res, user)
-
-    return res.status(201).json({ message: 'Succesfully created an account' })
+    return authenticateUser(res, user)
+      .then(res => res.json({ message: 'Succesfully created an account' }))
   } catch (err) {
     res.sendStatus(403)
 
