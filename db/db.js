@@ -22,8 +22,8 @@ export default class MongoDB {
     return this.db.collection(collection).findOne(query)
   }
 
-  async insertOne(collection, query) {
-    return this.db.collection(collection).insertOne(query)
+  async insertOne(collection, query, func) {
+    return this.db.collection(collection).insertOne(query, func)
   }
 
   async updateOne(collection, filter, query) {
