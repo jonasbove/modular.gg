@@ -1,18 +1,10 @@
 import express from 'express'
-import MongoDB from './db/db.js'
+import { db } from '../db/db.js'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
+import authenticateUser from './authenticate.js'
 
 const userAuth = express.Router()
-
-const db = new MongoDB('Cluster0')
-
-userAuth.use(cors())
-userAuth.use(express.urlencoded({ extended: true }))
-userAuth.use(express.json())
-userAuth.use(cookieParser())
 
 userAuth.post('/login', async function (req, res) {
   let invalidPassword = false
@@ -41,7 +33,7 @@ userAuth.post('/register', async function (req, res) {
   if (!formData.name) {
     return res.status(406).json({ message: 'Invalid name.' })
   }
-
+  
   if (await db.findOne('users', { email: formData.email })) {
     return res.status(409).json({ message: 'User already existing.' })
   }
@@ -96,20 +88,6 @@ function verifyJWT(req, res, next) {
   } else {
     res.sendStatus(401)
   }
-}
-
-function authenticateUser(res, user) {
-  jwt.sign(user, process.env.JWT_PRIVATE_KEY, (err, token) => {
-    if (err) {
-      return res.sendStatus(403)
-    }
-
-    res.cookie('authorization', token)
-
-    return res
-      .status(200)
-      .json({ message: 'You are authenticated', token: `Bearer ${token}` })
-  })
 }
 
 export { userAuth, verifyJWT }

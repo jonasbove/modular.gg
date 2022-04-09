@@ -1,8 +1,7 @@
-const registerForm = document.querySelector('#register')
-const loginForm = document.querySelector('#login')
-
-registerForm?.addEventListener('submit', handleRequest)
-loginForm?.addEventListener('submit', handleRequest)
+function addEventListenerForForms() {
+  const forms = document.querySelectorAll('form')
+  forms.forEach(form => form.addEventListener('submit', handleRequest))
+}
 
 async function handleRequest(event) {
   event.preventDefault()
@@ -11,7 +10,7 @@ async function handleRequest(event) {
 
   const formData = new FormData(event.target)
 
-  fetch(`http://localhost:3000/${formID}`, {
+  fetch(`/${formID}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,3 +33,5 @@ async function handleRequest(event) {
 function setResponse(message) {
   document.querySelector('#errorMessage').innerHTML = message
 }
+
+addEventListenerForForms()
