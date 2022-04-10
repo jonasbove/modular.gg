@@ -1,13 +1,10 @@
 // Certain functions (fetchoAuthDiscordUserToken and authenticateDiscordLogin) within this file is inspired by Discord.js example https://discordjs.guide/oauth2/#authorization-code-grant-flow
 
-import express from 'express'
 import fetch from 'node-fetch'
 import { db } from '../db/db.js'
 import authenticateUser from './authenticate.js'
 
-const discordAuth = express.Router()
-
-discordAuth.get('/ask-discord-permissions', (req, res) => {
+function askDiscordPermissions(req, res) {
   if (process.env.NODE_ENV === 'production') {
     res.redirect(
       'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=https%3A%2F%2Fmodular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
@@ -21,9 +18,9 @@ discordAuth.get('/ask-discord-permissions', (req, res) => {
       'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=https%3A%2F%2Fmodular.gg%2Fdev%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
     )
   }
-})
+}
 
-discordAuth.get('/authenticate-discord', async (req, res) => {
+async function authenticateDiscord(req, res) {
   const code = req.query.code
 
   if (code) {
@@ -39,7 +36,7 @@ discordAuth.get('/authenticate-discord', async (req, res) => {
       return res.status(401)
     }
   }
-})
+}
 
 async function fetchDiscordUserToken(code) {
   return fetch('https://discord.com/api/oauth2/token', {
@@ -112,4 +109,4 @@ async function authenticateDiscordLogin(res, userInfo) {
   }
 }
 
-export { discordAuth }
+export { askDiscordPermissions, authenticateDiscord }
