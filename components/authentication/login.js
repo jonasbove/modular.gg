@@ -1,6 +1,6 @@
-import { db } from '../db/db.js'
-import authenticateUser from './authenticate.js'
-import { hashPassword } from '../encryption/hashing.js'
+import db from '../db/db.js'
+import authenticateUserWithCookie from './authenticate.js'
+import hashPassword from '../encryption/hashing.js'
 
 export default async function loginUser(req, res) {
   let invalidPassword = false
@@ -20,6 +20,6 @@ export default async function loginUser(req, res) {
 
   // Yes, user is authenticated with correct email and password
 
-  return authenticateUser(res, userFound)
+  return authenticateUserWithCookie(res, userFound)
     .then(res => res.json({ message: 'Succesfully logged into your account' }))
 }

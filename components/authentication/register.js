@@ -1,5 +1,5 @@
-import { db } from "../db/db.js"
-import { hashPassword } from '../encryption/hashing.js'
+import db from "../db/db.js"
+import hashPassword from '../encryption/hashing.js'
 
 export default async function registerUser(req, res) {
   const formData = req.body

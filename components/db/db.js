@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb"
 import dotenv from 'dotenv'
 dotenv.config()
 
-export default class MongoDB {
+class MongoDB {
   constructor() {
     this.connectToMongoDB()
   }
@@ -36,5 +36,4 @@ export default class MongoDB {
 }
 
 const db = new MongoDB('Cluster0')
-
-export { db }
+export default db

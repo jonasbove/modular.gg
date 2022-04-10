@@ -1,8 +1,8 @@
 // Certain functions (fetchoAuthDiscordUserToken and authenticateDiscordLogin) within this file is inspired by Discord.js example https://discordjs.guide/oauth2/#authorization-code-grant-flow
 
 import fetch from 'node-fetch'
-import { db } from '../db/db.js'
-import authenticateUser from './authenticate.js'
+import db from '../db/db.js'
+import authenticateUserWithCookie from './authenticate.js'
 
 function askDiscordPermissions(req, res) {
   if (process.env.NODE_ENV === 'production') {
@@ -20,7 +20,7 @@ function askDiscordPermissions(req, res) {
   }
 }
 
-async function authenticateDiscord(req, res) {
+async function authenticateUserDiscord(req, res) {
   const code = req.query.code
 
   if (code) {
@@ -74,7 +74,7 @@ async function authenticateDiscordLogin(res, userInfo) {
   const alreadyExisting = await db.findOne('users', {discord_id: userInfo.id})
 
   if (alreadyExisting) {
-    return authenticateUser(res, alreadyExisting)
+    return authenticateUserWithCookie(res, alreadyExisting)
       .then(res => res.redirect('/settings'))
   }
 
@@ -94,11 +94,11 @@ async function authenticateDiscordLogin(res, userInfo) {
       // merge already existing mail user with discord.
       await db.updateOne('users', { email: userInfo.email }, { $set: dbData })
 
-      return authenticateUser(res, userExistingMail)
+      return authenticateUserWithCookie(res, userExistingMail)
         .then(res => res.redirect('/settings'))
     } else {
       const user = await db.insertOne('users', dbData)
-      return authenticateUser(res, user)
+      return authenticateUserWithCookie(res, user)
         .then(res => res.redirect('/settings'))
     }
 
@@ -109,4 +109,4 @@ async function authenticateDiscordLogin(res, userInfo) {
   }
 }
 
-export { askDiscordPermissions, authenticateDiscord }
+export { askDiscordPermissions, authenticateUserDiscord }

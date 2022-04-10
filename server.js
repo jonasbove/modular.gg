@@ -3,11 +3,11 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-import verifyJWT from './components/authentication/verifyUser.js'
+import { verifyUserLoggedIn, redirectIfLoggedIn } from './components/authentication/verifyUserLogin.js'
 import updateSettings from './components/profile/settings.js'
 import registerUser from './components/authentication/register.js'
 import loginUser from './components/authentication/login.js'
-import { askDiscordPermissions, authenticateDiscord } from './components/authentication/discordAuth.js'
+import { askDiscordPermissions, authenticateUserDiscord } from './components/authentication/discordAuth.js'
 
 dotenv.config()
 
@@ -22,21 +22,21 @@ app.use(express.static(publicResources))
 
 app.get('/', (req, res) => res.sendFile('frontpage.html', { root: publicResources }))
 
-app.get('/register', (req, res) => res.sendFile('register.html', { root: publicResources }))
+app.get('/register', redirectIfLoggedIn, (req, res) => res.sendFile('register.html', { root: publicResources }))
 app.post('/register', registerUser)
 
-app.get('/login', (req, res) => res.sendFile('login.html', { root: publicResources }))
+app.get('/login', redirectIfLoggedIn, (req, res) => res.sendFile('login.html', { root: publicResources }))
 app.post('/login', loginUser)
 
-app.get('/settings', verifyJWT, (req, res) => res.sendFile('settings.html', { root: publicResources }))
-app.post('/settings', verifyJWT, updateSettings)
+app.get('/settings', verifyUserLoggedIn, (req, res) => res.sendFile('settings.html', { root: publicResources }))
+app.post('/settings', verifyUserLoggedIn, updateSettings)
 
 app.use('/js', express.static('public/js'));
 app.use('/css', express.static('public/css'));
 app.use('/assets', express.static('public/assets'));
 
 app.get('/ask-discord-permissions', askDiscordPermissions)
-app.get('/authenticate-discord', authenticateDiscord)
+app.get('/authenticate-discord', authenticateUserDiscord)
 
 app.get('*', (req, res) => res.sendFile('404.html', { root: publicResources }))
 
