@@ -10,7 +10,7 @@ async function handleRequest(event) {
 
   const formData = new FormData(event.target)
 
-  fetch(`/${formID}`, {
+  fetch(`./${formID}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ async function handleRequest(event) {
       return resJSON
     })
     .then((res) => {
-      if (formID !== 'settings') window.location.pathname = '/settings'
+      if (formID !== 'settings') window.location.href = './settings'
       else setResponse(res.message)
     })
     .catch((err) => {
