@@ -1,5 +1,7 @@
-import db from "../db/db.js"
+import db from '../db/db.js'
 import hashPassword from '../encryption/hashing.js'
+import authenticateUserWithCookie from './authenticate.js'
+import crypto from 'crypto'
 
 export default async function registerUser(req, res) {
   const formData = req.body
@@ -29,7 +31,7 @@ export default async function registerUser(req, res) {
   try {
     const user = await db.insertOne('users', confirmedData)
 
-    return authenticateUser(res, user)
+    return authenticateUserWithCookie(res, user)
       .then(res => res.json({ message: 'Succesfully created an account' }))
   } catch (err) {
     res.sendStatus(403)
