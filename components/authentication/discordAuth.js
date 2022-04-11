@@ -57,7 +57,7 @@ async function fetchDiscordUserToken(code) {
       client_secret: process.env.CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
-      redirect_uri: `http://${uri()}:3000/authenticate-discord`,
+      redirect_uri: `http://${uri()}/authenticate-discord`,
       scope: 'identify',
     }),
     headers: {
