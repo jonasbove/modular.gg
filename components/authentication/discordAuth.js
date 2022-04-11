@@ -4,16 +4,27 @@ import fetch from 'node-fetch'
 import db from '../db/db.js'
 import authenticateUserWithCookie from './authenticate.js'
 
+function uri() {
+  switch (process.env.NODE_ENV) {
+    case 'development':
+      return 'modular.gg/dev'
+    case 'development/local':
+      return 'localhost:3000'
+    case 'production':
+      return 'modular.gg'
+  }
+}
+
 function askDiscordPermissions(req, res) {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'development') {
     res.redirect(
       'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=https%3A%2F%2Fmodular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
     )
-  } else if (process.env.NODE_ENV === 'development') {
+  } else if (process.env.NODE_ENV === 'development/local') {
     res.redirect(
       'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
     )
-  } else if (process.env.NODE_ENV === 'production/live') {
+  } else if (process.env.NODE_ENV === 'production') {
     res.redirect(
       'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=https%3A%2F%2Fmodular.gg%2Fdev%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
     )
@@ -46,7 +57,7 @@ async function fetchDiscordUserToken(code) {
       client_secret: process.env.CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
-      redirect_uri: `http://localhost:3000/authenticate-discord`,
+      redirect_uri: `http://${uri()}:3000/authenticate-discord`,
       scope: 'identify',
     }),
     headers: {
