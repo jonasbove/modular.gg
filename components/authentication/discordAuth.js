@@ -7,11 +7,11 @@ import authenticateUserWithCookie from './authenticate.js'
 function uri() {
   switch (process.env.NODE_ENV) {
     case 'development':
-      return 'modular.gg/dev'
+      return 'https://modular.gg/dev'
     case 'development/local':
       return 'localhost:3000'
     case 'production':
-      return 'modular.gg'
+      return 'https://modular.gg'
   }
 }
 
@@ -57,7 +57,7 @@ async function fetchDiscordUserToken(code) {
       client_secret: process.env.CLIENT_SECRET,
       code,
       grant_type: 'authorization_code',
-      redirect_uri: `http://${uri()}/authenticate-discord`,
+      redirect_uri: `${uri()}/authenticate-discord`,
       scope: 'identify',
     }),
     headers: {
