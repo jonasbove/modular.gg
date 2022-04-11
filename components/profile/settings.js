@@ -7,5 +7,7 @@ export default async function updateSettings(req, res) {
   
   await db.updateOne('users', { email: req.userData.email }, { $set: {discordBotToken: token} })
 
+  console.log('nice')
+
   return res.status(200).json( {message: "Discord Bot Token inserted into DB"} )
 }
