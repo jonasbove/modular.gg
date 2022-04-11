@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb"
 import dotenv from 'dotenv'
 dotenv.config()
 
-export default class MongoDB {
+class MongoDB {
   constructor() {
     this.connectToMongoDB()
   }
@@ -22,11 +22,18 @@ export default class MongoDB {
     return this.db.collection(collection).findOne(query)
   }
 
-  async insertOne(collection, query) {
-    return this.db.collection(collection).insertOne(query)
+  async insertOne(collection, query, func) {
+    return this.db.collection(collection).insertOne(query, func)
+  }
+
+  async updateOne(collection, filter, query) {
+    return this.db.collection(collection).updateOne(filter, query)
   }
 
   disconnect() {
     this.client.close()
   }
 }
+
+const db = new MongoDB('Cluster0')
+export default db
