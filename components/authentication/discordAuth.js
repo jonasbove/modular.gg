@@ -16,17 +16,17 @@ function uri() {
 }
 
 function askDiscordPermissions(req, res) {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'production') {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=https%3A%2F%2Fmodular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
+      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fmodular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email'
     )
   } else if (process.env.NODE_ENV === 'development/local') {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
+      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthenticate-discord&response_type=code&scope=identify%20email'
     )
-  } else if (process.env.NODE_ENV === 'production') {
+  } else if (process.env.NODE_ENV === 'development') {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&permissions=8&redirect_uri=https%3A%2F%2Fmodular.gg%2Fdev%2Fauthenticate-discord&response_type=code&scope=identify%20email%20connections%20guilds%20bot'
+      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fmodular.gg%2Fdev%2Fauthenticate-discord&response_type=code&scope=identify%20email'
     )
   }
 }
