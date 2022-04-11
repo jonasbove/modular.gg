@@ -9,7 +9,7 @@ function uri() {
     case 'development':
       return 'https://modular.gg/dev'
     case 'development/local':
-      return 'localhost:3000'
+      return 'http://localhost:3000'
     case 'production':
       return 'https://modular.gg'
   }
@@ -37,6 +37,8 @@ async function authenticateUserDiscord(req, res) {
   if (code) {
     try {
       const oauthResult = await fetchDiscordUserToken(code)
+
+      console.log(oauthResult)
 
       const userInfo = await fetchDiscordUserInfo(oauthResult.token_type, oauthResult.access_token)
 
@@ -86,7 +88,7 @@ async function authenticateDiscordLogin(res, userInfo) {
 
   if (alreadyExisting) {
     return authenticateUserWithCookie(res, alreadyExisting)
-      .then(res => res.redirect('/settings'))
+      .then(res => res.redirect('./settings'))
   }
 
   const dbData = {
@@ -106,11 +108,11 @@ async function authenticateDiscordLogin(res, userInfo) {
       await db.updateOne('users', { email: userInfo.email }, { $set: dbData })
 
       return authenticateUserWithCookie(res, userExistingMail)
-        .then(res => res.redirect('/settings'))
+        .then(res => res.redirect('./settings'))
     } else {
       const user = await db.insertOne('users', dbData)
       return authenticateUserWithCookie(res, user)
-        .then(res => res.redirect('/settings'))
+        .then(res => res.redirect('./settings'))
     }
 
   } catch (err) {
