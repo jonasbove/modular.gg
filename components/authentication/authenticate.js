@@ -7,7 +7,9 @@ export default function authenticateUserWithCookie(res, user, next) {
         return res.sendStatus(403)
       }
 
-      res.cookie('authorization', token)
+      console.log('hej')
+
+      res.cookie('authorization', token, {expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), httpOnly: true}) // cookie expires in 7 days
 
       resolve(res)
     })
