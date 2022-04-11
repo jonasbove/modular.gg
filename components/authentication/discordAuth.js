@@ -7,7 +7,7 @@ import authenticateUserWithCookie from './authenticate.js'
 function uri() {
   switch (process.env.NODE_ENV) {
     case 'development':
-      return 'https://modular.gg/dev'
+      return 'https://dev.modular.gg'
     case 'development/local':
       return 'http://localhost:3000'
     case 'production':
@@ -26,7 +26,7 @@ function askDiscordPermissions(req, res) {
     )
   } else if (process.env.NODE_ENV === 'development') {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fmodular.gg%2Fdev%2Fauthenticate-discord&response_type=code&scope=identify%20email'
+      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fdev.modular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email'
     )
   }
 }
