@@ -91,3 +91,28 @@ a{
 .italic {
     font-style: italic;
 }
+
+.discordlogo {
+    padding: 1rem;
+    width: 3rem;
+}
+
+.loginwithdiscord {
+    display: flex;
+    align-items: center;
+    background-color: #5865F2;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    border-radius: 1rem;
+    margin: 0 2rem;
+    box-sizing: border-box;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.loginwithdiscord:hover {
+    cursor: pointer;
+    background-color: #7983F5;
+    transition: ease-in-out 0.25s;
+}
