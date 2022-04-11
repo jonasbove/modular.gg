@@ -5,37 +5,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modular.gg | Register</title>
+  <link rel="stylesheet" href="./css/login.css" />
 </head>
 <body>
-  <form id="register">
+  <main>
+    <h1 class="heading">Register account</h1>
+    <form id="register">
+      <label for="name">Username</label>
+      <input type="text" name="name" required />
+  
+      <label for="email">Email</label>
+      <input type="email" name="email" required />
+  
+      <h3 class="notifier">We did <span class="italic">NOT</span> spend a lot of time on security, please don't use a password you use elsewhere!</h3>
+      <label for="password">Password</label>
+      <input type="password" name="password" required/>
+  
+      <label for="confirmPassword">Confirm password</label>
+      <input type="password" name="confirmPassword" required/>
 
-    <label for="name">What's would you liked to be called?</label>
-    <input type="text" name="name" required />
-
-    <br />
-
-    <label for="email">What's your email?</label>
-    <input type="email" name="email" required />
-
-    <label for="password">Enter a password?</label>
-    <input type="password" name="password" required />
-
-    <br />
-
-    <label for="confirmPassword">Confirm the password?</label>
-    <input type="password" name="confirmPassword" required />
-
-    <br />
-
-    <p>Already have a account? <a href="./login">Click here</a> to login</p>
-    <p>Do you already have a Discord account? Login in with your Discord account <a href="./ask-discord-permissions">right here.</a></p>
-
-    <input type="submit" value="Register" />
-
-    <p style="color: red; font-weight: bold;" id="errorMessage"></p>
-
-  </form>
-
+      
+      <p class="alreadyregistered">Already have a account? <a href="/login">Click here</a> to login.</p>
+      <input type="submit" value="Register" class="submitbutton"/>
+      
+      <p class="error" id="errorMessage"></p>
+      
+      <a href="./ask-discord-permissions" class="loginwithdiscord"><img src="./assets/Discord-Logo-White.svg" alt="Discord logo" class="discordlogo">Login with Discord </button></a>
+    </form>  
+  </main>
   <script src="./js/index.js"></script>
 </body>
 </html>

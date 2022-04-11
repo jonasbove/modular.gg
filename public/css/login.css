@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+body {
+  background: black;
+  color: white;
+}
+
+main {
+width: 100%;
+display: grid;
+justify-content: center;
+padding: 25vh 0;
+}
+
+.heading {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    grid-row-start: 1;
+    grid-row-end: 2;
+}
+form {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    display: grid;
+    width: 50vw;
+    height: 50vh;
+    justify-content: center;
+    grid-template-columns: 2fr 4fr;
+}
+
+.notifier, .alreadyregistered, .noaccount {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    justify-self: flex-start;
+    padding: 0 2rem;
+}
+
+label, input {
+    font-size: 1.5rem;
+    font-family: 'Raleway', sans-serif;
+    margin: 2rem;
+}
+
+input {
+    height: 3rem;
+}
+
+label, h3, p {
+    justify-self: flex-end;
+}
+
+p, h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+}
+
+a{
+    color: #50FA7B;
+}
+.submitbutton {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    padding: 1rem;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+    border: 2px solid white;
+    transition: ease-in-out 0.1s;
+    background-color: white;
+    border-radius: 0.7rem;
+    height: 4rem;
+}
+
+.submitbutton:hover {
+    cursor: pointer;
+    background: black;
+    color: white;
+
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.discordlogo {
+    padding: 1rem;
+    width: 3rem;
+}
+
+.loginwithdiscord {
+    display: flex;
+    align-items: center;
+    background-color: #5865F2;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    border-radius: 1rem;
+    margin: 0 2rem;
+    box-sizing: border-box;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.loginwithdiscord:hover {
+    cursor: pointer;
+    background-color: #7983F5;
+    transition: ease-in-out 0.25s;
+}

@@ -5,28 +5,28 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modular.gg | Login</title>
+  <link rel="stylesheet" href="./css/login.css" />
 </head>
 <body>
-  <form id="login">
+  <main>
+    <h1 class="heading">Log in</h1>
+    <form id="login">
+      <label for="email">Email</label>
+      <input type="email" name="email" required />
+  
+      <label for="password">Password</label>
+      <input type="password" name="password" required />
+  
+      <p class="noaccount">Don't have a account? <a href="/register">Click here</a> to register</p>
+  
+      <input type="submit" value="Login" class="submitbutton"/>
+  
+      <p class="error" id="errorMessage"></p>
+  
+      <a href="./ask-discord-permissions" class="loginwithdiscord"><img src="./assets/Discord-Logo-White.svg" alt="Discord logo" class="discordlogo">Login with Discord </button>
+    </form>
 
-    <label for="email">What's your email?</label>
-    <input type="email" name="email" required />
-
-    <br />
-
-    <label for="password">Enter your password?</label>
-    <input type="password" name="password" required />
-
-    <p>Don't have a account? <a href="./register">Click here</a> to register</p>
-
-    <p>Login with Discord <a href="./ask-discord-permissions">right here.</a></p>
-
-    <input type="submit" value="Login" />
-
-    <p style="color: red; font-weight: bold;" id="errorMessage"></p>
-
-  </form>
-
-  <script src="./js/index.js"></script>
+  </main>
+  <script src="/js/index.js"></script>
 </body>
 </html>
