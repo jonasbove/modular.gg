@@ -1,4 +1,5 @@
 import db from "../db/db.js"
+import crypto from "crypto"
 import hashPassword from '../encryption/hashing.js'
 
 export default async function registerUser(req, res) {
