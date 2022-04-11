@@ -23,7 +23,7 @@ async function handleRequest(event) {
       return resJSON
     })
     .then((res) => {
-      if (formID !== 'settings') window.location.pathname = './settings'
+      if (formID !== 'settings') window.location.pathname = 'settings'
       else setResponse(res.message)
     })
     .catch((err) => {
