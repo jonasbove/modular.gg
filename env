@@ -1,0 +1,6 @@
+NODE_ENV=development/local
+DB_URI=mongodb+srv://admin:passwordpassword@cluster0.jh1dz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+JWT_PRIVATE_KEY=minfuckingprivatekey
+PORT=3000
+CLIENT_ID=938051299709190144
+CLIENT_SECRET=cr-3sKpy6dWvsH3VzuOSk7sElxLaWQMG
