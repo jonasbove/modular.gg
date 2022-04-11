@@ -3,10 +3,10 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
-import { verifyUserLoggedIn, redirectIfLoggedIn } from './components/authentication/verifyUserLogin.js'
 import updateSettings from './components/profile/settings.js'
-import registerUser from './components/authentication/register.js'
 import loginUser from './components/authentication/login.js'
+import registerUser from './components/authentication/register.js'
+import { verifyUserLoggedIn, redirectIfLoggedIn } from './components/authentication/verifyUserLogin.js'
 import { askDiscordPermissions, authenticateUserDiscord } from './components/authentication/discordAuth.js'
 
 dotenv.config()
@@ -38,6 +38,7 @@ app.use('/assets', express.static('public/assets'));
 app.get('/ask-discord-permissions', askDiscordPermissions)
 app.get('/authenticate-discord', authenticateUserDiscord)
 
+// this is placed last because if we do not find a match this will match it
 app.get('*', (req, res) => res.sendFile('404.html', { root: publicResources }))
 
 app.listen(process.env.PORT, () => {

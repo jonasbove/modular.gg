@@ -1,5 +1,20 @@
 import jwt from 'jsonwebtoken'
 
+// verify the user is logged in
+async function verifyUserLoggedIn(req, res, next) {
+  return verifyToken(req)
+    .then(result => req.userData = result)
+    .then(() => next())
+    .catch(err => res.redirect('/login'))
+}
+
+// if the user is logged in then redirect
+async function redirectIfLoggedIn(req, res, next) {
+  verifyToken(req)
+    .then(() => res.redirect('/settings'))
+    .catch(() => next())
+}
+
 async function verifyToken(req) {
   return new Promise((resolve, reject) => {
     const token = req.cookies['authorization']
@@ -16,19 +31,6 @@ async function verifyToken(req) {
       reject()
     }
   })
-}
-
-async function verifyUserLoggedIn(req, res, next) {
-  return verifyToken(req)
-    .then(result => req.userData = result)
-    .then(() => next())
-    .catch(err => res.redirect('/login'))
-}
-
-async function redirectIfLoggedIn(req, res, next) {
-  verifyToken(req)
-    .then(() => res.redirect('/settings'))
-    .catch(() => next())
 }
 
 export { verifyUserLoggedIn, redirectIfLoggedIn }
