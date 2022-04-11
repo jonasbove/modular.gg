@@ -1,3 +1,4 @@
+import db from "../db/db.js"
 import hashPassword from '../encryption/hashing.js'
 import authenticateUserWithCookie from './authenticate.js'
 import crypto from 'crypto'
