@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(publicResources))
 
-app.get('/', (req, res) => res.sendFile('frontpage.html', { root: publicResources }))
+app.get('/', (req, res) => res.sendFile('index.html', { root: publicResources }))
 
 app.get('/register', redirectIfLoggedIn, (req, res) => res.sendFile('register.html', { root: publicResources }))
 app.post('/register', registerUser)
