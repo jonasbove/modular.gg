@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import updateSettings from './components/profile/settings.js'
 import loginUser from './components/authentication/login.js'
 import registerUser from './components/authentication/register.js'
+import userData from './components/authentication/userinfo.js'
 import { verifyUserLoggedIn, redirectIfLoggedIn } from './components/authentication/verifyUserLogin.js'
 import { askDiscordPermissions, authenticateUserDiscord } from './components/authentication/discordAuth.js'
 
@@ -30,6 +31,8 @@ app.post('/login', loginUser)
 
 app.get('/settings', verifyUserLoggedIn, (req, res) => res.sendFile('settings.html', { root: publicResources }))
 app.post('/settings', verifyUserLoggedIn, updateSettings)
+
+app.get('/userdata', verifyUserLoggedIn, userData)
 
 app.use('/js', express.static('public/js'));
 app.use('/css', express.static('public/css'));
