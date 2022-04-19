@@ -1,0 +1,25 @@
+// This is used to deploy commands to Discord således at Discord ved hvilke kommandoer der findes
+
+require('dotenv').config()
+const fs = require('fs')
+const { REST } = require('@discordjs/rest')
+const { Routes } = require('discord-api-types/v9')
+
+const commands = []
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'))
+
+async function deployCommands () {
+  console.log('Deploy commands')
+  for (const file of commandFiles) {
+    const command = require(`./commands/${file}`)
+    commands.push(command.data.toJSON())
+  }
+
+  const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN)
+
+  await rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
+    .then(() => console.log('Successfully registered application commands.'))
+    .catch(console.error)
+}
+
+module.exports = deployCommands

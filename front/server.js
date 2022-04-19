@@ -10,7 +10,7 @@ import userData from './components/authentication/userinfo.js'
 import { verifyUserLoggedIn, redirectIfLoggedIn } from './components/authentication/verifyUserLogin.js'
 import { askDiscordPermissions, authenticateUserDiscord } from './components/authentication/discordAuth.js'
 
-dotenv.config()
+dotenv.config({ path: '../.env' })
 
 const app = express()
 const publicResources = './public'
