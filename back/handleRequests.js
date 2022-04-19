@@ -1,13 +1,25 @@
 const express = require('express')
 const app = express()
+const compile = require('./compiler/compileJSON.js')
 
 app.use(express.json())
 
 app.post('/addJSON', (req, res) => {
-  console.log(req.body)
-
   res.status(200)
-  res.json({ pretty: 'yes' })
+
+  compile('test', req.body)
+
+  res.json({ result: 'JSON added!' })
+})
+
+app.get('/startBot', (req, res) => {
+  const botFunctions = require('./results/test.js')
+
+  botFunctions.forEach((func) => {
+    func()
+  })
+
+  res.status(200).json({ result: "Bot started" })
 })
 
 try {

@@ -17,7 +17,7 @@ function node_OnSlashCommand (obj) {
 
     if (!command) return
 
-    const discord_data = { client: client, interaction: interaction }
+    const discord_data = { client: client, channel: interaction.channelId }
 
     obj.next(discord_data)
   })
@@ -37,7 +37,7 @@ function node_GreaterThan (obj) {
 }
 
 function node_SendMessage (obj) {
-  obj.discord_data.interaction.reply(`${obj.message} - Lortet virker kraftedme`)
+  client.channels.cache.get(obj.channel).send(obj.text);
 }
 
 module.exports = {

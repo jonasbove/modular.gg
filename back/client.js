@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../../.env' })
+require('dotenv').config({ path: '../.env' })
 const deployCommands = require('./templates/deployCommands')
 
 const { Client, Collection, Intents /* DiscordAPIError */ } = require('discord.js')
