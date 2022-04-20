@@ -29,7 +29,7 @@ app.get('/startBot', (req, res) => {
 
 try {
   app.listen(process.env.BACKEND_PORT)
-  console.log(`Backend started on port ${process.env.BACKEND_PORT}`)
+  console.log(`Backend started on port ${process.env.BACKEND_PORT}.`)
 } catch (err) {
   console.log(`There was an error ${err}`)
 }
