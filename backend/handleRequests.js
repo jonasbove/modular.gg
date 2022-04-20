@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const compile = require('./compiler/compileJSON.js')
-import dotenv from 'dotenv'
+const dotenv = require('dotenv')
 
 dotenv.config({ path: '../.env' })
 
