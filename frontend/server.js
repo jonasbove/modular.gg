@@ -47,5 +47,5 @@ app.get('/authenticate-discord', authenticateUserDiscord)
 app.get('*', (req, res) => res.sendFile('404.html', { root: publicResources }))
 
 app.listen(process.env.FRONTEND_PORT, () => {
-  console.log(`Frontend started on port ${process.env.PORT}.`)
+  console.log(`Frontend started on port ${process.env.FRONTEND_PORT}.`)
 })
