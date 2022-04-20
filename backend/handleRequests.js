@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const compile = require('./compiler/compileJSON.js')
+import dotenv from 'dotenv'
+
+dotenv.config({ path: '../.env' })
 
 app.use(express.json())
 
@@ -16,8 +19,6 @@ app.post('/addJSON', (req, res) => {
 app.get('/startBot', (req, res) => {
   console.log('startbot get method')
   const botFunctions = require('./results/test.js')
-
-  
 
   botFunctions.forEach((func) => {
     func()
