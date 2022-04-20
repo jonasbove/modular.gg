@@ -8,6 +8,6 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 client.commands = new Collection()
 
 client.login(process.env.DISCORD_TOKEN)
-  .then(() => console.log('started'))
+  .then(() => console.log('Client connected'))
 
 exports.client = client

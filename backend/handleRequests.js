@@ -8,7 +8,6 @@ dotenv.config({ path: '../.env' })
 app.use(express.json())
 
 app.post('/addJSON', (req, res) => {
-  console.log('addjson get method')
   res.status(200)
 
   compile('test', req.body)
@@ -17,7 +16,6 @@ app.post('/addJSON', (req, res) => {
 })
 
 app.get('/startBot', (req, res) => {
-  console.log('startbot get method')
   const botFunctions = require('./results/test.js')
 
   botFunctions.forEach((func) => {
