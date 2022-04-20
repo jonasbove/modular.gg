@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+body {
+  background: black;
+  color: white;
+}
+header {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  width: 100%;
+  align-items: center;
+}
+
+header nav {
+  justify-self: flex-end;
+}
+
+header nav ul {
+  display: flex;
+  align-items: center;
+}
+header nav ul li {
+  list-style: none;
+  padding: 1rem;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.6rem;
+}
+
+.createaccount {
+  font-weight: bold;
+  border: solid 2px white;
+  border-radius: 1rem;
+  padding: 0.8rem;
+  transition: ease-in-out 0.1s;
+}
+
+.createaccount:hover {
+  background-color: white;
+  color: black;
+}
+
+.dots {
+  width: 50%;
+  height: 7rem;
+  background-color: transparent;
+  background-image: radial-gradient(circle, white 15%, transparent 10%), radial-gradient(circle, white 15%, transparent 10%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 0;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 8fr 4fr;
+  padding: 2rem 9rem;
+  justify-content: center;
+  align-items: center;
+}
+main h1 {
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.green {
+  color: #50fa7b;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.getstarted {
+  width: 50%;
+  height: 4.5rem;
+  border-radius: 0.7rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: 'Montserrat', sans-serif;
+  border: 2px solid white;
+  transition: ease-in-out 0.1s;
+  background-color: white;
+}
+.getstarted:hover {
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+img.logo {
+  height: 4rem;
+}
+
+img.dots {
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+#description {
+  grid-row-start: 4;
+  grid-row-end: 5;
+  box-sizing: border-box;
+  padding: 5rem 0;
+}
+
+#description label {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  padding: 0.5rem 0;
+}
+
+#description .tabs {
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+}
+
+#description .tabs label {
+  font-weight: 700;
+  border-bottom: 5px solid #444444;
+  flex-grow: 1;
+  padding-bottom: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+#description .slider {
+  position: absolute;
+  height: 5px;
+  background: white;
+  bottom: 0px;
+  transition: 0.45s ease;
+}
+
+#functionality:checked ~ .tabs .slider {
+  left: 0;
+  width: 32%;
+}
+
+#visual_scripting:checked ~ .tabs .slider {
+  left: 32%;
+  width: 35%;
+}
+
+#open_source:checked ~ .tabs .slider {
+  left: 67%;
+  width: 33%;
+  animation: fadeout 2s;
+}
+
+.tabs-content {
+  display: grid;
+  margin-bottom: 6rem;
+}
+
+.tabs-content p.tab-pane {
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity .45s ease;
+  opacity: 0;
+  white-space: pre-line;
+}
+
+#functionality:checked ~ .tabs-content p#functionality-pane {
+  opacity: 1;
+}
+#visual_scripting:checked ~ .tabs-content p#visual_scripting-pane {
+  opacity: 1;
+}
+#open_source:checked ~ .tabs-content p#open_source-pane {
+  opacity: 1;
+}
+
+
+
+#description p {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.25rem;
+  padding: 1rem 0;
+}
+
+#team {
+  display: flex;
+  grid-row-start: 5;
+  grid-row-end: 6;
+  box-sizing: border-box;
+  justify-self: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#team img {
+  width: 5rem;
+  border-radius: 50%;
+  padding: 0.25rem;
+}
+
+#team .person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#team .person h3 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+}
+
+#team .person p {
+  font-family: 'Raleway', sans-serif;
+  font-style: italic;
+}
+
+footer {
+  display: flex;
+  justify-content: flex-end;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.75rem;
+  padding: 1rem;
+}
+
+input[type=radio] {
+  display: none;
+}
