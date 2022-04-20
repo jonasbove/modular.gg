@@ -32,6 +32,8 @@ app.post('/login', loginUser)
 app.get('/settings', verifyUserLoggedIn, (req, res) => res.sendFile('settings.html', { root: publicResources }))
 app.post('/settings', verifyUserLoggedIn, updateSettings)
 
+app.get('/editor', verifyUserLoggedIn, (req, res) => res.sendFile('editor.html', { root: publicResources }))
+
 app.get('/userdata', verifyUserLoggedIn, userData)
 
 app.use('/js', express.static('public/js'));
@@ -44,6 +46,6 @@ app.get('/authenticate-discord', authenticateUserDiscord)
 // this is placed last because if we do not find a match this will match it
 app.get('*', (req, res) => res.sendFile('404.html', { root: publicResources }))
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.FRONTEND_PORT, () => {
   console.log(`The server has started on port ${process.env.PORT}`)
 })

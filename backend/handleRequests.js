@@ -23,7 +23,7 @@ app.get('/startBot', (req, res) => {
 })
 
 try {
-  app.listen(3000)
+  app.listen(process.env.BACKEND_PORT)
   console.log('Server has started')
 } catch (err) {
   console.log(`There was an error ${err}`)

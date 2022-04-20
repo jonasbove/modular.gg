@@ -1,0 +1,172 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "OnSlashCommand",
+            "type": "EventNode",
+            "inputs": {
+                "data": [
+                    {
+                        "name": "trigger",
+                        "type": "Text",
+                        "valueIsPath": false,
+                        "value": "useCommand"
+                    }
+                ],
+                "actions": [
+                    {
+                        "name": "next",
+                        "type": "Action",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 193,
+                            "plug": "IfElse"
+                        }
+                    }
+                ]
+            },
+            "outputs": {
+                "data": [
+                    {
+                        "name": "channel",
+                        "type": "Channel"
+                    },
+                    {
+                        "name": "text",
+                        "type": "Text"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 193,
+            "name": "IfElse",
+            "type": "ActionNode",
+            "inputs": {
+                "data": [
+                    {
+                        "name": "expression",
+                        "type": "Bool",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 190,
+                            "plug": "result"
+                        }
+                    }
+                ],
+                "actions": [
+                    {
+                        "name": "if",
+                        "type": "Action",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 194,
+                            "plug": "SendMessage"
+                        }
+                    },
+                    {
+                        "name": "else",
+                        "type": "Action",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 294,
+                            "plug": "SendMessage"
+                        }
+                    }
+                ]
+            },
+            "outputs": {
+                "data": []
+            }
+        },
+        {
+            "id": 190,
+            "name": "GreaterThan",
+            "type": "DataNode",
+            "inputs": {
+                "data": [
+                    {
+                        "name": "a",
+                        "type": "Num",
+                        "valueIsPath": false,
+                        "value": 6
+                    },
+                    {
+                        "name": "b",
+                        "type": "Num",
+                        "valueIsPath": false,
+                        "value": 4
+                    }
+                ],
+                "actions": []
+            },
+            "outputs": {
+                "data": [
+                    {
+                        "name": "result",
+                        "type": "Bool"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 294,
+            "name": "SendMessage",
+            "type": "ActionNode",
+            "inputs": {
+                "data": [
+                    {
+                        "name": "channel",
+                        "type": "Channel",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 0,
+                            "plug": "channel"
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "type": "Text",
+                        "valueIsPath": false,
+                        "value": "nope"
+                    }
+                ],
+                "actions": []
+            },
+            "outputs": {
+                "data": []
+            }
+        },
+        {
+            "id": 194,
+            "name": "SendMessage",
+            "type": "ActionNode",
+            "inputs": {
+                "data": [
+                    {
+                        "name": "channel",
+                        "type": "Channel",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 0,
+                            "plug": "channel"
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "type": "Text",
+                        "valueIsPath": true,
+                        "value": {
+                            "node": 0,
+                            "plug": "text"
+                        }
+                    }
+                ],
+                "actions": []
+            },
+            "outputs": {
+                "data": []
+            }
+        }
+    ]
+}
