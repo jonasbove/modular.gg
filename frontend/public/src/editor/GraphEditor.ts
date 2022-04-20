@@ -296,7 +296,7 @@ class GraphEditor {
                 download(this.jsonTranspile(), `${this.name}.json`, 'text/json')
             }
             if (e.key === 'p') {
-                fetch('./api0', {
+                fetch('./backend/addJSON', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
