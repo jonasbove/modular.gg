@@ -1,7 +1,7 @@
 import fs from 'fs'
 
-export default function compile(name, graph) {
-  fs.writeFile(`./results/${name}.js`, buildFile(graph), 'utf8', err => {
+export default function compile(path, name, graph) {
+  fs.writeFile(`${path}/${name}.js`, buildFile(graph), 'utf8', err => {
     if (err) console.log(err)
     else {
       console.log('success')
@@ -22,7 +22,7 @@ function setType(string, type) {
 
 function buildFile(graph) { //Todo: parameterize and shit
     //let importSet = new Set()
-    let file = graph.nodes.filter(n => n.type === "EventNode").map(n => `funcs.push( () => {${recFillParams(graph, n)}});`).reduce((prev, curr) => prev + curr)
+    let file = graph.filter(n => n.type === "EventNode").map(n => `funcs.push( () => {${recFillParams(graph, n)}});`).reduce((prev, curr) => prev + curr)
 
     //return ((Array.from(importSet)).reduce((res, func) => { return res += `import { ${func} } from "..\\\\tempFunctions.js;"\n`})) + file
 
@@ -36,7 +36,7 @@ function buildFile(graph) { //Todo: parameterize and shit
             if (!data.valueIsPath) {
                 result += setType(data.value, data.type) + ","
             } else {
-                let nextNode = graph.nodes.find((n) => { return n.id === data.value.node })
+                let nextNode = graph.find((n) => { return n.id === data.value.node })
                 if (nextNode.type === "EventNode") {
                     result += `${nextNode.name}_data.${data.value.plug},`
                 } else {
@@ -53,7 +53,7 @@ function buildFile(graph) { //Todo: parameterize and shit
             if (!action.valueIsPath) {
                 result += `${signature} => {},`
             } else {
-                let nextNode = graph.nodes.find((n) => { return n.id === action.value.node })
+                let nextNode = graph.find((n) => { return n.id === action.value.node })
                 if (nextNode.type === "ActionNode") {
                     result += `${signature} => {${recFillParams(graph, nextNode)}},`
                 } else {

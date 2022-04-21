@@ -1,4 +1,4 @@
-const nodeFunctions = require('../templates/functions.js')
+import nodeFunctions from '../templates/functions.js'
 nodeFunctions.node_OnSlashCommand({
   trigger: 'lort',
   veryCoolNum: nodeFunctions.node_Number({ inputNumber: 5 }).outputNumber,

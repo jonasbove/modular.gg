@@ -1,3 +1,4 @@
+import nodeFunctions from '../../templates/functions.js'
 let funcs = []
 funcs.push(() => {
   nodeFunctions.node_OnSlashCommand({

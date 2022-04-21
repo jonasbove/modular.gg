@@ -1,7 +1,5 @@
 // const deployCommands = require('./deploy-commands')
-const { Client, Collection, Intents /* DiscordAPIError */ } = require('discord.js')
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { client } = require('../client')
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 function node_OnSlashCommand (obj) {
   const data = new SlashCommandBuilder()
@@ -39,8 +37,7 @@ function node_GreaterThan (obj) {
 function node_SendMessage (obj) {
   client.channels.cache.get(obj.channel).send(obj.text);
 }
-
-module.exports = {
+export default {
   node_OnSlashCommand,
   node_IfElse,
   node_Number,

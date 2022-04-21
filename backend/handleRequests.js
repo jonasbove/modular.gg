@@ -11,17 +11,19 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.post('/addJSON', (req, res) => {
+  const userData = await verifyToken(req)
+  const botToken = userData.discordBotToken
+
   res.status(200)
 
-  compile('test', req.body)
+  compile(`./clients/${botToken}`, req.body.name ?? 'test', req.body.nodes)
 
-  res.json({ result: 'JSON added!' })
+  res.status(200).json({ result: 'JSON added!' })
 })
 
 app.get('/startBot', async (req, res) => {
   const userData = await verifyToken(req)
-  const botToken = userData.discordBotToken
-  console.log(botToken)
+  const botToken = userData.discordBotToken  
 
   /*const botFunctions = require('./results/test.js')
 
