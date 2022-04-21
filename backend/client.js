@@ -1,13 +1,16 @@
-require('dotenv').config({ path: '../.env' })
-const deployCommands = require('./templates/deployCommands')
+import dotenv from 'dotenv'
+dotenv.config({ path: '../.env' })
+//import deployCommands from './templates/deployCommands'
 
-const { Client, Collection, Intents /* DiscordAPIError */ } = require('discord.js')
+import { Client, Collection, Intents /* DiscordAPIError */ } from 'discord.js'
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
 
 client.commands = new Collection()
 
-client.login(process.env.DISCORD_TOKEN)
-  .then(() => console.log('Client connected'))
+function connectBot(token) {
+  client.login(token)
+    .then(() => console.log('Client connected'))
+}
 
 exports.client = client

@@ -1,6 +1,6 @@
-const fs = require('fs')
+import fs from 'fs'
 
-function compile(name, graph) {
+export default function compile(name, graph) {
   fs.writeFile(`./results/${name}.js`, buildFile(graph), 'utf8', err => {
     if (err) console.log(err)
     else {
@@ -26,7 +26,7 @@ function buildFile(graph) { //Todo: parameterize and shit
 
     //return ((Array.from(importSet)).reduce((res, func) => { return res += `import { ${func} } from "..\\\\tempFunctions.js;"\n`})) + file
 
-    return `const nodeFunctions = require("../templates/functions.js"); let funcs = [];${file}; module.exports = funcs`
+    return `import nodeFunctions from "../templates/functions.js"; let funcs = [];${file}; export default funcs`
 
     function recFillParams(graph, node) {
         let result = `nodeFunctions.node_${node.name}({`
@@ -69,5 +69,3 @@ function buildFile(graph) { //Todo: parameterize and shit
         return result + "})"
     }
 }
-
-module.exports = compile
