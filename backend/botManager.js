@@ -12,6 +12,8 @@ class Bot {
     this.token = token
     this.running = false
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] })
+    
+    this.client.commands = new Collection()
 
     this.client.login(token)
       .then(() => console.log('Client connected'))

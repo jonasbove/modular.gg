@@ -1,7 +1,6 @@
 import fs from 'fs'
 
 export default function compile(path, graph) {
-    return ''
     fs.writeFile(`${path}/${graph.name}.js`, buildFile(graph), 'utf8', err => {
         if (err) console.log(err)
         else {
@@ -27,10 +26,10 @@ function buildFile(graph) { //Todo: parameterize and shit
 
     let startNode = graph.nodes.find(n => n.type === "EventNode")
 
-    return `import nodeFunctions from "../../templates/functions.js";
+    return `import getFunctions from "../../templates/functions.js";
     export let name = "${graph.name}"; 
     export let event = "${startNode.name}"; 
-    export let func = () => {${recFillParams(graph.nodes, startNode)}};`
+    export let func = (client) => {let nodeFunctions = getFunctions(client); ${recFillParams(graph.nodes, startNode)}};`
 
     function recFillParams(nodes, node) {
         let result = `nodeFunctions.node_${node.name}({`
