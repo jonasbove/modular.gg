@@ -3,6 +3,7 @@ import compile from './compiler/compileJSON.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import verifyToken from '../shared/authentication/verifyJWTToken.js'
+import { botManager } from './botManager.js'
 
 dotenv.config({ path: '../.env' })
 const app = express()
@@ -10,20 +11,28 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-app.post('/addJSON', (req, res) => {
+let botMan = new botManager()
+
+app.post('/addJSON', async (req, res) => {
+  console.log("Got json request")
   const userData = await verifyToken(req)
   const botToken = userData.discordBotToken
 
+  compile(`./clients/${botToken}`, req.body)
+  let bot = botMan.addBot(botToken)
+  bot.start()
+
   res.status(200)
 
-  compile(`./clients/${botToken}`, req.body.name ?? 'test', req.body.nodes)
+
+  console.log("Json added")
 
   res.status(200).json({ result: 'JSON added!' })
 })
 
 app.get('/startBot', async (req, res) => {
   const userData = await verifyToken(req)
-  const botToken = userData.discordBotToken  
+  const botToken = userData.discordBotToken
 
   /*const botFunctions = require('./results/test.js')
 

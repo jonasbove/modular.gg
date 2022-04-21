@@ -1,7 +1,7 @@
 // const deployCommands = require('./deploy-commands')
 import { SlashCommandBuilder } from '@discordjs/builders'
 
-function node_OnSlashCommand (obj) {
+function node_OnSlashCommand(obj) {
   const data = new SlashCommandBuilder()
     .setName(obj.trigger)
     .setDescription(`${obj.trigger}`)
@@ -21,22 +21,23 @@ function node_OnSlashCommand (obj) {
   })
 }
 
-function node_IfElse (obj) {
+function node_IfElse(obj) {
   if (obj.expression === true) obj.if()
   else obj.else()
 }
 
-function node_Number (obj) {
+function node_Number(obj) {
   return { outputNumber: obj.inputNumber }
 }
 
-function node_GreaterThan (obj) {
+function node_GreaterThan(obj) {
   return { result: (obj.a > obj.b) }
 }
 
-function node_SendMessage (obj) {
+function node_SendMessage(obj) {
   client.channels.cache.get(obj.channel).send(obj.text);
 }
+
 export default {
   node_OnSlashCommand,
   node_IfElse,
