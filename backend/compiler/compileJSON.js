@@ -1,6 +1,7 @@
 import fs from 'fs'
 
 export default function compile(path, graph) {
+    return ''
     fs.writeFile(`${path}/${graph.name}.js`, buildFile(graph), 'utf8', err => {
         if (err) console.log(err)
         else {

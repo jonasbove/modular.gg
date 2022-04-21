@@ -29,12 +29,19 @@ class Bot {
     //let exCmd = { name: "Command to do stuff", func: () => {/*do stuf */ } }
   }
 
+  runCommands() {
+    this.commands.forEach(command => {
+      console.log('Running a command')
+      command.func(this.client)
+    })
+  }
+
   async addCommand(name) {
 
   }
 
   start() {
-    Console.log("i do nothing")
+    console.log("i do nothing")
   }
 }
 
@@ -48,6 +55,7 @@ export class botManager {
 
     this.bots[token] = new Bot(token)
     await this.bots[token].loadCommands()
+    this.bots[token].runCommands()
     return this.bots[token]
   }
 
