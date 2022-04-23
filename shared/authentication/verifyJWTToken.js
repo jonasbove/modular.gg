@@ -6,14 +6,14 @@ export default async function verifyToken(req) {
     if (token) {
       jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, userData) => {
         if (err) {
-          console.log("Rejected!")
+          console.log("Rejected 001!")
           reject()
         } else {
           resolve(userData)
         }
       })
     } else {
-      console.log("Rejected!")
+      console.log("Rejected (no token)!")
       reject()
     }
   })

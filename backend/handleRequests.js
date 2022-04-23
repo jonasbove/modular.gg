@@ -2,12 +2,16 @@ import express from 'express'
 import compile from './compiler/compileJSON.js'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
 import verifyToken from '../shared/authentication/verifyJWTToken.js'
 import { botManager } from './botManager.js'
+import { getBotToken } from '../frontend/components/authentication/verifyUserLogin.js'
 
 dotenv.config({ path: '../.env' })
 const app = express()
 
+app.use(cors({credentials: true,  origin: ['http://localhost:3000', 'https://modular.gg']}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
 
@@ -18,6 +22,8 @@ app.post('/addJSON', async (req, res) => {
   const userData = await verifyToken(req)
   const botToken = userData.discordBotToken
 
+  return console.log(botToken)
+
   compile(`./clients/${botToken}`, req.body)
   let bot = await botMan.addBot(botToken)
   bot.start()
@@ -27,17 +33,30 @@ app.post('/addJSON', async (req, res) => {
   res.status(200).json({ result: 'JSON added!' })
 })
 
-app.get('/startBot', async (req, res) => {
-  const userData = await verifyToken(req)
-  const botToken = userData.discordBotToken
+app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
+  try {
+    const userData = await verifyToken(req)
+    const botToken = await getBotToken(userData.email)
 
-  /*const botFunctions = require('./results/test.js')
+    let bot = await botMan.addBot(botToken) // just for testing
 
-  botFunctions.forEach((func) => {
-    func()
-  })
+    switch (req.path) {
+      case '/startbot':
+        await botMan.startBot(botToken)
+        break
+      case '/stopbot':
+        await botMan.stopBot(botToken)
+        break
+      case '/restartbot':
+        await botMan.restartBot(botToken)
+        break;
+    }
 
-  res.status(200).json({ result: "Bot started" })*/
+    res.status(200).json({ result: "Success" })
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ result: "error... error message is in console" })
+  }
 })
 
 try {

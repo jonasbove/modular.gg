@@ -9,6 +9,7 @@ function getFunctions(client) {
         .setDescription(`${obj.trigger}`)
     
       client.commands.set(data.name, obj.trigger)
+      client.commandsToDeploy.push(data)
     
       client.on('interactionCreate', (interaction) => {
         if (!interaction.isCommand()) return

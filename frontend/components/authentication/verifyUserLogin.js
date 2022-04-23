@@ -1,4 +1,5 @@
 import verifyToken from '../../../shared/authentication/verifyJWTToken.js'
+import db from '../db/db.js'
 
 // verify the user is logged in
 async function verifyUserLoggedIn(req, res, next) {
@@ -15,4 +16,10 @@ async function redirectIfLoggedIn(req, res, next) {
     .catch(() => next())
 }
 
-export { verifyUserLoggedIn, redirectIfLoggedIn }
+async function getBotToken(email) {
+  const userFound = await db.findOne('users', {email: email})
+
+  return userFound.discordBotToken
+}
+
+export { verifyUserLoggedIn, redirectIfLoggedIn, getBotToken }
