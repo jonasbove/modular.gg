@@ -163,7 +163,7 @@ class VPL_Node extends HTMLElement {
 
         this.Actions.forEach(p => {
             if (p.Connection != null) {
-                let rect = p.getBoundingClientRect()
+                let rect = getBoundingClientRectPage(p)
                 let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2)
 
                 p.Curve.setStart(pos)
@@ -172,7 +172,7 @@ class VPL_Node extends HTMLElement {
 
         this.Inputs.forEach(p => {
             if (p.Connection != null) {
-                let rect = p.getBoundingClientRect()
+                let rect = getBoundingClientRectPage(p)
                 let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2)
 
                 p.Curve.setEnd(pos)
@@ -182,7 +182,7 @@ class VPL_Node extends HTMLElement {
 
         this.Outputs.forEach(p => {
             p.Connections.forEach(destPlug => {
-                let rect = p.getBoundingClientRect()
+                let rect = getBoundingClientRectPage(p)
                 let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2)
 
                 destPlug.Curve.setStart(pos)
@@ -251,7 +251,7 @@ class ActionNode extends VPL_Node {
         super.dragMove(p)
 
         this.Connections.forEach(c => {
-            let rect = this.header.getBoundingClientRect()
+            let rect = getBoundingClientRectPage(this.header)
             let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2)
 
             c.Curve.setEnd(pos)
@@ -384,7 +384,7 @@ class GraphEditor {
 
 function beginConnection(e: MouseEvent, fromPlug: VPL_Plug) {
     e.preventDefault()
-    let rect = fromPlug.getBoundingClientRect()
+    let rect = getBoundingClientRectPage(fromPlug)
     let curveSVG = makeSVGElement("path", { "fill": "none", "stroke": window.getComputedStyle(fromPlug).backgroundColor, "stroke-width": 4 })
     this.svgContainer.appendChild(curveSVG)
 

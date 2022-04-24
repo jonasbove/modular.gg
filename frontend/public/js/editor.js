@@ -158,6 +158,14 @@ function download(data, filename, type) {
         window.URL.revokeObjectURL(url);
     }, 0);
 }
+function pageRectAdjust(rect) {
+    rect.x += window.scrollX;
+    rect.y += window.scrollY;
+    return rect;
+}
+function getBoundingClientRectPage(e) {
+    return pageRectAdjust(e.getBoundingClientRect());
+}
 class Graph {
 }
 var GraphType;
@@ -281,21 +289,21 @@ class VPL_Node extends HTMLElement {
         this.setPosition(new point((this.offsetLeft - deltaX), (this.offsetTop - deltaY)));
         this.Actions.forEach(p => {
             if (p.Connection != null) {
-                let rect = p.getBoundingClientRect();
+                let rect = getBoundingClientRectPage(p);
                 let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2);
                 p.Curve.setStart(pos);
             }
         });
         this.Inputs.forEach(p => {
             if (p.Connection != null) {
-                let rect = p.getBoundingClientRect();
+                let rect = getBoundingClientRectPage(p);
                 let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2);
                 p.Curve.setEnd(pos);
             }
         });
         this.Outputs.forEach(p => {
             p.Connections.forEach(destPlug => {
-                let rect = p.getBoundingClientRect();
+                let rect = getBoundingClientRectPage(p);
                 let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2);
                 destPlug.Curve.setStart(pos);
             });
@@ -340,7 +348,7 @@ class ActionNode extends VPL_Node {
     dragMove(p) {
         super.dragMove(p);
         this.Connections.forEach(c => {
-            let rect = this.header.getBoundingClientRect();
+            let rect = getBoundingClientRectPage(this.header);
             let pos = new point(rect.x + rect.width / 2, rect.y + rect.height / 2);
             c.Curve.setEnd(pos);
         });
@@ -453,7 +461,7 @@ class GraphEditor {
 }
 function beginConnection(e, fromPlug) {
     e.preventDefault();
-    let rect = fromPlug.getBoundingClientRect();
+    let rect = getBoundingClientRectPage(fromPlug);
     let curveSVG = makeSVGElement("path", { "fill": "none", "stroke": window.getComputedStyle(fromPlug).backgroundColor, "stroke-width": 4 });
     this.svgContainer.appendChild(curveSVG);
     let from = new point(rect.x + rect.width / 2, rect.y + rect.height / 2);

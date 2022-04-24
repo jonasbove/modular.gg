@@ -235,3 +235,13 @@ function download(data, filename, type) {
     }, 0);
 
 }
+
+function pageRectAdjust(rect: DOMRect) {
+    rect.x += window.scrollX
+    rect.y += window.scrollY
+    return rect
+}
+
+function getBoundingClientRectPage(e: Element) {
+    return pageRectAdjust(e.getBoundingClientRect())
+}
