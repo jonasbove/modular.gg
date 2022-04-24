@@ -197,8 +197,8 @@ class svgCurve {
             " C " + this.startControl.x + " " + this.startControl.y + //startpoint curve towards
             " , " + this.startControl.x + " " + this.startControl.y + //center
             " , " + this.center.x + " " + this.center.y + //center
-            " C " + + " " + this.endControl.x + " " + this.endControl.y +
-            " , " + + " " + this.endControl.x + " " + this.endControl.y +
+            " C " + " " + this.endControl.x + " " + this.endControl.y +
+            " , " + " " + this.endControl.x + " " + this.endControl.y +
             " , " + this.end.x + " " + this.end.y)
     }
 

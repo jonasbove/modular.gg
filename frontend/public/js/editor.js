@@ -31,7 +31,6 @@ class point {
     }
 }
 point.zero = new point(0, 0);
-//http://stackoverflow.com/a/3642265/1869660
 function makeSVGElement(tag, attrs) {
     let el = document.createElementNS('http://www.w3.org/2000/svg', tag);
     for (let k in attrs) {
@@ -50,8 +49,6 @@ class svgCurve {
         this.endControl = new point((this.end.x + this.center.x) / 2, this.end.y);
         this.recalc();
     }
-    //TODO: Fix issues with start and end being at the same height
-    //TODO: Figure out why moving the start retains the relative spacing of c1 and c2, but mocing end doesn't
     setStart(p) {
         let oldStart = this.start;
         this.start = p;
@@ -79,10 +76,6 @@ class svgCurve {
         this.recalc();
     }
     proportionalAdjustControls(oldStart, oldEnd) {
-        //Logic for moving the control points proportionally
-        //Feel free to think of alternatives, I am not a huge fan of this behavior
-        //Works great when c1.y is very close to start.y and c2.y is very close to end.y and c2.x > start.x and c1.x < end.x
-        //This describes a lot of our usecases, but it's still pretty shit that it gets fucked in all other cases, as there are some other valid cases
         if (this.start.y != this.end.y) {
             this.startControl.x = (((this.startControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x);
             this.startControl.y = (((this.startControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y);
@@ -118,7 +111,7 @@ class svgCurve {
         let b1 = d[1][0].y - a1 * d[1][0].x;
         let x = (b0 - b1) / (a1 - a0);
         let y = a0 * x + b0;
-        if (x != x || y != y) { //couldn't use isNaN for some reason
+        if (x != x || y != y) {
             return point.add(this.start, this.end).multiply(1 / 2);
         }
         else {
@@ -131,12 +124,12 @@ class svgCurve {
         this.element.setAttribute("d", this.getSVGData());
     }
     getSVGData() {
-        return (" M " + this.start.x + " " + this.start.y + //start point
-            " C " + this.startControl.x + " " + this.startControl.y + //startpoint curve towards
-            " , " + this.startControl.x + " " + this.startControl.y + //center
-            " , " + this.center.x + " " + this.center.y + //center
-            " C " + +" " + this.endControl.x + " " + this.endControl.y +
-            " , " + +" " + this.endControl.x + " " + this.endControl.y +
+        return (" M " + this.start.x + " " + this.start.y +
+            " C " + this.startControl.x + " " + this.startControl.y +
+            " , " + this.startControl.x + " " + this.startControl.y +
+            " , " + this.center.x + " " + this.center.y +
+            " C " + " " + this.endControl.x + " " + this.endControl.y +
+            " , " + " " + this.endControl.x + " " + this.endControl.y +
             " , " + this.end.x + " " + this.end.y);
     }
     onUpdate() {
@@ -152,7 +145,6 @@ function setSize(e, p) {
     e.style.width = p.x.toString() + "px";
     e.style.height = p.y.toString() + "px";
 }
-//https://stackoverflow.com/a/30832210/
 function download(data, filename, type) {
     var file = new Blob([data], { type: type });
     let a = document.createElement("a");
@@ -166,7 +158,6 @@ function download(data, filename, type) {
         window.URL.revokeObjectURL(url);
     }, 0);
 }
-/// <reference path="Stuff.ts" />
 class Graph {
 }
 var GraphType;
@@ -240,7 +231,7 @@ class VPL_Node extends HTMLElement {
             inputDiv.classList.add("input");
             if (input.HasField) {
                 let inputField = document.createElement("input");
-                inputField.addEventListener("change", (e) => { input.Value = inputField.value; }); //TODO: implement an actual input parsing function, maybe even do drop downs as opposed to text fields for some types?
+                inputField.addEventListener("change", (e) => { input.Value = inputField.value; });
                 inputField.placeholder = input.Name;
                 inputDiv.appendChild(inputField);
             }
@@ -283,7 +274,7 @@ class VPL_Node extends HTMLElement {
         document.addEventListener("mousemove", this.boundDragMove);
     }
     dragMove(p) {
-        this.oldPos = this.oldPos || p; //Short circuit evaluation to assign oldPos to p in case of no previous value
+        this.oldPos = this.oldPos || p;
         let deltaX = this.oldPos.x - p.x;
         let deltaY = this.oldPos.y - p.y;
         this.oldPos = p;
@@ -360,8 +351,6 @@ class GraphEditor {
         this.nodes = [];
         this.eventNodes = [];
         this.count = 0;
-        //-This is a shitty meme, god i hate this, whoever decided tot do this, did way more than a 'little bit' of trolling
-        //customElements.define('vpl-plug', VPL_Plug);
         customElements.define('vpl-action-plug', ActionPlug);
         customElements.define('vpl-in-plug', InPlug);
         customElements.define('vpl-out-plug', OutPlug);
@@ -370,11 +359,11 @@ class GraphEditor {
         bg.addEventListener("click", (e) => {
             e.preventDefault();
             this.spawnNode.bind(this)(new VPL_Node("TestNode" + (this.count++).toString(), [new ActionPlug("Next >>")], [new InPlug(GraphType.Num), new InPlug(GraphType.Text, "wow"), new InPlug(GraphType.Emoji), new InPlug(GraphType.Time)], [new OutPlug(GraphType.Num), new OutPlug(GraphType.Time), new OutPlug(GraphType.Text)], new point(e.pageX, e.pageY), this.count));
-        }); //Don't know how "bind" works, but it makes it so the event fucntion has the instance of GraphEditor as 'this' instead of somehting else
+        });
         this.container = container;
         this.svgContainer = svgContainer;
         window.addEventListener("resize", (e) => {
-            let editorSize = new point(Math.max(document.body.clientWidth, ...this.nodes.map((n) => n.getPosition().x + 200)), Math.max(document.body.clientHeight, ...this.nodes.map((n) => n.getPosition().y + 200))); //TODO: less arbitrary numbders for with/height of nodes
+            let editorSize = new point(Math.max(document.body.clientWidth, ...this.nodes.map((n) => n.getPosition().x + 200)), Math.max(document.body.clientHeight, ...this.nodes.map((n) => n.getPosition().y + 200)));
             setSize(container, editorSize);
             setSize(bg, editorSize);
             setSize(svgContainer, editorSize);
@@ -479,9 +468,6 @@ function beginConnection(e, fromPlug) {
             center = point.add(from, to).multiply(1 / 2);
             fromControl = new point(center.x, from.y);
             toControl = new point(center.x, to.y);
-            //Kinda cringe we end up recalcing thrice, I could remove the recalc from the setter and expose it, but that would mean the user would have to call it manually
-            //A potentially good solution could be to have a setter that takes a variable amount of parameters, coudl be an object, where the unchanging points are just left undefined
-            //Todo: low prio, maybe do that?
             curve.setEnd(to);
             curve.setStartControl(fromControl);
             curve.setEndControl(toControl);
@@ -490,7 +476,7 @@ function beginConnection(e, fromPlug) {
             document.removeEventListener("mousemove", dragConnection);
             document.removeEventListener("mouseup", stopConnection);
             let targetPlug = e.target;
-            while (targetPlug && !(targetPlug instanceof VPL_Plug)) { //Move up the parent hierachy, useless for the plugs, as they are (currently at least) leaf nodes, but could be useful if we want to select nodeDiv
+            while (targetPlug && !(targetPlug instanceof VPL_Plug)) {
                 targetPlug = targetPlug.parentNode;
             }
             if (!targetPlug || !(targetPlug instanceof InPlug) || (targetPlug.Type != fromPlug.Type)) {
@@ -522,7 +508,7 @@ function beginConnection(e, fromPlug) {
             document.removeEventListener("mousemove", dragConnection);
             document.removeEventListener("mouseup", stopConnection);
             let targetPlug = e.target;
-            while (targetPlug && !(targetPlug instanceof VPL_Plug)) { //Move up the parent hierachy, useless for the plugs, as they are (currently at least) leaf nodes, but could be useful if we want to select nodeDiv
+            while (targetPlug && !(targetPlug instanceof VPL_Plug)) {
                 targetPlug = targetPlug.parentNode;
             }
             if (!targetPlug || !(targetPlug instanceof OutPlug) || (targetPlug.Type != fromPlug.Type)) {
@@ -554,10 +540,10 @@ function beginConnection(e, fromPlug) {
             document.removeEventListener("mousemove", dragConnection);
             document.removeEventListener("mouseup", stopConnection);
             let target = e.target;
-            while (target != undefined && !(target instanceof VPL_Node)) { //Move up the parent hierachy, useless for the plugs, as they are (currently at least) leaf nodes, but could be useful if we want to select nodeDiv
+            while (target != undefined && !(target instanceof VPL_Node)) {
                 target = target.parentNode;
             }
-            if (!target || !(target instanceof ActionNode)) { //If it's not a node
+            if (!target || !(target instanceof ActionNode)) {
                 curveSVG.remove();
                 return;
             }
@@ -612,7 +598,6 @@ function beginConnection(e, fromPlug) {
         });
     }
 }
-/// <reference path="GraphEditor.ts" />
 let windowSize = new point(document.body.clientWidth, document.body.clientHeight);
 let container = document.getElementById('container');
 setSize(container, windowSize);

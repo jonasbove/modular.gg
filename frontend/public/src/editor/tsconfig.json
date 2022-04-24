@@ -1,13 +1,16 @@
 {
-    "compilerOptions": {
-      //"module": "system",
-      //"noImplicitAny": true,
-      "removeComments": true,
-      //"preserveConstEnums": true,
-      "target": "es6",
-      "outFile": "../../js/editor.js",
-      //"sourceMap": true
-    },
-    "include": ["./*"],
-    //"exclude": ["node_modules", "**/*.spec.ts"]
-  }
+  "compilerOptions": {
+    //"module": "system",
+    //"noImplicitAny": true,
+    "removeComments": true,
+    //"preserveConstEnums": true,
+    "target": "es6",
+    "outFile": "../../js/editor.js",
+    "skipLibCheck": true
+    //"sourceMap": true
+  },
+  "include": [
+    "./*"
+  ],
+  //"exclude": ["node_modules", "**/*.spec.ts"]
+}
