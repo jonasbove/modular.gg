@@ -1,3 +1,5 @@
+let id = 0;
+
 const events = document.querySelectorAll('.events a')
 
 events.forEach(anchor => {
@@ -20,13 +22,13 @@ effects.forEach(anchor => {
 
     switch(anchor.getAttribute('effect')) {
       case 'ifelse':
-        e.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), 193, false))
+        e.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), id++, false))
         break;
       case 'sendMessage':
-        e.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), 494, false))
+        e.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), id++, false))
         break;
       case 'greaterThan':
-        e.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), 190, false))
+        e.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), id++, false))
         break;
     }
   })
