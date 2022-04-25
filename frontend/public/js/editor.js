@@ -52,7 +52,7 @@ class svgCurve {
     setStart(p) {
         let oldStart = this.start;
         this.start = p;
-        this.proportionalAdjustControls();
+        this.proportionalAdjustControls(oldStart, this.end);
         this.restrictControlPoints();
         this.recalc();
     }
@@ -71,25 +71,17 @@ class svgCurve {
     setEnd(p) {
         let oldEnd = this.end;
         this.end = p;
-        this.proportionalAdjustControls();
+        this.proportionalAdjustControls(this.start, oldEnd);
         this.restrictControlPoints();
         this.recalc();
     }
-    proportionalAdjustControls() {
-        let midpoint = (this.start.x + this.end.x) / 2;
-        this.startControl.x = midpoint;
-        this.startControl.y = this.start.y;
-        this.endControl.x = midpoint;
-        this.endControl.y = this.end.y;
-
-
-
-        /*if (this.start.y != this.end.y) {
+    proportionalAdjustControls(oldStart, oldEnd) {
+        if (this.start.y != this.end.y) {
             this.startControl.x = (((this.startControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x);
             this.startControl.y = (((this.startControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y);
             this.endControl.x = (((this.endControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x);
             this.endControl.y = (((this.endControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y);
-        }*/
+        }
     }
     restrictControlPoints() {
         if (this.start.y < this.end.y && this.start.x < this.end.x) {
