@@ -76,7 +76,7 @@ class svgCurve {
         this.recalc();
     }
     proportionalAdjustControls() {
-        let midpoint = (this.start.x - this.end.x) / 2;
+        let midpoint = (this.start.x + this.end.x) / 2;
         this.startControl.x = midpoint;
         this.startControl.y = this.start.y;
         this.endControl.x = midpoint;
