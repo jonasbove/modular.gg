@@ -46,13 +46,12 @@ class VPL_Node extends HTMLElement {
     Inputs: InPlug[]
     Outputs: OutPlug[]
     Actions: ActionPlug[]
-    ID: number
+    ID: number = 0
     IsEvent: boolean
 
-    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, id: number, isEvent?: boolean) {
+    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, isEvent?: boolean) {
         super()
         this.IsEvent = isEvent ?? false
-        this.ID = id
         this.Name = Name
         this.Actions = Actions
         this.Inputs = Inputs
@@ -242,8 +241,8 @@ class ActionNode extends VPL_Node {
     Connections: ActionPlug[] = []
     Curve: svgCurve
 
-    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, id: number, isEvent?: boolean) {
-        super(Name, Actions, Inputs, Outputs, position, id, isEvent)
+    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, isEvent?: boolean) {
+        super(Name, Actions, Inputs, Outputs, position, isEvent)
         this.classList.add("actionNode")
     }
 
@@ -277,7 +276,7 @@ class GraphEditor {
         customElements.define('vpl-action-node', ActionNode);
 
         bg.addEventListener("click", (e) => {
-            e.preventDefault(); this.spawnNode.bind(this)(new VPL_Node("TestNode" + (this.count++).toString(), [new ActionPlug("Next >>")], [new InPlug(GraphType.Num), new InPlug(GraphType.Text, "wow"), new InPlug(GraphType.Emoji), new InPlug(GraphType.Time)], [new OutPlug(GraphType.Num), new OutPlug(GraphType.Time), new OutPlug(GraphType.Text)], new point(e.pageX, e.pageY), this.count))
+            e.preventDefault(); this.spawnNode.bind(this)(new VPL_Node("TestNode" + (this.count++).toString(), [new ActionPlug("Next >>")], [new InPlug(GraphType.Num), new InPlug(GraphType.Text, "wow"), new InPlug(GraphType.Emoji), new InPlug(GraphType.Time)], [new OutPlug(GraphType.Num), new OutPlug(GraphType.Time), new OutPlug(GraphType.Text)], new point(e.pageX, e.pageY)))
         }) //Don't know how "bind" works, but it makes it so the event fucntion has the instance of GraphEditor as 'this' instead of somehting else
         this.container = container;
         this.svgContainer = svgContainer;
@@ -308,6 +307,7 @@ class GraphEditor {
     }
 
     spawnNode(n: VPL_Node) {
+        n.ID = ++this.count
         this.container.appendChild(n)
         this.nodes.push(n)
         if (n.IsEvent) {
