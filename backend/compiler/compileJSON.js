@@ -1,12 +1,12 @@
-const fs = require('fs')
+import fs from 'fs'
 
-function compile(name, graph) {
-  fs.writeFile(`./results/${name}.js`, buildFile(graph), 'utf8', err => {
-    if (err) console.log(err)
-    else {
-      console.log('success')
-    }
-  })
+export default function compile(path, graph) {
+    fs.writeFile(`${path}/${graph.name}.js`, buildFile(graph), 'utf8', err => {
+        if (err) console.log(err)
+        else {
+            console.log('success')
+        }
+    })
 }
 
 function setType(string, type) {
@@ -22,13 +22,16 @@ function setType(string, type) {
 
 function buildFile(graph) { //Todo: parameterize and shit
     //let importSet = new Set()
-    let file = graph.nodes.filter(n => n.type === "EventNode").map(n => `funcs.push( () => {${recFillParams(graph, n)}});`).reduce((prev, curr) => prev + curr)
-
     //return ((Array.from(importSet)).reduce((res, func) => { return res += `import { ${func} } from "..\\\\tempFunctions.js;"\n`})) + file
 
-    return `const nodeFunctions = require("../templates/functions.js"); let funcs = [];${file}; module.exports = funcs`
+    let startNode = graph.nodes.find(n => n.type === "EventNode")
 
-    function recFillParams(graph, node) {
+    return `import getFunctions from "../../templates/functions.js";
+    export let name = "${graph.name}"; 
+    export let event = "${startNode.name}"; 
+    export let func = (client) => {let nodeFunctions = getFunctions(client); ${recFillParams(graph.nodes, startNode)}};`
+
+    function recFillParams(nodes, node) {
         let result = `nodeFunctions.node_${node.name}({`
         //importSet.add(`nodeFunctions.node_${node.name}`)
         node.inputs.data.forEach(data => {
@@ -36,11 +39,11 @@ function buildFile(graph) { //Todo: parameterize and shit
             if (!data.valueIsPath) {
                 result += setType(data.value, data.type) + ","
             } else {
-                let nextNode = graph.nodes.find((n) => { return n.id === data.value.node })
+                let nextNode = nodes.find((n) => { return n.id === data.value.node })
                 if (nextNode.type === "EventNode") {
                     result += `${nextNode.name}_data.${data.value.plug},`
                 } else {
-                    result += `${recFillParams(graph, nextNode)}.${data.value.plug},`
+                    result += `${recFillParams(nodes, nextNode)}.${data.value.plug},`
                 }
             }
         })
@@ -53,9 +56,9 @@ function buildFile(graph) { //Todo: parameterize and shit
             if (!action.valueIsPath) {
                 result += `${signature} => {},`
             } else {
-                let nextNode = graph.nodes.find((n) => { return n.id === action.value.node })
+                let nextNode = nodes.find((n) => { return n.id === action.value.node })
                 if (nextNode.type === "ActionNode") {
-                    result += `${signature} => {${recFillParams(graph, nextNode)}},`
+                    result += `${signature} => {${recFillParams(nodes, nextNode)}},`
                 } else {
                     throw 'Parser error: Action points to non action node'; //TODO: add usefull info here, but this should also be unreachable with a correctly generated json file
                 }
@@ -69,5 +72,3 @@ function buildFile(graph) { //Todo: parameterize and shit
         return result + "})"
     }
 }
-
-module.exports = compile

@@ -5,11 +5,40 @@
 </head>
 
 <body>
-    <div id="bg"></div>
-    <div id="container">
-        <svg id="svgContainer"></svg>
+    <div id="wrapper">
+        <nav id="top-nav">
+            <h1>Events</h1>
+            <div class="events">
+                <a event="onCommand">On Command</a>
+                <a event="onMessage">On Message</a>
+                <a event="onMessageUpdate">On Message Update</a>
+                <a event="onVoiceChannelChange">On Voice Channel Change</a>
+            </div>
+        </nav>
+        <nav id="side-nav">
+            <h1>Effects</h1>
+            <div class="effects">
+                <a effect="ifelse">If/else</a>
+                <a effect="sendMessage">Send message</a>
+                <a effect="greaterThan">Greater than</a>
+                <a effect="variable">Variable</a>
+            </div>
+        </nav>
+        <div id="editor">
+            <div id="bg"></div>
+            <div id="container">
+                <svg id="svgContainer"></svg>
+            </div>
+        </div>
     </div>
+    <div class="statusButtons">
+        <input id="startbot" type="button" value="Start bot">
+        <input id="stopbot" type="button" value="Stop bot">
+        <input id="restartbot" type="button" value="Restart bot">
+    </div>
+
     <script src="./js/editor.js"></script>
+    <script src="./js/editor_buttons.js"></script>
 </body>
 
 </html>

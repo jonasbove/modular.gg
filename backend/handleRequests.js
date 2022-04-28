@@ -1,28 +1,62 @@
-const express = require('express')
-const app = express()
-const compile = require('./compiler/compileJSON.js')
-const dotenv = require('dotenv')
+import express from 'express'
+import compile from './compiler/compileJSON.js'
+import dotenv from 'dotenv'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import verifyToken from '../shared/authentication/verifyJWTToken.js'
+import { botManager } from './botManager.js'
+import { getBotToken } from '../frontend/components/authentication/verifyUserLogin.js'
 
 dotenv.config({ path: '../.env' })
+const app = express()
 
+app.use(cors({credentials: true,  origin: ['http://localhost:3000', 'https://modular.gg']}))
+app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(cookieParser())
 
-app.post('/addJSON', (req, res) => {
-  res.status(200)
+let botMan = new botManager()
 
-  compile('test', req.body)
+app.post('/addJSON', async (req, res) => {
+  console.log("Got json request")
+  const userData = await verifyToken(req)
+  const botToken = userData.discordBotToken
 
-  res.json({ result: 'JSON added!' })
+  return console.log(botToken)
+
+  compile(`./clients/${botToken}`, req.body)
+  let bot = await botMan.addBot(botToken)
+  bot.start()
+
+  console.log("Json added")
+
+  res.status(200).json({ result: 'JSON added!' })
 })
 
-app.get('/startBot', (req, res) => {
-  const botFunctions = require('./results/test.js')
+app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
+  try {
+    const userData = await verifyToken(req)
+    const botToken = await getBotToken(userData.email)
 
-  botFunctions.forEach((func) => {
-    func()
-  })
+    let bot = await botMan.addBot(botToken) // just for testing
 
-  res.status(200).json({ result: "Bot started" })
+    switch (req.path) {
+      case '/startbot':
+        await botMan.startBot(botToken)
+        break
+      case '/stopbot':
+        await botMan.stopBot(botToken)
+        break
+      case '/restartbot':
+        await botMan.restartBot(botToken)
+        break;
+    }
+
+    res.status(200).json({ result: "Success" })
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ result: "error... error message is in console" })
+  }
 })
 
 try {

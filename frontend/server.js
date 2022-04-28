@@ -7,8 +7,14 @@ import updateSettings from './components/profile/settings.js'
 import loginUser from './components/authentication/login.js'
 import registerUser from './components/authentication/register.js'
 import userData from './components/authentication/userinfo.js'
-import { verifyUserLoggedIn, redirectIfLoggedIn } from './components/authentication/verifyUserLogin.js'
-import { askDiscordPermissions, authenticateUserDiscord } from './components/authentication/discordAuth.js'
+import {
+  verifyUserLoggedIn,
+  redirectIfLoggedIn,
+} from './components/authentication/verifyUserLogin.js'
+import {
+  askDiscordPermissions,
+  authenticateUserDiscord,
+} from './components/authentication/discordAuth.js'
 
 dotenv.config({ path: '../.env' })
 
@@ -21,24 +27,34 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.static(publicResources))
 
-app.get('/', (req, res) => res.sendFile('index.html', { root: publicResources }))
+app.get('/', (req, res) =>
+  res.sendFile('index.html', { root: publicResources })
+)
 
-app.get('/register', redirectIfLoggedIn, (req, res) => res.sendFile('register.html', { root: publicResources }))
+app.get('/register', redirectIfLoggedIn, (req, res) =>
+  res.sendFile('register.html', { root: publicResources })
+)
 app.post('/register', registerUser)
 
-app.get('/login', redirectIfLoggedIn, (req, res) => res.sendFile('login.html', { root: publicResources }))
+app.get('/login', redirectIfLoggedIn, (req, res) =>
+  res.sendFile('login.html', { root: publicResources })
+)
 app.post('/login', loginUser)
 
-app.get('/settings', verifyUserLoggedIn, (req, res) => res.sendFile('settings.html', { root: publicResources }))
+app.get('/settings', verifyUserLoggedIn, (req, res) =>
+  res.sendFile('settings.html', { root: publicResources })
+)
 app.post('/settings', verifyUserLoggedIn, updateSettings)
 
-app.get('/editor', verifyUserLoggedIn, (req, res) => res.sendFile('editor.html', { root: publicResources }))
+app.get('/editor', verifyUserLoggedIn, (req, res) =>
+  res.sendFile('editor.html', { root: publicResources })
+)
 
 app.get('/userdata', verifyUserLoggedIn, userData)
 
-app.use('/js', express.static('public/js'));
-app.use('/css', express.static('public/css'));
-app.use('/assets', express.static('public/assets'));
+app.use('/js', express.static('public/js'))
+app.use('/css', express.static('public/css'))
+app.use('/assets', express.static('public/assets'))
 
 app.get('/ask-discord-permissions', askDiscordPermissions)
 app.get('/authenticate-discord', authenticateUserDiscord)
