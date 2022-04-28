@@ -8,6 +8,7 @@ dotenv.config({ path: '../../.env' })
 
 export default function deployCommands(commands, token) {
   const rest = new REST({ version: '9' }).setToken(token);
+  console.log("Commands to deploy: " + commands)
 
 	return rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
