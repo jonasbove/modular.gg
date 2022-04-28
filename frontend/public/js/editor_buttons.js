@@ -6,7 +6,7 @@ events.forEach(anchor => {
   anchor.addEventListener('click', event => {
     event.preventDefault()
 
-    switch(anchor.getAttribute('event')) {
+    switch (anchor.getAttribute('event')) {
       case 'onCommand':
         e.spawnNode(new VPL_Node("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel"), new OutPlug(GraphType.Text, "text")], new point(250, 175), 0, true))
         break;
@@ -20,7 +20,7 @@ effects.forEach(anchor => {
   anchor.addEventListener('click', event => {
     event.preventDefault()
 
-    switch(anchor.getAttribute('effect')) {
+    switch (anchor.getAttribute('effect')) {
       case 'ifelse':
         e.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), id++, false))
         break;
@@ -40,7 +40,7 @@ statusButtons.forEach(button => {
   button.addEventListener('click', e => {
     e.preventDefault()
 
-    fetch(`http://localhost:3001/${button.getAttribute('id')}`, {
+    fetch(`./backend/${button.getAttribute('id')}`, {
       method: 'GET',
       credentials: 'include' // sending cookies with the request
     })
