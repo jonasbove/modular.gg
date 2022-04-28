@@ -22,11 +22,11 @@ app.post('/addJSON', async (req, res) => {
   const userData = await verifyToken(req)
   const botToken = userData.discordBotToken
 
-  return console.log(botToken)
+  //return console.log(botToken)
 
   compile(`./clients/${botToken}`, req.body)
-  let bot = await botMan.addBot(botToken)
-  bot.start()
+  //let bot = await botMan.addBot(botToken)
+  //bot.start()
 
   console.log("Json added")
 
