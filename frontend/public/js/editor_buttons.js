@@ -22,13 +22,13 @@ effects.forEach(anchor => {
 
     switch (anchor.getAttribute('effect')) {
       case 'ifelse':
-        e.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), id++, false))
+        e.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), 1, false))
         break;
       case 'sendMessage':
-        e.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), id++, false))
+        e.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), 2, false))
         break;
       case 'greaterThan':
-        e.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), id++, false))
+        e.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), 3, false))
         break;
     }
   })
