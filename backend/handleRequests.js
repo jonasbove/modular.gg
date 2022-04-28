@@ -20,8 +20,7 @@ let botMan = new botManager()
 app.post('/addJSON', async (req, res) => {
   console.log("Got json request")
   const userData = await verifyToken(req)
-  console.log(userData)
-  const botToken = userData.discordBotToken
+  const botToken = await getBotToken(userData.email)
 
   //return console.log(botToken)
 
