@@ -32,6 +32,9 @@ effects.forEach(anchor => {
       case 'greaterThan':
         e.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), false))
         break;
+      case 'sequence':
+        e.spawnNode(new ActionNode("Sequence", [new ActionPlug("first"), new ActionPlug("second")], [], [], new point(250, 175), false))
+        break;
     }
   })
 })
