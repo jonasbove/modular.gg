@@ -1,0 +1,26 @@
+[
+    {
+        "humanName": "Greater Than",
+        "description": "Checks if a is greater than b",
+        "name": "GreaterThan",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "a",
+                "type": "Num",
+                "field": true
+            },
+            {
+                "name": "b",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "result",
+                "type": "Bool"
+            }
+        ]
+    }
+]

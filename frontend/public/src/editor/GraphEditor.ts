@@ -201,8 +201,6 @@ class VPL_Node extends HTMLElement {
 
 }
 
-
-
 class InPlug extends VPL_Plug {
     HasField: boolean
     Type: GraphType
@@ -275,9 +273,6 @@ class GraphEditor {
         customElements.define('vpl-node', VPL_Node);
         customElements.define('vpl-action-node', ActionNode);
 
-        bg.addEventListener("click", (e) => {
-            e.preventDefault(); this.spawnNode.bind(this)(new VPL_Node("TestNode" + (this.count++).toString(), [new ActionPlug("Next >>")], [new InPlug(GraphType.Num), new InPlug(GraphType.Text, "wow"), new InPlug(GraphType.Emoji), new InPlug(GraphType.Time)], [new OutPlug(GraphType.Num), new OutPlug(GraphType.Time), new OutPlug(GraphType.Text)], new point(e.pageX, e.pageY)))
-        }) //Don't know how "bind" works, but it makes it so the event fucntion has the instance of GraphEditor as 'this' instead of somehting else
         this.container = container;
         this.svgContainer = svgContainer;
 
@@ -304,6 +299,65 @@ class GraphEditor {
                 })
             }
         });
+
+        //Load menus
+        let dataNodeMenu = document.createElement("div")
+        dataNodeMenu.classList.add("menu")
+        dataNodeMenu.style.display = "none"
+        fetch("./assets/JSON/dataNodes.json") //TODO: Make this dependency explicit
+            .then(r => r.json())
+            .then(nodes => nodes.forEach((n) => {
+                let button = document.createElement("div")
+                button.innerText = n.humanName
+                button.title = n.description
+                button.classList.add("button")
+                button.addEventListener("mousedown", (_) => { this.spawnNode(new VPL_Node(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type as string], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type as string], des.name)), new point(250, 175), false)); toggleVisibility(dataNodeMenu, "flex") })
+                dataNodeMenu.appendChild(button)
+            }))
+
+        let dataNodeButton = document.createElement("div")
+        dataNodeButton.innerText = "Insert Data"
+        dataNodeButton.classList.add("button")
+        dataNodeButton.addEventListener("mousedown", (_) => toggleVisibility(dataNodeMenu, "flex"))
+
+        let actionNodeMenu = document.createElement("div")
+        actionNodeMenu.classList.add("menu")
+        actionNodeMenu.style.display = "none"
+        fetch("./assets/JSON/actionNodes.json") //TODO: Make this dependency explicit
+            .then(r => r.json())
+            .then(nodes => nodes.forEach((n) => {
+                let button = document.createElement("div")
+                button.innerText = n.humanName
+                button.title = n.description
+                button.classList.add("button")
+                button.addEventListener("mousedown", (_) => { this.spawnNode(new ActionNode(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type as string], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type as string], des.name)), new point(250, 175), false)); toggleVisibility(actionNodeMenu, "flex") })
+                actionNodeMenu.appendChild(button)
+            }))
+
+        let actionNodeButton = document.createElement("div")
+        actionNodeButton.innerText = "Insert Action"
+        actionNodeButton.classList.add("button")
+        actionNodeButton.addEventListener("mousedown", (_) => toggleVisibility(actionNodeMenu, "flex"))
+
+        let actionSection = document.createElement("div")
+        let dataSection = document.createElement("div")
+        actionSection.classList.add("menuWrapper")
+        dataSection.classList.add("menuWrapper")
+
+        actionSection.appendChild(actionNodeButton)
+        actionSection.appendChild(actionNodeMenu)
+        dataSection.appendChild(dataNodeButton)
+        dataSection.appendChild(dataNodeMenu)
+
+        let title = document.createElement("h1")
+        title.innerText = this.name
+
+        const top_nav = document.querySelector('#top-nav') //TODO: Make this dependency explicit
+        top_nav.appendChild(title)
+        top_nav.appendChild(actionSection)
+        top_nav.appendChild(dataSection)
+
+        //End load menus
     }
 
     spawnNode(n: VPL_Node) {
@@ -318,6 +372,10 @@ class GraphEditor {
 
     jsonTranspile(): string {
         let todoStack: VPL_Node[] = [...this.eventNodes]
+        if (todoStack.length !== 1) {
+            alert("Exactly one event node is allowed per graph")
+            throw new Error("Incorrect EventNode amount in graph");
+        }
         let doneStack: VPL_Node[] = []
 
         while (todoStack.length > 0) {
@@ -327,7 +385,7 @@ class GraphEditor {
             doneStack.push(curr)
         }
 
-
+        //TODO: loop detection
         return `
 { 
     "nodes": [ 
@@ -527,8 +585,8 @@ function beginConnection(e: MouseEvent, fromPlug: VPL_Plug) {
     function addDots(curve: svgCurve) {
         let dots: { setter: (p: point) => void, getter: () => point, element: SVGElement }[] = [
             { setter: curve.setStart.bind(curve), getter: curve.getStart.bind(curve), element: makeSVGElement("circle", { "fill": "yellow", "r": 5, "pointer-events": "all" }) },
-            { setter: curve.setStartControl.bind(curve), getter: curve.getC1.bind(curve), element: makeSVGElement("circle", { "fill": "orange", "r": 5, "pointer-events": "all" }) },
-            { setter: curve.setEndControl.bind(curve), getter: curve.getC2.bind(curve), element: makeSVGElement("circle", { "fill": "purple", "r": 5, "pointer-events": "all" }) },
+            { setter: curve.setStartControl.bind(curve), getter: curve.getC1.bind(curve), element: makeSVGElement("circle", { "fill": "#50FA7B", "r": 5, "pointer-events": "all" }) },
+            { setter: curve.setEndControl.bind(curve), getter: curve.getC2.bind(curve), element: makeSVGElement("circle", { "fill": "#BD93F9", "r": 5, "pointer-events": "all" }) },
             { setter: curve.setEnd.bind(curve), getter: curve.getEnd.bind(curve), element: makeSVGElement("circle", { "fill": "blue", "r": 5, "pointer-events": "all" }) }]
         curve.addEvent("updateshit", (curve) => {
             dots.forEach(dot => {

@@ -245,3 +245,12 @@ function pageRectAdjust(rect: DOMRect) {
 function getBoundingClientRectPage(e: Element) {
     return pageRectAdjust(e.getBoundingClientRect())
 }
+
+
+function toggleVisibility(element: HTMLElement, displayStyle: string) {
+    if (element.style.display === "none") {
+        element.style.display = displayStyle;
+    } else {
+        element.style.display = "none";
+    }
+}

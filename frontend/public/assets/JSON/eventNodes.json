@@ -1,0 +1,25 @@
+[
+    {
+        "humanName": "Slash Command",
+        "description": "Lorem ipsum",
+        "name": "OnSlashCommand",
+        "ActionPlugs": [
+            {
+                "name": "next"
+            }
+        ],
+        "InPlugs": [
+            {
+                "name": "trigger",
+                "type": "Text",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "channel",
+                "type": "Channel"
+            }
+        ]
+    }
+]

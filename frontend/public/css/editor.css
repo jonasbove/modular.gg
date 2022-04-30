@@ -17,52 +17,93 @@
   left: 0;
   width: 100%;
   background-color: #282A36;
-  padding: 10px 10px 10px 175px;
+  padding: 0.1rem;
+  /*
   overflow-y: scroll;
-  white-space: nowrap;
-  z-index: 500;
+  */
+  height: 3.5rem;
+  overflow-y: visible;
+  z-index: 500; 
+  display: flex;
+  justify-content: center;
+}
+
+.menuWrapper {
+  overflow: show;
+  text-align: center;
+  width: 20%;
+}
+
+.menuWrapper > .button{
+  margin: 10px auto 10px auto;
+}
+
+.menu {
+  margin: 10px;
+  flex-wrap:  wrap;
+  justify-content: center;
+  display: flex;
+  z-index: 700; 
+  background-color: #282A36;
+  border: #44475A solid 5px;
+  overflow-y: auto;
+  max-height: calc(100vh - 3.5rem); /* top-nav height */
+}
+
+.menu::-webkit-scrollbar {
+  width: 10px;
+}
+
+.menu::-webkit-scrollbar-track {
+  background-color: #1d1d1d;
+  border-radius: 3rem;
+}
+
+.menu::-webkit-scrollbar-thumb {
+  background-color: #BD93F9;
+  border-radius: 3rem;
 }
 
 #top-nav h1 {
-  text-align: center;
+  margin: 10px 10px 10px 10px;
+  margin-right: auto;
 }
 
-#top-nav .events {
-  position: relative;
-  margin: 12px 0;
+#top-nav .menu .button{
+  margin: 10px 10px 10px 10px;
+  background-color: #1d1d1d;
 }
 
-#top-nav .events a {
+#top-nav .button { 
+  border-radius: 3rem;
+  width: 10rem;
   background-color: #44475A;
   padding: 8px;
 }
 
-#top-nav .events a:hover {
-  background-color: #a062f7;
+#top-nav .button:hover {
+  background-color: #BD93F9;
   cursor: pointer;
 }
+
 
 #side-nav {
   position: fixed;
   top: 0;
   left: 0;
-  padding: 0 10px;
+  width: 100%;
   background-color: #282A36;
-  height: 100%;
-  align-items: center;
-  z-index: 600;
+  padding: 0.1rem;
+  overflow-y: scroll;
+  max-height: 4rem;
+  overflow-y: visible;
+  z-index: 400; 
+  display: flex;
+  justify-content: center;
+  flex-wrap:  wrap
 }
 
-#side-nav h1 {
-  text-align: center;
-  margin: 30px 0;
-}
-
-#side-nav .effects {
-  display: block;
-}
-
-#side-nav .effects a {
+#side-nav .button {
   display: block;
   text-align: center;
   padding: 15px;
@@ -70,7 +111,7 @@
   background-color: #44475A;
 }
 
-#side-nav .effects a:hover {
+#side-nav .button:hover {
   background-color: #50FA7B;
   color: black;
   cursor: pointer;
@@ -94,11 +135,11 @@
 }
 
 .actionNode > .header {
-  border-bottom: 0.3rem solid #00ff0d;
+  border-bottom: 0.3rem solid #50FA7B;
 }
 
 .actionConnected > .header {
-  border: 0.3rem solid #00ff0d;
+  border: 0.3rem solid #50FA7B;
 }
 
 
@@ -189,7 +230,7 @@
 
 .typeDot.action {
   border-radius: 25%;
-  background-color: #00ff0d;
+  background-color: #50FA7B;
 }
 
 
@@ -202,7 +243,7 @@
 }
 
 .typeDot.bool {
-  background-color: rgb(187, 26, 66);
+  background-color: #FFB86C;
 }
 
 .typeDot.user {

@@ -1,0 +1,57 @@
+[
+    {
+        "humanName": "If Else",
+        "description": "Evaluates an expression, and executes the piece of code corresponding to the result",
+        "name": "IfElse",
+        "ActionPlugs": [
+            {
+                "name": "if"
+            },
+            {
+                "name": "else"
+            }
+        ],
+        "InPlugs": [
+            {
+                "name": "expression",
+                "type": "Bool",
+                "field": false
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Send Message",
+        "description": "Sends a message in a channel",
+        "name": "SendMessage",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "channel",
+                "type": "Channel",
+                "field": false
+            },
+            {
+                "name": "text",
+                "type": "Text",
+                "field": true
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Sequence",
+        "description": "First does one thing, then does another",
+        "name": "Sequence",
+        "ActionPlugs": [
+            {
+                "name": "first"
+            },
+            {
+                "name": "second"
+            }
+        ],
+        "InPlugs": [],
+        "OutPlugs": []
+    }
+]
