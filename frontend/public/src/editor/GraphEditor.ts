@@ -1,7 +1,11 @@
 /// <reference path="Stuff.ts" />
 
 
-class Graph { }
+class Graph {
+    name: string
+    nodes: VPL_Node[] = []
+    event: EventNode
+}
 
 enum GraphType {
     Num,
@@ -32,7 +36,7 @@ class VPL_Node extends HTMLElement {
         if (this instanceof ActionNode)
             return "ActionNode"
 
-        if (this.IsEvent)
+        if (this instanceof EventNode) //Again, this probably would be "better" as a bool, but this fits the pattern better
             return "EventNode"
 
         return "DataNode"
@@ -47,11 +51,9 @@ class VPL_Node extends HTMLElement {
     Outputs: OutPlug[]
     Actions: ActionPlug[]
     ID: number = 0
-    IsEvent: boolean
 
-    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, isEvent?: boolean) {
+    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, onPlugClick: (e: MouseEvent, p: VPL_Plug) => void /*This feels a bit out of place, but given we're doing this with events, I guess we need this*/) {
         super()
-        this.IsEvent = isEvent ?? false
         this.Name = Name
         this.Actions = Actions
         this.Inputs = Inputs
@@ -87,9 +89,9 @@ class VPL_Node extends HTMLElement {
             outputDiv.classList.add("output")
             let text = document.createElement("p")
             action.classList.add("typeDot", "action")
-            action.addEventListener("mousedown", (e) => beginConnection(e, action))
+            action.addEventListener("mousedown", (e) => onPlugClick(e, action))
 
-            text.innerHTML = action.Name
+            text.innerText = action.Name
             outputDiv.appendChild(action)
             outputDiv.appendChild(text)
             outputListDiv.appendChild(outputDiv)
@@ -100,7 +102,7 @@ class VPL_Node extends HTMLElement {
             let inputDiv = document.createElement("div")
             input.classList.add("typeDot", GraphType[input.Type])
             inputDiv.appendChild(input)
-            input.addEventListener("mousedown", (e) => beginConnection(e, input))
+            input.addEventListener("mousedown", (e) => onPlugClick(e, input))
             inputListDiv.appendChild(inputDiv)
             inputDiv.classList.add("input")
 
@@ -111,7 +113,7 @@ class VPL_Node extends HTMLElement {
                 inputDiv.appendChild(inputField)
             } else {
                 let text = document.createElement("p")
-                text.innerHTML = input.Name
+                text.innerText = input.Name
                 inputDiv.appendChild(text)
             }
 
@@ -123,9 +125,9 @@ class VPL_Node extends HTMLElement {
             outputDiv.classList.add("output")
             let text = document.createElement("p")
             output.classList.add("typeDot", GraphType[output.Type])
-            output.addEventListener("mousedown", (e) => beginConnection(e, output))
+            output.addEventListener("mousedown", (e) => onPlugClick(e, output))
 
-            text.innerHTML = output.Name
+            text.innerText = output.Name
             outputDiv.appendChild(output)
             outputDiv.appendChild(text)
             outputListDiv.appendChild(outputDiv)
@@ -201,6 +203,8 @@ class VPL_Node extends HTMLElement {
 
 }
 
+class EventNode extends VPL_Node { } //Really does nothing and is probably more effecient as a bool, but this fits the overall design pattern better
+
 class InPlug extends VPL_Plug {
     HasField: boolean
     Type: GraphType
@@ -239,8 +243,8 @@ class ActionNode extends VPL_Node {
     Connections: ActionPlug[] = []
     Curve: svgCurve
 
-    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, isEvent?: boolean) {
-        super(Name, Actions, Inputs, Outputs, position, isEvent)
+    constructor(Name: string, Actions: ActionPlug[], Inputs: InPlug[], Outputs: OutPlug[], position: point, onPlugClick: (e: MouseEvent, p: VPL_Plug) => void) {
+        super(Name, Actions, Inputs, Outputs, position, onPlugClick)
         this.classList.add("actionNode")
     }
 
@@ -257,19 +261,19 @@ class ActionNode extends VPL_Node {
 }
 
 class GraphEditor {
-    name: string
     container: HTMLElement
     svgContainer: SVGElement
-    nodes = []
-    eventNodes = []
+    currentGraph: Graph
+    savedGraphs: Graph[] = [] //Maybe have this be a Graph[] or maybe change it to an array of some way to query for a Graph instead
     count = 0
 
-    constructor(container: HTMLElement, bg: HTMLElement, svgContainer: SVGElement, graph: Graph) {
+    constructor(container: HTMLElement, svgContainer: SVGElement) {
         //-This is a shitty meme, god i hate this, whoever decided tot do this, did way more than a 'little bit' of trolling
         //customElements.define('vpl-plug', VPL_Plug);
         customElements.define('vpl-action-plug', ActionPlug);
         customElements.define('vpl-in-plug', InPlug);
         customElements.define('vpl-out-plug', OutPlug);
+        customElements.define('vpl-event-node', EventNode);
         customElements.define('vpl-node', VPL_Node);
         customElements.define('vpl-action-node', ActionNode);
 
@@ -277,17 +281,16 @@ class GraphEditor {
         this.svgContainer = svgContainer;
 
         window.addEventListener("resize", (e) => {
-            let editorSize = new point(Math.max(document.body.clientWidth, ...this.nodes.map((n) => n.getPosition().x + 200)), Math.max(document.body.clientHeight, ...this.nodes.map((n) => n.getPosition().y + 200))) //TODO: less arbitrary numbders for with/height of nodes
+            let editorSize = new point(Math.max(document.body.clientWidth, ...this.currentGraph.nodes.map((n) => n.getPosition().x + 200)), Math.max(document.body.clientHeight, ...this.currentGraph.nodes.map((n) => n.getPosition().y + 200))) //TODO: less arbitrary numbers for with/height of nodes
 
             setSize(container, editorSize)
-            setSize(bg, editorSize)
             setSize(svgContainer, editorSize)
         })
 
         document.addEventListener("keyup", (e) => {
             e.preventDefault();
             if (e.key === 'Enter') {
-                download(this.jsonTranspile(), `${this.name}.json`, 'text/json')
+                download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json')
             }
             if (e.key === 'p') {
                 fetch('./backend/addJSON', {
@@ -311,7 +314,7 @@ class GraphEditor {
                 button.innerText = n.humanName
                 button.title = n.description
                 button.classList.add("button")
-                button.addEventListener("mousedown", (_) => { this.spawnNode(new VPL_Node(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type as string], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type as string], des.name)), new point(250, 175), false)); toggleVisibility(dataNodeMenu, "flex") })
+                button.addEventListener("mousedown", (_) => { this.spawnNode(new VPL_Node(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type as string], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type as string], des.name)), new point(250, 175), beginConnection.bind(this))); toggleVisibility(dataNodeMenu, "flex") })
                 dataNodeMenu.appendChild(button)
             }))
 
@@ -330,7 +333,7 @@ class GraphEditor {
                 button.innerText = n.humanName
                 button.title = n.description
                 button.classList.add("button")
-                button.addEventListener("mousedown", (_) => { this.spawnNode(new ActionNode(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type as string], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type as string], des.name)), new point(250, 175), false)); toggleVisibility(actionNodeMenu, "flex") })
+                button.addEventListener("mousedown", (_) => { this.spawnNode(new ActionNode(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type as string], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type as string], des.name)), new point(250, 175), beginConnection.bind(this))); toggleVisibility(actionNodeMenu, "flex") })
                 actionNodeMenu.appendChild(button)
             }))
 
@@ -350,32 +353,89 @@ class GraphEditor {
         dataSection.appendChild(dataNodeMenu)
 
         let title = document.createElement("h1")
-        title.innerText = this.name
+        title.innerText = this.currentGraph?.name
 
         const top_nav = document.querySelector('#top-nav') //TODO: Make this dependency explicit
         top_nav.appendChild(title)
         top_nav.appendChild(actionSection)
         top_nav.appendChild(dataSection)
 
+        const side_nav = document.querySelector('#side-nav') //TODO: Make this dependency explicit
+
+        let newGraphButton = document.createElement("div")
+        newGraphButton.classList.add("button")
+        newGraphButton.innerText = "+"
+        newGraphButton.addEventListener("mousedown", (_) => alert("soooy"))
+        side_nav.appendChild(newGraphButton)
+
+        //TODO: Load saved graph from database
+
+        //Temp fake savefiles
+        this.makeNewGraph()
+        this.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), beginConnection.bind(this)))
+        this.currentGraph.name = "IfElseSave"
+        this.makeNewGraph()
+        this.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), beginConnection.bind(this)))
+        this.currentGraph.name = "Biiiiiig Numebr"
+        this.makeNewGraph()
+        this.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), beginConnection.bind(this)))
+        this.currentGraph.name = "SendMassageage"
+        //End fake saveFiles
+
+        this.savedGraphs.forEach(graph => {
+            let graphButton = document.createElement("div")
+            graphButton.classList.add("button")
+            graphButton.innerText = graph.name
+            graphButton.addEventListener("mousedown", (_) => this.loadGraph(graph))
+            side_nav.appendChild(graphButton)
+        });
         //End load menus
+
+        if (this.savedGraphs.length > 0) {
+            this.currentGraph = this.savedGraphs[0]
+        } else {
+            this.makeNewGraph()
+        }
+    }
+
+    makeNewGraph() {
+        let g = new Graph()
+        g.name = "test"
+        this.loadGraph(g)
+        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel"), new OutPlug(GraphType.Text, "text")], new point(250, 175), beginConnection.bind(this)))
+        this.savedGraphs.push(g)
+    }
+
+    loadGraph(graph: Graph) {
+        let svgContainer = this.svgContainer
+        this.container.innerHTML = ''
+        this.container.appendChild(svgContainer)
+        this.svgContainer.innerHTML = ''
+        this.currentGraph = graph
+        graph.nodes.forEach(n => this.renderNode(n)) //TODO: add connections to this
     }
 
     spawnNode(n: VPL_Node) {
         n.ID = ++this.count
-        this.container.appendChild(n)
-        this.nodes.push(n)
-        if (n.IsEvent) {
-            this.eventNodes.push(n)
+        this.renderNode(n)
+        this.currentGraph.nodes.push(n)
+        if (n instanceof EventNode) {
+            this.currentGraph.event = n
         }
+    }
+
+    renderNode(n: VPL_Node) {
+        this.container.appendChild(n)
     }
 
 
     jsonTranspile(): string {
-        let todoStack: VPL_Node[] = [...this.eventNodes]
-        if (todoStack.length !== 1) {
-            alert("Exactly one event node is allowed per graph")
-            throw new Error("Incorrect EventNode amount in graph");
+        if (this.currentGraph?.event === null) {
+            alert("Missing event node")
+            throw new Error("Missing EventNode");
         }
+
+        let todoStack: VPL_Node[] = [this.currentGraph.event] //This doesn't need to be a collection anymore since we dropped support for multiple events per graph, but might as well keep it like this ¯\_(ツ)_/¯
         let doneStack: VPL_Node[] = []
 
         while (todoStack.length > 0) {
@@ -438,13 +498,73 @@ class GraphEditor {
 }`
     }
 
+
+    jsonTranspileAll(): string {
+        let nodes: VPL_Node[] = [...this.currentGraph.nodes]
+
+        //TODO: loop detection
+        return `
+{ 
+    "nodes": [ 
+        ${nodes.map((n: VPL_Node) =>
+            `{
+            "x-pos": ${n.getPosition().x},
+            "y-pos": ${n.getPosition().y},
+            "id": ${n.ID},
+            "name": "${n.Name}",
+            "type": "${n.VPL_Node_Type()}",
+            "inputs":  
+            { 
+                "data": [ 
+                    ${n.Inputs.map((a) => `
+                    {
+                        "name": "${a.Name}",
+                        "type": "${GraphType[a.Type]}",
+                        "valueIsPath": ${a.Connection !== null},
+                        "value": ${a.Connection === null ? (a.HasField ? a.Value.toString() : "null") : `
+                        {
+                            "node": ${a.Connection.ParentNode.ID},
+                            "plug": "${a.Connection.Name}"
+                        }`}
+                    }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0) as unknown as number)} ${curr}`, "")}
+                ],
+                "actions": [ 
+                    ${n.Actions.map((a) => `
+                    {
+                        "name": "${a.Name}",
+                        "type": "Action",
+                        "valueIsPath": ${a.Connection !== null},
+                        "value": ${a.Connection === null ? "null" : `
+                        {
+                            "node": ${a.Connection.ID},
+                            "plug": "${a.Connection.Name}"
+                        }`}
+                    }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0) as unknown as number)} ${curr}`, "")}
+                ]
+            },
+            "outputs":  
+            { 
+                "data": [ 
+                    ${n.Outputs.map((a) => `
+                    {
+                        "name": "${a.Name}",
+                        "type": "${GraphType[a.Type]}"
+                    }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0) as unknown as number)} ${curr}`, "")}
+                ]
+            }
+        }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0) as unknown as number)} ${curr}`, "")}
+    ]
+}`
+    }
+
 }
 
+//This being placed here is super cringe
 function beginConnection(e: MouseEvent, fromPlug: VPL_Plug) {
     e.preventDefault()
     let rect = getBoundingClientRectPage(fromPlug)
     let curveSVG = makeSVGElement("path", { "fill": "none", "stroke": window.getComputedStyle(fromPlug).backgroundColor, "stroke-width": 4 })
-    this.svgContainer.appendChild(curveSVG)
+    this.svgContainer.appendChild(curveSVG) //This is basically the only reason we ned this placed here, very bad Madge, but no time to fix now. No clue why it worked before, probably some lucky JS magic
 
     let from = new point(rect.x + rect.width / 2, rect.y + rect.height / 2)
     let to = new point(e.pageX, e.pageY)

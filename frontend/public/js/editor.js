@@ -175,6 +175,9 @@ function toggleVisibility(element, displayStyle) {
     }
 }
 class Graph {
+    constructor() {
+        this.nodes = [];
+    }
 }
 var GraphType;
 (function (GraphType) {
@@ -195,13 +198,12 @@ class VPL_Plug extends HTMLElement {
     }
 }
 class VPL_Node extends HTMLElement {
-    constructor(Name, Actions, Inputs, Outputs, position, isEvent) {
+    constructor(Name, Actions, Inputs, Outputs, position, onPlugClick) {
         super();
         this.ID = 0;
         this.boundDragNode = (e) => { e.preventDefault(); this.dragNode.bind(this)(); };
         this.boundDragMove = (e) => { e.preventDefault(); this.dragMove.bind(this)(new point(e.pageX, e.pageY)); };
         this.boundStopDragNode = (e) => { e.preventDefault(); this.stopDragNode.bind(this)(); };
-        this.IsEvent = isEvent !== null && isEvent !== void 0 ? isEvent : false;
         this.Name = Name;
         this.Actions = Actions;
         this.Inputs = Inputs;
@@ -231,8 +233,8 @@ class VPL_Node extends HTMLElement {
             outputDiv.classList.add("output");
             let text = document.createElement("p");
             action.classList.add("typeDot", "action");
-            action.addEventListener("mousedown", (e) => beginConnection(e, action));
-            text.innerHTML = action.Name;
+            action.addEventListener("mousedown", (e) => onPlugClick(e, action));
+            text.innerText = action.Name;
             outputDiv.appendChild(action);
             outputDiv.appendChild(text);
             outputListDiv.appendChild(outputDiv);
@@ -242,7 +244,7 @@ class VPL_Node extends HTMLElement {
             let inputDiv = document.createElement("div");
             input.classList.add("typeDot", GraphType[input.Type]);
             inputDiv.appendChild(input);
-            input.addEventListener("mousedown", (e) => beginConnection(e, input));
+            input.addEventListener("mousedown", (e) => onPlugClick(e, input));
             inputListDiv.appendChild(inputDiv);
             inputDiv.classList.add("input");
             if (input.HasField) {
@@ -253,7 +255,7 @@ class VPL_Node extends HTMLElement {
             }
             else {
                 let text = document.createElement("p");
-                text.innerHTML = input.Name;
+                text.innerText = input.Name;
                 inputDiv.appendChild(text);
             }
         });
@@ -263,8 +265,8 @@ class VPL_Node extends HTMLElement {
             outputDiv.classList.add("output");
             let text = document.createElement("p");
             output.classList.add("typeDot", GraphType[output.Type]);
-            output.addEventListener("mousedown", (e) => beginConnection(e, output));
-            text.innerHTML = output.Name;
+            output.addEventListener("mousedown", (e) => onPlugClick(e, output));
+            text.innerText = output.Name;
             outputDiv.appendChild(output);
             outputDiv.appendChild(text);
             outputListDiv.appendChild(outputDiv);
@@ -273,7 +275,7 @@ class VPL_Node extends HTMLElement {
     VPL_Node_Type() {
         if (this instanceof ActionNode)
             return "ActionNode";
-        if (this.IsEvent)
+        if (this instanceof EventNode)
             return "EventNode";
         return "DataNode";
     }
@@ -323,6 +325,8 @@ class VPL_Node extends HTMLElement {
         this.style.zIndex = null;
     }
 }
+class EventNode extends VPL_Node {
+}
 class InPlug extends VPL_Plug {
     constructor(type, Name, HasField) {
         super();
@@ -348,8 +352,8 @@ class ActionPlug extends VPL_Plug {
     }
 }
 class ActionNode extends VPL_Node {
-    constructor(Name, Actions, Inputs, Outputs, position, isEvent) {
-        super(Name, Actions, Inputs, Outputs, position, isEvent);
+    constructor(Name, Actions, Inputs, Outputs, position, onPlugClick) {
+        super(Name, Actions, Inputs, Outputs, position, onPlugClick);
         this.Connections = [];
         this.classList.add("actionNode");
     }
@@ -363,27 +367,27 @@ class ActionNode extends VPL_Node {
     }
 }
 class GraphEditor {
-    constructor(container, bg, svgContainer, graph) {
-        this.nodes = [];
-        this.eventNodes = [];
+    constructor(container, svgContainer) {
+        var _a;
+        this.savedGraphs = [];
         this.count = 0;
         customElements.define('vpl-action-plug', ActionPlug);
         customElements.define('vpl-in-plug', InPlug);
         customElements.define('vpl-out-plug', OutPlug);
+        customElements.define('vpl-event-node', EventNode);
         customElements.define('vpl-node', VPL_Node);
         customElements.define('vpl-action-node', ActionNode);
         this.container = container;
         this.svgContainer = svgContainer;
         window.addEventListener("resize", (e) => {
-            let editorSize = new point(Math.max(document.body.clientWidth, ...this.nodes.map((n) => n.getPosition().x + 200)), Math.max(document.body.clientHeight, ...this.nodes.map((n) => n.getPosition().y + 200)));
+            let editorSize = new point(Math.max(document.body.clientWidth, ...this.currentGraph.nodes.map((n) => n.getPosition().x + 200)), Math.max(document.body.clientHeight, ...this.currentGraph.nodes.map((n) => n.getPosition().y + 200)));
             setSize(container, editorSize);
-            setSize(bg, editorSize);
             setSize(svgContainer, editorSize);
         });
         document.addEventListener("keyup", (e) => {
             e.preventDefault();
             if (e.key === 'Enter') {
-                download(this.jsonTranspile(), `${this.name}.json`, 'text/json');
+                download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json');
             }
             if (e.key === 'p') {
                 fetch('./backend/addJSON', {
@@ -405,7 +409,7 @@ class GraphEditor {
             button.innerText = n.humanName;
             button.title = n.description;
             button.classList.add("button");
-            button.addEventListener("mousedown", (_) => { this.spawnNode(new VPL_Node(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type], des.name)), new point(250, 175), false)); toggleVisibility(dataNodeMenu, "flex"); });
+            button.addEventListener("mousedown", (_) => { this.spawnNode(new VPL_Node(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type], des.name)), new point(250, 175), beginConnection.bind(this))); toggleVisibility(dataNodeMenu, "flex"); });
             dataNodeMenu.appendChild(button);
         }));
         let dataNodeButton = document.createElement("div");
@@ -422,7 +426,7 @@ class GraphEditor {
             button.innerText = n.humanName;
             button.title = n.description;
             button.classList.add("button");
-            button.addEventListener("mousedown", (_) => { this.spawnNode(new ActionNode(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type], des.name)), new point(250, 175), false)); toggleVisibility(actionNodeMenu, "flex"); });
+            button.addEventListener("mousedown", (_) => { this.spawnNode(new ActionNode(n.name, n.ActionPlugs.map(des => new ActionPlug(des.name)), n.InPlugs.map(des => new InPlug(GraphType[des.type], des.name, des.field)), n.OutPlugs.map(des => new OutPlug(GraphType[des.type], des.name)), new point(250, 175), beginConnection.bind(this))); toggleVisibility(actionNodeMenu, "flex"); });
             actionNodeMenu.appendChild(button);
         }));
         let actionNodeButton = document.createElement("div");
@@ -438,26 +442,73 @@ class GraphEditor {
         dataSection.appendChild(dataNodeButton);
         dataSection.appendChild(dataNodeMenu);
         let title = document.createElement("h1");
-        title.innerText = this.name;
+        title.innerText = (_a = this.currentGraph) === null || _a === void 0 ? void 0 : _a.name;
         const top_nav = document.querySelector('#top-nav');
         top_nav.appendChild(title);
         top_nav.appendChild(actionSection);
         top_nav.appendChild(dataSection);
+        const side_nav = document.querySelector('#side-nav');
+        let newGraphButton = document.createElement("div");
+        newGraphButton.classList.add("button");
+        newGraphButton.innerText = "+";
+        newGraphButton.addEventListener("mousedown", (_) => alert("soooy"));
+        side_nav.appendChild(newGraphButton);
+        this.makeNewGraph();
+        this.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), beginConnection.bind(this)));
+        this.currentGraph.name = "IfElseSave";
+        this.makeNewGraph();
+        this.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), beginConnection.bind(this)));
+        this.currentGraph.name = "Biiiiiig Numebr";
+        this.makeNewGraph();
+        this.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), beginConnection.bind(this)));
+        this.currentGraph.name = "SendMassageage";
+        this.savedGraphs.forEach(graph => {
+            let graphButton = document.createElement("div");
+            graphButton.classList.add("button");
+            graphButton.innerText = graph.name;
+            graphButton.addEventListener("mousedown", (_) => this.loadGraph(graph));
+            side_nav.appendChild(graphButton);
+        });
+        if (this.savedGraphs.length > 0) {
+            this.currentGraph = this.savedGraphs[0];
+        }
+        else {
+            this.makeNewGraph();
+        }
+    }
+    makeNewGraph() {
+        let g = new Graph();
+        g.name = "test";
+        this.loadGraph(g);
+        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel"), new OutPlug(GraphType.Text, "text")], new point(250, 175), beginConnection.bind(this)));
+        this.savedGraphs.push(g);
+    }
+    loadGraph(graph) {
+        let svgContainer = this.svgContainer;
+        this.container.innerHTML = '';
+        this.container.appendChild(svgContainer);
+        this.svgContainer.innerHTML = '';
+        this.currentGraph = graph;
+        graph.nodes.forEach(n => this.renderNode(n));
     }
     spawnNode(n) {
         n.ID = ++this.count;
-        this.container.appendChild(n);
-        this.nodes.push(n);
-        if (n.IsEvent) {
-            this.eventNodes.push(n);
+        this.renderNode(n);
+        this.currentGraph.nodes.push(n);
+        if (n instanceof EventNode) {
+            this.currentGraph.event = n;
         }
     }
+    renderNode(n) {
+        this.container.appendChild(n);
+    }
     jsonTranspile() {
-        let todoStack = [...this.eventNodes];
-        if (todoStack.length !== 1) {
-            alert("Exactly one event node is allowed per graph");
-            throw new Error("Incorrect EventNode amount in graph");
+        var _a;
+        if (((_a = this.currentGraph) === null || _a === void 0 ? void 0 : _a.event) === null) {
+            alert("Missing event node");
+            throw new Error("Missing EventNode");
         }
+        let todoStack = [this.currentGraph.event];
         let doneStack = [];
         while (todoStack.length > 0) {
             let curr = todoStack.pop();
@@ -469,6 +520,60 @@ class GraphEditor {
 { 
     "nodes": [ 
         ${doneStack.map((n) => `{
+            "id": ${n.ID},
+            "name": "${n.Name}",
+            "type": "${n.VPL_Node_Type()}",
+            "inputs":  
+            { 
+                "data": [ 
+                    ${n.Inputs.map((a) => `
+                    {
+                        "name": "${a.Name}",
+                        "type": "${GraphType[a.Type]}",
+                        "valueIsPath": ${a.Connection !== null},
+                        "value": ${a.Connection === null ? (a.HasField ? a.Value.toString() : "null") : `
+                        {
+                            "node": ${a.Connection.ParentNode.ID},
+                            "plug": "${a.Connection.Name}"
+                        }`}
+                    }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0))} ${curr}`, "")}
+                ],
+                "actions": [ 
+                    ${n.Actions.map((a) => `
+                    {
+                        "name": "${a.Name}",
+                        "type": "Action",
+                        "valueIsPath": ${a.Connection !== null},
+                        "value": ${a.Connection === null ? "null" : `
+                        {
+                            "node": ${a.Connection.ID},
+                            "plug": "${a.Connection.Name}"
+                        }`}
+                    }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0))} ${curr}`, "")}
+                ]
+            },
+            "outputs":  
+            { 
+                "data": [ 
+                    ${n.Outputs.map((a) => `
+                    {
+                        "name": "${a.Name}",
+                        "type": "${GraphType[a.Type]}"
+                    }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0))} ${curr}`, "")}
+                ]
+            }
+        }`).reduce((prev, curr, i) => `${prev}${','.repeat((i > 0))} ${curr}`, "")}
+    ]
+}`;
+    }
+    jsonTranspileAll() {
+        let nodes = [...this.currentGraph.nodes];
+        return `
+{ 
+    "nodes": [ 
+        ${nodes.map((n) => `{
+            "x-pos": ${n.getPosition().x},
+            "y-pos": ${n.getPosition().y},
             "id": ${n.ID},
             "name": "${n.Name}",
             "type": "${n.VPL_Node_Type()}",
@@ -666,8 +771,6 @@ function beginConnection(e, fromPlug) {
 let windowSize = new point(document.body.clientWidth, document.body.clientHeight);
 let container = document.getElementById('container');
 setSize(container, windowSize);
-let bg = document.getElementById('bg');
-setSize(bg, windowSize);
 let svgContainer = document.getElementById('svgContainer');
 setSize(svgContainer, windowSize);
-let e = new GraphEditor(container, bg, svgContainer, new Graph());
+let e = new GraphEditor(container, svgContainer);
