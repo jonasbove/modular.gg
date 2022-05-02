@@ -442,10 +442,10 @@ class GraphEditor {
         actionSection.appendChild(actionNodeMenu);
         dataSection.appendChild(dataNodeButton);
         dataSection.appendChild(dataNodeMenu);
-        let title = document.createElement("h1");
-        title.innerText = (_a = this.currentGraph) === null || _a === void 0 ? void 0 : _a.name;
+        this.titleHeader = document.createElement("h1");
+        this.titleHeader.innerText = (_a = this.currentGraph) === null || _a === void 0 ? void 0 : _a.name;
         const top_nav = document.querySelector('#top-nav');
-        top_nav.appendChild(title);
+        top_nav.appendChild(this.titleHeader);
         top_nav.appendChild(actionSection);
         top_nav.appendChild(dataSection);
         const side_nav = document.querySelector('#side-nav');
@@ -463,6 +463,7 @@ class GraphEditor {
         this.makeNewGraph();
         this.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), beginConnection.bind(this)));
         this.currentGraph.name = "SendMassageage";
+        this.loadGraph(this.currentGraph);
         this.savedGraphs.forEach(graph => {
             let graphButton = document.createElement("div");
             graphButton.classList.add("button");
@@ -485,6 +486,7 @@ class GraphEditor {
         this.savedGraphs.push(g);
     }
     loadGraph(graph) {
+        this.titleHeader.innerText = graph.name;
         let svgContainer = this.svgContainer;
         this.container.innerHTML = '';
         this.container.appendChild(svgContainer);
@@ -519,6 +521,7 @@ class GraphEditor {
         }
         return `
 { 
+    "name": "${this.currentGraph.name}",
     "nodes": [ 
         ${doneStack.map((n) => `{
             "id": ${n.ID},

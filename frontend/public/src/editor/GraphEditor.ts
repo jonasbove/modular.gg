@@ -262,6 +262,7 @@ class ActionNode extends VPL_Node {
 
 class GraphEditor {
     container: HTMLElement
+    titleHeader: HTMLHeadingElement
     svgContainer: SVGElement
     currentGraph: Graph
     savedGraphs: Graph[] = [] //Maybe have this be a Graph[] or maybe change it to an array of some way to query for a Graph instead
@@ -352,11 +353,11 @@ class GraphEditor {
         dataSection.appendChild(dataNodeButton)
         dataSection.appendChild(dataNodeMenu)
 
-        let title = document.createElement("h1")
-        title.innerText = this.currentGraph?.name
+        this.titleHeader = document.createElement("h1")
+        this.titleHeader.innerText = this.currentGraph?.name
 
         const top_nav = document.querySelector('#top-nav') //TODO: Make this dependency explicit
-        top_nav.appendChild(title)
+        top_nav.appendChild(this.titleHeader)
         top_nav.appendChild(actionSection)
         top_nav.appendChild(dataSection)
 
@@ -380,6 +381,7 @@ class GraphEditor {
         this.makeNewGraph()
         this.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), beginConnection.bind(this)))
         this.currentGraph.name = "SendMassageage"
+        this.loadGraph(this.currentGraph)
         //End fake saveFiles
 
         this.savedGraphs.forEach(graph => {
@@ -407,6 +409,7 @@ class GraphEditor {
     }
 
     loadGraph(graph: Graph) {
+        this.titleHeader.innerText = graph.name
         let svgContainer = this.svgContainer
         this.container.innerHTML = ''
         this.container.appendChild(svgContainer)
@@ -448,6 +451,7 @@ class GraphEditor {
         //TODO: loop detection
         return `
 { 
+    "name": "${this.currentGraph.name}",
     "nodes": [ 
         ${doneStack.map((n: VPL_Node) =>
             `{
