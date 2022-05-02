@@ -209,7 +209,7 @@ class InPlug extends VPL_Plug {
     HasField: boolean
     Type: GraphType
     Connection: OutPlug = null
-    Value: any
+    Value: any = "null"
 
     constructor(type: GraphType, Name?: string, HasField?: boolean) {
         super();
