@@ -402,7 +402,7 @@ class GraphEditor {
         let g = new Graph()
         g.name = "test"
         this.loadGraph(g)
-        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel"), new OutPlug(GraphType.Text, "text")], new point(250, 175), beginConnection.bind(this)))
+        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)))
         this.savedGraphs.push(g)
     }
 

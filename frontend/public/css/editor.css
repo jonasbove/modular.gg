@@ -103,8 +103,12 @@
   z-index: 400; 
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items:center;
   flex-direction: column;
+}
+
+#side-nav .button {
+  margin: 10px 10px 10px 10px;
 }
 
 #side-nav .button:hover {
@@ -233,11 +237,11 @@
 }
 
 .typeDot.text {
-  background-color: #50FA7B;
+  background-color: #ffff7b;
 }
 
 .typeDot.bool {
-  background-color: #FFB86C;
+  background-color: #ff5151;
 }
 
 .typeDot.user {
@@ -245,7 +249,7 @@
 }
 
 .typeDot.mesage {
-  background-color: rgb(88, 26, 187);
+  background-color: #FFB86C;
 }
 
 .typeDot.time {
