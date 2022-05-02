@@ -44,6 +44,12 @@ function getFunctions(client) {
     node_Sequence: (obj) => {
       obj.first()
       obj.second()
+    },
+    
+    node_Loop: (obj) => {
+      for (let index = 0; index < obj.x; index++) {
+        obj.action()
+      }
     }
   }
 }

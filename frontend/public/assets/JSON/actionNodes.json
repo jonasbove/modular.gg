@@ -53,5 +53,24 @@
         ],
         "InPlugs": [],
         "OutPlugs": []
+    },
+    {
+        "humanName": "Loop",
+        "description": "Loops an action, x amount of times",
+        "name": "Loop",
+        "ActionPlugs": [
+            {
+                "name": "action"
+            
+            }
+        ],
+        "InPlugs": [
+            {
+                "name": "x",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": []
     }
 ]
