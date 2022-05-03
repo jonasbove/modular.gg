@@ -1,4 +1,5 @@
-# Visual interface for creating a Discord Bot
+# Modular.gg | Visual Programming & Discord Bots
+> Visual interface for creating a Discord Bot
 ## Table of contents
 * [Features](#Features)
 * [Requirements](#Requirements)
