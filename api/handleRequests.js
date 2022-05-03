@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import verifyToken from '../shared/authentication/verifyJWTToken.js'
 import { botManager } from './botManager.js'
-import { getBotToken } from '../frontend/components/authentication/verifyUserLogin.js'
+import { getBotToken } from '../site/components/authentication/verifyUserLogin.js.js'
 
 dotenv.config({ path: '../.env' })
 const app = express()

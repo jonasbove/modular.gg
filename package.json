@@ -29,5 +29,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.5.0",
     "node-fetch": "^3.2.3"
+  },
+  "scripts": {
+    "site": "cd ./site && node server.js",
+    "api": "cd ./api && node handleRequests.js"
   }
 }
