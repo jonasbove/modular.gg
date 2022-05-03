@@ -4,6 +4,8 @@
   "description": "Online Discord Bot Generation using Visual Programming",
   "main": "index.js",
   "scripts": {
+    "site": "cd ./site && node server.js",
+    "api": "cd ./api && node handleRequests.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -29,9 +31,5 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.5.0",
     "node-fetch": "^3.2.3"
-  },
-  "scripts": {
-    "site": "cd ./site && node server.js",
-    "api": "cd ./api && node handleRequests.js"
   }
 }
