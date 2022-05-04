@@ -25,9 +25,9 @@ app.use(cors())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
-app.use(express.static(publicResources))
+//app.use(express.static(publicResources))
 
-app.get('/', (req, res) =>
+app.get('/', redirectIfLoggedIn, (req, res) =>
   res.sendFile('index.html', { root: publicResources })
 )
 
