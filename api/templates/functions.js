@@ -40,7 +40,7 @@ function getFunctions(client) {
 
     node_SendMessage: async (obj) => {
       const message = await client.channels.cache.get(obj.channel).send(obj.text)
-      return { messageid: message.id }
+      return { messageid: 'testid' }
     },
 
     node_ReplyToCommand: async (obj) => {

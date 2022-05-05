@@ -40,6 +40,12 @@ class Bot {
 
   async addCommand(name) {}
 
+  async deployCommands() {
+    await deployCommands(this.client.commandsToDeploy.map(command => command.toJSON()), this.token)
+
+    return true
+  }
+
   async start() {
     return this.client
       .login(this.token)
@@ -76,7 +82,7 @@ export class botManager {
   }
 
   async startBot(token) {
-    await deployCommands(this.bots[token].client.commandsToDeploy.map(command => command.toJSON()), token)
+    this.bots[token].deployCommands()
     
     return this.bots[token]?.start()
   }
