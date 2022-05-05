@@ -28,5 +28,9 @@ statusButtons.forEach(button => {
         return res
       })
       .then((res) => alert(`Result: ${res.result}`))
+      .catch(() => {
+        updateLoader('stop')
+        alert('Error - maybe the server is not online?')
+      })
   })
 })
