@@ -260,6 +260,14 @@
   background-color: rgb(95, 112, 128);
 }
 
+.typeDot.interaction {
+  background-color: rgb(238, 141, 233)
+}
+
+.typeDot.messageid {
+  background-color: rgb(132, 233, 167)
+}
+
 
 .typeDot.category {
   background-color: rgb(91, 26, 107);
@@ -330,10 +338,16 @@
   100% { transform: rotate(360deg); }
 }
 
-#goBack {
+#gobacknav {
   z-index: 10000;
   position: absolute;
   bottom: 10px;
   left: 10px;
   color: white;
+}
+
+#gobacknav a {
+  display: block;
+  color: white;
+  margin: 15px 10px;
 }

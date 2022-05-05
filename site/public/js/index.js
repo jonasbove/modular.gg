@@ -1,3 +1,5 @@
+checkIfLoggedIn()
+
 function addEventListenerForForms() {
   const forms = document.querySelectorAll('form')
   forms.forEach(form => form.addEventListener('submit', handleRequest))
@@ -36,3 +38,16 @@ function setResponse(message) {
 }
 
 addEventListenerForForms()
+
+function checkIfLoggedIn() {
+  fetch('./userdata')
+  .then((res) => res.json())
+  .then((json) => {
+    document.querySelector('#isnotloggedin').style.display = 'none'
+    document.querySelector('#isloggedin').style.display = 'flex'
+    document.querySelector('#name').textContent = `Hi ${json.name}`
+  })
+  .catch(err => {
+    console.log('Is not logged in')
+  })
+}

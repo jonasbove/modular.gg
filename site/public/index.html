@@ -18,9 +18,15 @@
       <a href="#" class="logolink"><img src="./assets/modular-logo-full.png" alt="Modular Logo" class="logo"/></a>
       <div class="dots"></div>
       <nav class="navigation">
-        <ul>
+        <ul id="isnotloggedin">
           <li><a href="./login" class="login">Log in</a></li>
           <li><a href="./register" class="createaccount">Create account</a></li>
+        </ul>
+        <ul id="isloggedin">
+          <li><a href="./" id="name"></li>
+          <li><a href="./settings" style="text-decoration: underline;">Settings</a></li>
+          <li><a href="./editor" style="text-decoration: underline;">Editor</a></li>
+          <li><a href="./login" id="logout" class="createaccount">Log out</a></li>
         </ul>
       </nav>
     </header>
@@ -119,5 +125,6 @@
     </footer>
     
     <script src="./js/index.js"></script>
+    <script src="./js/logout.js"></script>
   </body>
 </html>

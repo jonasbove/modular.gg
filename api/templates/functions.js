@@ -1,4 +1,3 @@
-// const deployCommands = require('./deploy-commands')
 import { SlashCommandBuilder } from '@discordjs/builders'
 
 function getFunctions(client) {
@@ -20,7 +19,7 @@ function getFunctions(client) {
 
         if (obj.trigger != command) return
 
-        const discord_data = { client: client, channel: interaction.channelId }
+        const discord_data = { client: client, channel: interaction.channelId, interaction: interaction }
 
         obj.next(discord_data)
       })
@@ -39,13 +38,32 @@ function getFunctions(client) {
       return { result: (obj.a > obj.b) }
     },
 
-    node_SendMessage: (obj) => {
-      client.channels.cache.get(obj.channel).send(obj.text);
+    node_SendMessage: async (obj) => {
+      const message = await client.channels.cache.get(obj.channel).send(obj.text)
+      return { messageid: message.id }
     },
 
-    node_Sequence: (obj) => {
-      obj.first()
-      obj.second()
+    node_ReplyToCommand: async (obj) => {
+      // todo
+      await obj.interaction.reply(obj.text)
+    },
+
+    node_Sequence: async (obj) => {
+      await obj.first()
+      await obj.second()
+    },
+
+    node_RandomNumber: (obj) => {
+      return { num: Math.floor(Math.random() * obj.max) + obj.min }
+    },
+
+    node_ReplyToMessage: (obj) => {
+      console.log(obj)
+      // TODO
+    },
+
+    node_ConvertNumToText: (obj) => {
+      return { text: `${obj.num}` }
     },
     
     node_Loop: (obj) => {

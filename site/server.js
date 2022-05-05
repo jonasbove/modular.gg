@@ -27,7 +27,7 @@ app.use(express.json())
 app.use(cookieParser())
 //app.use(express.static(publicResources))
 
-app.get('/', redirectIfLoggedIn, (req, res) =>
+app.get('/', /*redirectIfLoggedIn,*/ (req, res) =>
   res.sendFile('index.html', { root: publicResources })
 )
 

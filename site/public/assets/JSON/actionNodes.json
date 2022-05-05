@@ -37,7 +37,71 @@
                 "field": true
             }
         ],
+        "OutPlugs": [
+            {
+                "name": "messageid",
+                "type": "MessageID",
+                "field": false
+            }
+        ]
+    },
+    {
+        "humanName": "Reply to Command",
+        "description": "Reply with a message in the channel the command has been used",
+        "name": "ReplyToCommand",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "text",
+                "type": "Text",
+                "field": true
+            },
+            {
+                "name": "interaction",
+                "type": "Interaction",
+                "field": false
+            }
+        ],
         "OutPlugs": []
+    },
+    {
+        "humanName": "Reply to Message",
+        "description": "Reply with a message in the channel the command has been used",
+        "name": "ReplyToMessage",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "text",
+                "type": "Text",
+                "field": true
+            },
+            {
+                "name": "messageid",
+                "type": "MessageID",
+                "field": false
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Convert number to text",
+        "description": "Converter number to text",
+        "name": "ConvertNumToText",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "num",
+                "type": "Num",
+                "field": false
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "text",
+                "type": "Text",
+                "field": false
+            }
+        ]
     },
     {
         "humanName": "Sequence",

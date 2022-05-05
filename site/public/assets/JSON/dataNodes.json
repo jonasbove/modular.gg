@@ -22,5 +22,30 @@
                 "type": "Bool"
             }
         ]
+    },
+    {
+        "humanName": "Random number",
+        "description": "Generates a random number",
+        "name": "RandomNumber",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "min",
+                "type": "Num",
+                "field": true
+            },
+            {
+                "name": "max",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "num",
+                "type": "Num",
+                "field": false
+            }
+        ]
     }
 ]

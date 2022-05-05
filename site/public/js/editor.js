@@ -191,6 +191,8 @@ var GraphType;
     GraphType[GraphType["Category"] = 7] = "Category";
     GraphType[GraphType["Emoji"] = 8] = "Emoji";
     GraphType[GraphType["MessageType"] = 9] = "MessageType";
+    GraphType[GraphType["Interaction"] = 10] = "Interaction";
+    GraphType[GraphType["MessageID"] = 11] = "MessageID";
 })(GraphType || (GraphType = {}));
 class VPL_Plug extends HTMLElement {
     constructor() {
@@ -484,7 +486,7 @@ class GraphEditor {
         let g = new Graph();
         g.name = "test";
         this.loadGraph(g);
-        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)));
+        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel"), new OutPlug(GraphType.Interaction, "interaction")], new point(250, 175), beginConnection.bind(this)));
         this.savedGraphs.push(g);
     }
     loadGraph(graph) {
