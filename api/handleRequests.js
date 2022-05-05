@@ -22,6 +22,10 @@ app.post('/addJSON', async (req, res) => {
   const userData = await verifyToken(req)
   const botToken = await getBotToken(userData.email)
 
+  if (!botToken) {
+    return res.status(401).json({ result: 'Please insert the bot token first' })
+  }
+
   //return console.log(botToken)
 
   compile(`./clients/${botToken}`, req.body)
@@ -38,21 +42,30 @@ app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
     const userData = await verifyToken(req)
     const botToken = await getBotToken(userData.email)
 
+    if (!botToken) {
+      return res.status(401).json({ result: 'Please insert the bot token first' })
+    }
+
     let bot = await botMan.addBot(botToken) // just for testing
+
+    let resultMessage
 
     switch (req.path) {
       case '/startbot':
         await botMan.startBot(botToken)
+        resultMessage = 'Bot has been started'
         break
       case '/stopbot':
         await botMan.stopBot(botToken)
+        resultMessage = 'Bot has been stopped'
         break
       case '/restartbot':
         await botMan.restartBot(botToken)
+        resultMessage = 'Bot has been restarted'
         break;
     }
 
-    res.status(200).json({ result: "Success" })
+    res.status(200).json({ result: resultMessage })
   } catch(err) {
     console.log(err)
     res.status(500).json({ result: "error... error message is in console" })

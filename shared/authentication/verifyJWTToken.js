@@ -12,7 +12,7 @@ export default async function verifyToken(req) {
           resolve(userData)
         }
       })
-    } else {v
+    } else {
       console.log("Rejected (no token)!")
       reject()
     }

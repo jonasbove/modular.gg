@@ -391,10 +391,11 @@ class GraphEditor {
                 download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json');
             }
             if (e.key === 'p') {
-                fetch('./backend/addJSON', {
+                fetch('http://localhost:3001/addJSON', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: this.jsonTranspile()
                 });

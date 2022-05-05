@@ -3,7 +3,7 @@ import db from '../db/db.js'
 export default async function updateSettings(req, res) {
   const token = req.body.token
   
-  if (!token) res.status(406).json({ message: "Token is not valid" })
+  if (!token) return res.status(406).json({ message: "Token is not valid" })
   
   await db.updateOne('users', { email: req.userData.email }, { $set: {discordBotToken: token} })
 
