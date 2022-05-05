@@ -18,6 +18,8 @@ function getFunctions(client) {
 
         if (!command) return
 
+        if (obj.trigger != command) return
+
         const discord_data = { client: client, channel: interaction.channelId }
 
         obj.next(discord_data)

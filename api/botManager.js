@@ -68,7 +68,6 @@ export class botManager {
     this.bots[token] = new Bot(token)
     await this.bots[token].loadCommands()
     this.bots[token].runCommands()
-    await deployCommands(this.bots[token].client.commandsToDeploy.map(command => command.toJSON()), token)
     return this.bots[token]
   }
 
@@ -77,6 +76,8 @@ export class botManager {
   }
 
   async startBot(token) {
+    await deployCommands(this.bots[token].client.commandsToDeploy.map(command => command.toJSON()), token)
+    
     return this.bots[token]?.start()
   }
   async stopBot(token) {
