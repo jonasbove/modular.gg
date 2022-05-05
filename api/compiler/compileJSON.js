@@ -1,6 +1,10 @@
 import fs from 'fs'
 
 export default function compile(path, graph) {
+    if (!fs.existsSync(path)){
+        fs.mkdirSync(path, { recursive: true });
+    } // https://stackoverflow.com/questions/21194934/how-to-create-a-directory-if-it-doesnt-exist-using-node-js
+
     fs.writeFile(`${path}/${graph.name}.js`, buildFile(graph), 'utf8', err => {
         if (err) console.log(err)
         else {
