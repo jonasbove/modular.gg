@@ -391,6 +391,7 @@ class GraphEditor {
                 download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json');
             }
             if (e.key === 'p') {
+                // TODO change this to http://localhost:3001/ to ./backend/ when deploying
                 fetch('http://localhost:3001/addJSON', {
                     method: 'POST',
                     credentials: 'include',

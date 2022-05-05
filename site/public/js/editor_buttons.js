@@ -18,6 +18,7 @@ statusButtons.forEach(button => {
 
     updateLoader('start')
 
+    // TODO change this to http://localhost:3001/ to ./backend/ when deploying
     fetch(`http://localhost:3001/${button.getAttribute('id')}`, {
       method: 'GET',
       credentials: 'include' // sending cookies with the request
@@ -30,7 +31,7 @@ statusButtons.forEach(button => {
       .then((res) => alert(`Result: ${res.result}`))
       .catch(() => {
         updateLoader('stop')
-        alert('Error - maybe the server is not online?')
+        alert('Cannot connect to the backend - are you sure it has been started or is it the wrong fetch url?')
       })
   })
 })
