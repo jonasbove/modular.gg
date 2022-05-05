@@ -329,3 +329,11 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+#goBack {
+  z-index: 10000;
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  color: white;
+}
