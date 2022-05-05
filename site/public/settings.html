@@ -5,20 +5,27 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modular.gg | Settings</title>
+
+  <link rel="stylesheet" href="./css/settings.css" />
 </head>
 <body>
-  <h1>User Settings!</h1>
-  <form id="settings">
-    <label for="token">Discord Bot Token</label>
-    <input type="text" name="token">
+  <div class="container">
+    <h1>User Settings!</h1>
+    <form id="settings">
+      <label for="token">Discord Bot Token</label>
+      <input type="text" name="token">
+      <input type="submit" value="Submit" />
 
-    <input type="submit" value="Submit" />
-    
-    <p style="color: red; font-weight: bold;" id="errorMessage"></p>
-  </form>
-  <a href="./">Index</a>
-  <a href="./editor" id="editor">Editor</a>
-  <a href="./" id="logout">logout</a>
+      <p>Don't have it? Generate your Bot Token right here: <a href="https://discord.com/developers/applications/" target="_blank">click here</a></p>
+      
+      <p style="color: red; font-weight: bold;" id="errorMessage"></p>
+    </form>
+    <nav class="nav">
+      <a href="./">Index</a>
+      <a href="./editor" id="editor">Editor</a>
+      <a href="./" id="logout">Logout</a>
+    </nav>
+  </div>
 
   <script src="./js/index.js"></script>
   <script src="./js/logout.js"></script>
