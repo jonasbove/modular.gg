@@ -43,8 +43,31 @@
         "OutPlugs": [
             {
                 "name": "num",
+                "type": "Num"
+            }
+        ]
+    },
+    {
+        "humanName": "Plus",
+        "description": "Preforms addition",
+        "name": "Add",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "a",
                 "type": "Num",
-                "field": false
+                "field": true
+            },
+            {
+                "name": "a",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "sum",
+                "type": "Num"
             }
         ]
     }

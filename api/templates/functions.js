@@ -65,11 +65,27 @@ function getFunctions(client) {
     node_ConvertNumToText: (obj) => {
       return { text: `${obj.num}` }
     },
-    
+
     node_Loop: (obj) => {
       for (let index = 0; index < obj.x; index++) {
         obj.action()
       }
+    },
+
+    node_Add: (obj) => {
+      obj.a + obj.b
+    },
+
+    node_Sub: (obj) => {
+      obj.a - obj.b
+    },
+
+    node_Multiply: (obj) => {
+      obj.a * obj.b
+    },
+
+    node_Sqrt: (obj) => {
+      Math.sqrt(obj.a)
     }
   }
 }
