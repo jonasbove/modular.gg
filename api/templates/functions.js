@@ -73,19 +73,23 @@ function getFunctions(client) {
     },
 
     node_Add: (obj) => {
-      obj.a + obj.b
+      return {sum: obj.a + obj.b}
     },
 
     node_Sub: (obj) => {
-      obj.a - obj.b
+      return {subtraction: obj.a - obj.b}
     },
 
     node_Multiply: (obj) => {
-      obj.a * obj.b
+      return {product: obj.a * obj.b}
     },
 
     node_Sqrt: (obj) => {
-      Math.sqrt(obj.a)
+      return {square: Math.sqrt(obj.a)}
+    },
+    
+    node_Div: (obj) => {
+      return {div: obj.a / obj.b}
     }
   }
 }
