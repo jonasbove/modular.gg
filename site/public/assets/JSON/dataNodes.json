@@ -49,7 +49,7 @@
     },
     {
         "humanName": "Plus",
-        "description": "Preforms addition",
+        "description": "Performs addition",
         "name": "Add",
         "ActionPlugs": [],
         "InPlugs": [
@@ -59,7 +59,7 @@
                 "field": true
             },
             {
-                "name": "a",
+                "name": "b",
                 "type": "Num",
                 "field": true
             }
@@ -67,6 +67,97 @@
         "OutPlugs": [
             {
                 "name": "sum",
+                "type": "Num"
+            }
+        ]
+    },
+    {
+        "humanName": "Subtraction",
+        "description": "Performs subtraction",
+        "name": "Sub",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "a",
+                "type": "Num",
+                "field": true
+            },
+            {
+                "name": "b",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "subtraction",
+                "type": "Num"
+            }
+        ]
+    },
+    {
+        "humanName": "Squared",
+        "description": "Performs squaring",
+        "name": "Sqrt",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "a",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "square",
+                "type": "Num"
+            }
+        ]
+    },
+    {
+        "humanName": "Multiplication",
+        "description": "Performs multiplication",
+        "name": "Mult",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "a",
+                "type": "Num",
+                "field": true
+            },
+            {
+                "name": "b",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "product",
+                "type": "Num"
+            }
+        ]
+    },
+    {
+        "humanName": "Division",
+        "description": "Performs division",
+        "name": "Div",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "a",
+                "type": "Num",
+                "field": true
+            },
+            {
+                "name": "b",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "div",
                 "type": "Num"
             }
         ]
