@@ -46,7 +46,7 @@ app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    let bot = await botMan.addBot(botToken) // just for testing
+    await botMan.addBot(botToken)
 
     let resultMessage
 

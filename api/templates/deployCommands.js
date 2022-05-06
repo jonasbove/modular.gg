@@ -12,9 +12,10 @@ export default function deployCommands(commands, token) {
 
 	return rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
+		.catch(console.error);
 }
 
-const commands = [
+/*const commands = [
 	new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
 	new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
 	new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
@@ -23,6 +24,6 @@ const commands = [
 ]
 	.map(command => command.toJSON());
 
-/*deployCommands(commands)
+deployCommands(commands, 'OTM4MDUxMjk5NzA5MTkwMTQ0.YfkqWg.TFDLx9LDTPJM7LwCIcoyefcJ0XE')
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);*/

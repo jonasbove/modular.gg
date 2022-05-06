@@ -22,12 +22,33 @@ class Bot {
   }
 
   async loadCommands() {
+    this.loadCommands.num = this.loadCommands.num ?? 0
     this.commands = await Promise.all(
+      fs
+        .readdirSync(`./clients/${this.token}`)
+        .map(async (file) => {
+          ++this.loadCommands.num
+          
+          fs.symlinkSync(`./clients/${this.token}/${file}`, `./.temp${this.loadCommands.num}`, 'file');
+
+          const imported = await import(`./.temp${this.loadCommands.num}`)
+          console.log('imported:')
+          console.log(imported)
+
+          fs.unlinkSync(`./.temp${this.loadCommands.num}`);
+
+          return imported
+
+        })
+    )
+    this.areCommandsLoaded = true
+
+    /*this.commands = await Promise.all(
       fs
         .readdirSync(`./clients/${this.token}`)
         .map((file) => import(`./clients/${this.token}/${file}`))
     )
-    this.areCommandsLoaded = true
+    this.areCommandsLoaded = true*/
     //let exCmd = { name: "Command to do stuff", func: () => {/*do stuf */ } }
   }
 
@@ -82,7 +103,15 @@ export class botManager {
   }
 
   async startBot(token) {
-    this.bots[token].deployCommands()
+    //console.log('before:')
+    //console.log(this.bots[token].commands)
+
+    await this.bots[token].loadCommands()
+
+    //console.log('after:')
+    //console.log(this.bots[token].commands)
+
+    await this.bots[token].deployCommands()
     
     return this.bots[token]?.start()
   }
