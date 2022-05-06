@@ -9,7 +9,7 @@ class Bot {
     console.log('making new bot')
     this.token = token
     this.running = false
-    this.client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],})
+    this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
 
     this.client.commands = new Collection()
     this.client.commandsToDeploy = []
@@ -27,15 +27,13 @@ class Bot {
       fs
         .readdirSync(`./clients/${this.token}`)
         .map(async (file) => {
-          ++this.loadCommands.num
-          
-          fs.symlinkSync(`./clients/${this.token}/${file}`, `./.temp${this.loadCommands.num}`, 'file');
+          let num = ++this.loadCommands.num
 
-          const imported = await import(`./.temp${this.loadCommands.num}`)
-          console.log('imported:')
-          console.log(imported)
+          //console.log(`Starting import of: ./clients/${this.token}/${file}`)
 
-          fs.unlinkSync(`./.temp${this.loadCommands.num}`);
+          const imported = await import(`./clients/${this.token}/${file}?foo=${num}`)
+          //console.log('imported:')
+          //console.log(imported)
 
           return imported
 
@@ -59,7 +57,7 @@ class Bot {
     })
   }
 
-  async addCommand(name) {}
+  async addCommand(name) { }
 
   async deployCommands() {
     await deployCommands(this.client.commandsToDeploy.map(command => command.toJSON()), this.token)
@@ -107,12 +105,13 @@ export class botManager {
     //console.log(this.bots[token].commands)
 
     await this.bots[token].loadCommands()
-
+    this.bots[token].client.commandsToDeploy = []
+    this.bots[token].runCommands()
     //console.log('after:')
     //console.log(this.bots[token].commands)
 
     await this.bots[token].deployCommands()
-    
+
     return this.bots[token]?.start()
   }
   async stopBot(token) {
