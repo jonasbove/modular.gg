@@ -324,9 +324,13 @@
   top: 50%;
 }
 
+.loader-wrapper-2 .loader {
+  margin-left: 40px;
+}
+
 .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border: 16px solid #424242; /* Light grey */
+  border-top: 16px solid #50FA7B; /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;
