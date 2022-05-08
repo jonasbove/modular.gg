@@ -76,12 +76,9 @@ class svgCurve {
         this.recalc();
     }
     proportionalAdjustControls(oldStart, oldEnd) {
-        if (this.start.y != this.end.y) {
-            this.startControl.x = (((this.startControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x);
-            this.startControl.y = (((this.startControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y);
-            this.endControl.x = (((this.endControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x);
-            this.endControl.y = (((this.endControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y);
-        }
+        console.log("adjusting");
+        this.startControl = this.startControl.add(this.start).subtract(oldStart);
+        this.endControl = this.endControl.add(this.end).subtract(oldEnd);
     }
     restrictControlPoints() {
         if (this.start.y < this.end.y && this.start.x < this.end.x) {
@@ -191,8 +188,6 @@ var GraphType;
     GraphType[GraphType["Category"] = 7] = "Category";
     GraphType[GraphType["Emoji"] = 8] = "Emoji";
     GraphType[GraphType["MessageType"] = 9] = "MessageType";
-    GraphType[GraphType["Interaction"] = 10] = "Interaction";
-    GraphType[GraphType["MessageID"] = 11] = "MessageID";
 })(GraphType || (GraphType = {}));
 class VPL_Plug extends HTMLElement {
     constructor() {
@@ -393,12 +388,10 @@ class GraphEditor {
                 download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json');
             }
             if (e.key === 'p') {
-                // TODO change this to http://localhost:3001/ to ./backend/ when deploying
-                fetch('http://localhost:3001/addJSON', {
+                fetch('./backend/addJSON', {
                     method: 'POST',
-                    credentials: 'include',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: this.jsonTranspile()
                 });
@@ -486,7 +479,7 @@ class GraphEditor {
         let g = new Graph();
         g.name = "test";
         this.loadGraph(g);
-        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel"), new OutPlug(GraphType.Interaction, "interaction")], new point(250, 175), beginConnection.bind(this)));
+        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)));
         this.savedGraphs.push(g);
     }
     loadGraph(graph) {

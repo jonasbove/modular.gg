@@ -121,17 +121,23 @@ class svgCurve {
     }
 
     proportionalAdjustControls(oldStart: point, oldEnd: point) {
+
         //Logic for moving the control points proportionally
         //Feel free to think of alternatives, I am not a huge fan of this behavior
         //Works great when c1.y is very close to start.y and c2.y is very close to end.y and c2.x > start.x and c1.x < end.x
         //This describes a lot of our usecases, but it's still pretty shit that it gets fucked in all other cases, as there are some other valid cases
-        if (this.start.y != this.end.y) {
-            this.startControl.x = (((this.startControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x)
-            this.startControl.y = (((this.startControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y)
+        // if (this.start.y != this.end.y) {
+        //     this.startControl.x = (((this.startControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x)
+        //     this.startControl.y = (((this.startControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y)
 
-            this.endControl.x = (((this.endControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x)
-            this.endControl.y = (((this.endControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y)
-        }
+        //     this.endControl.x = (((this.endControl.x - oldStart.x) / (oldEnd.x - oldStart.x)) * (this.end.x - this.start.x) + this.start.x)
+        //     this.endControl.y = (((this.endControl.y - oldStart.y) / (oldEnd.y - oldStart.y)) * (this.end.y - this.start.y) + this.start.y)
+        // }
+
+
+        //New, more basic shit
+        this.startControl = this.startControl.add(this.start).subtract(oldStart)
+        this.endControl = this.endControl.add(this.end).subtract(oldEnd)
     }
 
     restrictControlPoints() {

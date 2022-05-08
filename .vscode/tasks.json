@@ -3,12 +3,17 @@
 	"tasks": [
 		{
 			"type": "typescript",
-			"tsconfig": "frontend/public/src/editor/tsconfig.json",
+			"tsconfig": "site/public/src/editor/tsconfig.json",
 			"problemMatcher": [
 				"$tsc"
 			],
 			"group": "build",
-			"label": "tsc: build - frontend/public/src/editor/tsconfig.json"
+			"label": "tsc: build - site/public/src/editor/tsconfig.json",
+			"presentation": {
+				"reveal": "silent",
+				"revealProblems": "onProblem",
+				"close": false
+			}
 		}
 	]
 }
