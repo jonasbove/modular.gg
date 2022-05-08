@@ -24,6 +24,26 @@
         ]
     },
     {
+        "humanName": "Convert number to text",
+        "description": "Converter number to text",
+        "name": "ConvertNumToText",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "num",
+                "type": "Num",
+                "field": false
+            }
+        ],
+        "OutPlugs": [
+            {
+                "name": "text",
+                "type": "Text",
+                "field": false
+            }
+        ]
+    },
+    {
         "humanName": "Random number",
         "description": "Generates a random number",
         "name": "RandomNumber",

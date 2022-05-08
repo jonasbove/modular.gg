@@ -37,13 +37,7 @@
                 "field": true
             }
         ],
-        "OutPlugs": [
-            {
-                "name": "messageid",
-                "type": "MessageID",
-                "field": false
-            }
-        ]
+        "OutPlugs": []
     },
     {
         "humanName": "Reply to Command",
@@ -84,26 +78,6 @@
         "OutPlugs": []
     },
     {
-        "humanName": "Convert number to text",
-        "description": "Converter number to text",
-        "name": "ConvertNumToText",
-        "ActionPlugs": [],
-        "InPlugs": [
-            {
-                "name": "num",
-                "type": "Num",
-                "field": false
-            }
-        ],
-        "OutPlugs": [
-            {
-                "name": "text",
-                "type": "Text",
-                "field": false
-            }
-        ]
-    },
-    {
         "humanName": "Sequence",
         "description": "First does one thing, then does another",
         "name": "Sequence",
@@ -125,7 +99,6 @@
         "ActionPlugs": [
             {
                 "name": "action"
-            
             }
         ],
         "InPlugs": [
