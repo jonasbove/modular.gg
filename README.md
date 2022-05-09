@@ -9,7 +9,7 @@
 * [Troubleshooting](#Troubleshooting)
 
 ### Features
-- Creating a Discord Bot using a Visual Interface.
+- Online editor for creating a Discord Bot using a Visual Programming Interface.
 	- Generating [Discord.js](https://discord.js.org) code using a Visual Interface.
 - User authentication
 	- Login
