@@ -10,7 +10,7 @@ import { getBotToken } from '../site/components/authentication/verifyUserLogin.j
 dotenv.config({ path: '../.env' })
 const app = express()
 
-app.use(cors({credentials: true,  origin: ['http://localhost:3000', 'https://modular.gg']}))
+app.use(cors({ credentials: true, origin: ['http://localhost:3000', 'https://modular.gg'] }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
@@ -18,23 +18,28 @@ app.use(cookieParser())
 let botMan = new botManager()
 
 app.post('/addJSON', async (req, res) => {
-  console.log("Got json request")
-  const userData = await verifyToken(req)
-  const botToken = await getBotToken(userData.email)
+  try {
+    console.log("Got json request")
+    const userData = await verifyToken(req)
+    const botToken = await getBotToken(userData.email)
 
-  if (!botToken) {
-    return res.status(401).json({ result: 'Please insert the bot token first' })
+    if (!botToken) {
+      return res.status(401).json({ result: 'Please insert the bot token first' })
+    }
+
+    //return console.log(botToken)
+
+    compile(`./clients/${botToken}`, req.body)
+    //let bot = await botMan.addBot(botToken)
+    //bot.start()
+
+    console.log("Json added")
+
+    res.status(200).json({ result: 'JSON added!' })
   }
-
-  //return console.log(botToken)
-
-  compile(`./clients/${botToken}`, req.body)
-  //let bot = await botMan.addBot(botToken)
-  //bot.start()
-
-  console.log("Json added")
-
-  res.status(200).json({ result: 'JSON added!' })
+  catch {
+    console.log("json (probably) NOT added")
+  }
 })
 
 app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
@@ -66,7 +71,7 @@ app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
     }
 
     res.status(200).json({ result: resultMessage })
-  } catch(err) {
+  } catch (err) {
     console.log(err)
     res.status(500).json({ result: "error... error message is in console" })
   }
