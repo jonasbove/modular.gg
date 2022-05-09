@@ -25,7 +25,9 @@
 1. Download the [latest release](https://github.com/jonasbove/modular.gg/releases).
 2. Open the downloaded zip folder and unzip.
 3. Open the terminal navigate into the home directory of the unzipped folder.
-4. Run the following command `npm install`
+4. Create the env file using `cp -R env.example .env`
+5. Insert the required environmental values for the variables.
+6. Run the following command `npm install`
 
 ### Usage
 You will need to run two instances concurrently - therefore open **two** terminals by repeating step 3 in [[/Installation]]. 
