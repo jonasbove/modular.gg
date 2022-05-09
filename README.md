@@ -30,7 +30,7 @@
 6. Run the following command `npm install`
 
 ### Usage
-You will need to run two instances concurrently - therefore open **two** terminals by repeating step 3 in [[/Installation]]. 
+You will need to run two instances concurrently - therefore open **two** terminals by repeating step 3 in [/Installation]. 
 	- One instance (site) needs to run for handling the website with authentication.
 	- One instance (api folder) needs to run for handling the compiling of JSON from the website and into JavaScript code.
 
