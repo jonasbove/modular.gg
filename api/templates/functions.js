@@ -1,28 +1,25 @@
-import { SlashCommandBuilder } from '@discordjs/builders'
-
 function getFunctions(client) {
   return {
     node_OnSlashCommand: (obj) => {
-      const data = new SlashCommandBuilder()
-        .setName(obj.trigger)
-        .setDescription(`${obj.trigger}`)
 
-      client.commands.set(data.name, obj.trigger)
-      client.commandsToDeploy.push(data)
+      //Returns an object with a attribute 'func' which is a function that takes a DiscordJS 'interaction' as the parameter, this function will be the funciton boud to the event on the DiscordJS 'client'
+      //and an attribute 'data' following some internal rules for metadata we need to setup the event (in this case a trigger to deploy the slash command to Discord)
+      //All node_ functions corresponding to an 'event node' will be expected to follow this pattern
+      return {
+        data: {
+          trigger: obj.trigger,
+          description: obj.description ?? obj.trigger // <- description is optional
+        },
+        func: (interaction) => {
+          console.log(`Recieved command ${interaction.commandName} in function for ${obj.trigger}`)
+          if (!interaction.isCommand()) return
+          if (interaction.commandName != obj.trigger) return
 
-      client.on('interactionCreate', (interaction) => {
-        if (!interaction.isCommand()) return
+          const discord_data = { client: client, channel: interaction.channelId, interaction: interaction }
 
-        const command = client.commands.get(interaction.commandName)
-
-        if (!command) return
-
-        if (obj.trigger != command) return
-
-        const discord_data = { client: client, channel: interaction.channelId, interaction: interaction }
-
-        obj.next(discord_data)
-      })
+          obj.next(discord_data)
+        }
+      }
     },
 
     node_IfElse: (obj) => {

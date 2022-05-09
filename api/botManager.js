@@ -3,6 +3,11 @@ import fs from 'fs'
 import { Client, Collection, Intents /* DiscordAPIError */ } from 'discord.js'
 dotenv.config({ path: '../.env' })
 import deployCommands from './templates/deployCommands.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
+
+const eventMap = {
+  "OnSlashCommand": "interactionCreate",
+}
 
 class Bot {
   constructor(token) {
@@ -11,12 +16,9 @@ class Bot {
     this.running = false
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
 
-    this.client.commands = new Collection()
-    this.client.commandsToDeploy = []
-
     this.areCommandsLoaded = false
     this.loadCommands().then(() => {
-      console.log('commands are')
+      console.log('commands are: ')
       console.log(this.commands)
     })
   }
@@ -35,8 +37,18 @@ class Bot {
           //console.log('imported:')
           //console.log(imported)
 
-          return imported
+          let generatedCommandData = imported.funcGenerator(this.client)
 
+          let result = {
+            name: imported.name,
+            event: imported.event,
+            isActive: true,
+            hasChanged: true,
+            func: generatedCommandData.func,
+            data: generatedCommandData.data
+          }
+
+          return result
         })
     )
     this.areCommandsLoaded = true
@@ -52,23 +64,51 @@ class Bot {
 
   runCommands() {
     this.commands.forEach((command) => {
-      console.log('Running a command')
-      command.func(this.client)
+
+      if (command.hasChanged && command.isActive) {
+        console.log(`Registering command: ${command.name}, to: ${command.event}`)
+        console.log(command)
+        //command.hasChanged = false //only include this line when we accurately update elsewhere
+        this.client.on(eventMap[command.event], command.func)
+      }
     })
+
   }
 
   async addCommand(name) { }
 
   async deployCommands() {
-    await deployCommands(this.client.commandsToDeploy.map(command => command.toJSON()), this.token)
+    console.log("Deploying commands:")
+    await deployCommands( //! May be bad :)
+      this.commands.map((command) => {
+        if (command.event === "OnSlashCommand" && command.isActive)
+          return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.trigger}`)
+      }), this.token)
 
     return true
   }
 
   async start() {
-    return this.client
+    let res = await this.client
       .login(this.token)
       .then(() => console.log(`Bot started: ${this.token}`))
+
+    this.commands.forEach(command => {
+      if (command.hasChanged || !command.isActive) {
+        console.log(`Un-registering command: ${command.name}, to: ${command.event}`)
+        this.client.removeListener(eventMap[command.event], command.func)
+      }
+
+    });
+
+    await this.loadCommands()
+    this.runCommands()
+    //console.log('after:')
+    //console.log(this.bots[token].commands)
+
+    await this.deployCommands()
+
+    return res
   }
 
   stop() {
@@ -90,9 +130,11 @@ export class botManager {
   async addBot(token) {
     if (this.bots[token]) return this.bots[token]
 
+
+
     this.bots[token] = new Bot(token)
     await this.bots[token].loadCommands()
-    this.bots[token].runCommands()
+    //this.bots[token].runCommands()
     return this.bots[token]
   }
 
@@ -104,19 +146,17 @@ export class botManager {
     //console.log('before:')
     //console.log(this.bots[token].commands)
 
-    await this.bots[token].loadCommands()
-    this.bots[token].client.commandsToDeploy = []
-    this.bots[token].runCommands()
-    //console.log('after:')
-    //console.log(this.bots[token].commands)
 
-    await this.bots[token].deployCommands()
+
+
 
     return this.bots[token]?.start()
   }
+
   async stopBot(token) {
     return this.bots[token]?.stop()
   }
+
   async restartBot(token) {
     return this.bots[token]?.restart()
   }

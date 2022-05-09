@@ -459,7 +459,7 @@ class GraphEditor {
         let newGraphButton = document.createElement("div");
         newGraphButton.classList.add("button");
         newGraphButton.innerText = "+";
-        newGraphButton.addEventListener("mousedown", (_) => this.makeNewGraph());
+        newGraphButton.addEventListener("mousedown", (_) => alert("This feature is still a work in progress and will become available at a later time"));
         side_nav.appendChild(newGraphButton);
         this.savedGraphs.forEach(graph => {
             let graphButton = document.createElement("div");
@@ -482,7 +482,7 @@ class GraphEditor {
         popup.appendChild(textbox);
         popup.appendChild(button);
         button.addEventListener("mousedown", (_) => {
-            actualMakeNewGraph(textbox.value, new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)));
+            actualMakeNewGraph(textbox.value, new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true), new InPlug(GraphType.Text, "description", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)));
             document.body.removeChild(popup);
         });
         document.body.appendChild(popup);

@@ -1,7 +1,7 @@
 import fs from 'fs'
 
 export default function compile(path, graph) {
-    if (!fs.existsSync(path)){
+    if (!fs.existsSync(path)) {
         fs.mkdirSync(path, { recursive: true });
     } // https://stackoverflow.com/questions/21194934/how-to-create-a-directory-if-it-doesnt-exist-using-node-js
 
@@ -33,7 +33,10 @@ function buildFile(graph) { //Todo: parameterize and shit
     return `import getFunctions from "../../templates/functions.js";
     export let name = "${graph.name}"; 
     export let event = "${startNode.name}"; 
-    export let func = (client) => {let nodeFunctions = getFunctions(client); ${recFillParams(graph.nodes, startNode)}};`
+    export let funcGenerator = (client) => {
+        let nodeFunctions = getFunctions(client); 
+        return ${recFillParams(graph.nodes, startNode)}
+    };`
 
     function recFillParams(nodes, node) {
         let result = `nodeFunctions.node_${node.name}({`
@@ -41,7 +44,7 @@ function buildFile(graph) { //Todo: parameterize and shit
         node.inputs.data.forEach(data => {
             result += data.name + ":"
             if (!data.valueIsPath) {
-                result += setType(data.value, data.type) + ","
+                result += setType(data.value, data.type) + ", "
             } else {
                 let nextNode = nodes.find((n) => { return n.id === data.value.node })
                 if (nextNode.type === "EventNode") {
@@ -52,17 +55,17 @@ function buildFile(graph) { //Todo: parameterize and shit
             }
         })
         node.inputs.actions.forEach(action => {
-            result += action.name + ":"
+            result += action.name + ": "
             let signature = "()"
             if (node.type === "EventNode") {
                 signature = `(${node.name}_data)`
             }
             if (!action.valueIsPath) {
-                result += `${signature} => {},`
+                result += `${signature} => {}, `
             } else {
                 let nextNode = nodes.find((n) => { return n.id === action.value.node })
                 if (nextNode.type === "ActionNode") {
-                    result += `${signature} => {${recFillParams(nodes, nextNode)}},`
+                    result += `${signature} => {${recFillParams(nodes, nextNode)}}, `
                 } else {
                     throw 'Parser error: Action points to non action node'; //TODO: add usefull info here, but this should also be unreachable with a correctly generated json file
                 }

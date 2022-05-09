@@ -13,6 +13,11 @@
                 "name": "trigger",
                 "type": "Text",
                 "field": true
+            },
+            {
+                "name": "description",
+                "type": "Text",
+                "field": true
             }
         ],
         "OutPlugs": [
