@@ -40,7 +40,7 @@ You will need to run two instances concurrently - therefore open **two** termina
 **To run the API:**
 	- `npm run api`
 	
-You can now access `localhost:3000`.
+You can now access [localhost:3000](http://localhost:3000).
 
 ### Licensing
 [MIT License](https://github.com/jonasbove/modular.gg/blob/main/LICENSE)
