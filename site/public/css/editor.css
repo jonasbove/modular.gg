@@ -11,6 +11,38 @@
   color: white;
 }
 
+.popup {
+  width: 300px;
+  height: 300px;
+  background-color: #44475A;
+  color: white;
+  border-radius: 1.5em;
+  border: 5px solid #282A36;
+  padding: 10px;
+
+  position: absolute;
+  top: 50%;  
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: column;
+}
+
+.popup * {
+  margin-top: auto;
+}
+
+.popup .button {
+  border: 3px solid #282A36;
+}
+
+.popup .button:hover {
+  background-color: #50FA7B;
+}
+
 #top-nav {
   position: fixed;
   top: 0;
@@ -194,7 +226,7 @@
   font-weight: 600;
 }
 
-.input > input {
+input {
   background-color:#282A36;
   border: 0px;
   border-radius: 1em;
@@ -202,7 +234,7 @@
   max-width: 100%;
 }
 
-.input > input::placeholder {
+input::placeholder {
   color:#44475A;
 }
 

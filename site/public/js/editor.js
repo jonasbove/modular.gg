@@ -445,29 +445,7 @@ class GraphEditor {
         top_nav.appendChild(this.titleHeader);
         top_nav.appendChild(actionSection);
         top_nav.appendChild(dataSection);
-        const side_nav = document.querySelector('#side-nav');
-        let newGraphButton = document.createElement("div");
-        newGraphButton.classList.add("button");
-        newGraphButton.innerText = "+";
-        newGraphButton.addEventListener("mousedown", (_) => alert("soooy"));
-        side_nav.appendChild(newGraphButton);
-        this.makeNewGraph();
-        this.spawnNode(new ActionNode("IfElse", [new ActionPlug("if"), new ActionPlug("else")], [new InPlug(GraphType.Bool, "expression", false)], [], new point(250, 175), beginConnection.bind(this)));
-        this.currentGraph.name = "IfElseSave";
-        this.makeNewGraph();
-        this.spawnNode(new VPL_Node("GreaterThan", [], [new InPlug(GraphType.Num, "a", true), new InPlug(GraphType.Num, "b", true)], [new OutPlug(GraphType.Bool, "result")], new point(250, 175), beginConnection.bind(this)));
-        this.currentGraph.name = "Biiiiiig Numebr";
-        this.makeNewGraph();
-        this.spawnNode(new ActionNode("SendMessage", [], [new InPlug(GraphType.Channel, "channel", false), new InPlug(GraphType.Text, "text", true)], [], new point(250, 175), beginConnection.bind(this)));
-        this.currentGraph.name = "SendMassageage";
-        this.loadGraph(this.currentGraph);
-        this.savedGraphs.forEach(graph => {
-            let graphButton = document.createElement("div");
-            graphButton.classList.add("button");
-            graphButton.innerText = graph.name;
-            graphButton.addEventListener("mousedown", (_) => this.loadGraph(graph));
-            side_nav.appendChild(graphButton);
-        });
+        this.loadSavesMenu();
         if (this.savedGraphs.length > 0) {
             this.currentGraph = this.savedGraphs[0];
         }
@@ -475,12 +453,46 @@ class GraphEditor {
             this.makeNewGraph();
         }
     }
+    loadSavesMenu() {
+        const side_nav = document.querySelector('#side-nav');
+        side_nav.innerHTML = '';
+        let newGraphButton = document.createElement("div");
+        newGraphButton.classList.add("button");
+        newGraphButton.innerText = "+";
+        newGraphButton.addEventListener("mousedown", (_) => this.makeNewGraph());
+        side_nav.appendChild(newGraphButton);
+        this.savedGraphs.forEach(graph => {
+            let graphButton = document.createElement("div");
+            graphButton.classList.add("button");
+            graphButton.innerText = graph.name;
+            graphButton.addEventListener("mousedown", (_) => this.loadGraph(graph));
+            side_nav.appendChild(graphButton);
+        });
+    }
     makeNewGraph() {
         let g = new Graph();
-        g.name = "test";
-        this.loadGraph(g);
-        this.spawnNode(new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)));
-        this.savedGraphs.push(g);
+        let popup = document.createElement("div");
+        popup.classList.add("popup");
+        popup.innerText = "New Graph";
+        let textbox = document.createElement("input");
+        textbox.placeholder = "Graph Name";
+        let button = document.createElement("div");
+        button.classList.add("button");
+        button.innerText = "OKAY!";
+        popup.appendChild(textbox);
+        popup.appendChild(button);
+        button.addEventListener("mousedown", (_) => {
+            actualMakeNewGraph(textbox.value, new EventNode("OnSlashCommand", [new ActionPlug("next")], [new InPlug(GraphType.Text, "trigger", true)], [new OutPlug(GraphType.Channel, "channel")], new point(250, 175), beginConnection.bind(this)));
+            document.body.removeChild(popup);
+        });
+        document.body.appendChild(popup);
+        let actualMakeNewGraph = (function (name, event) {
+            g.name = name;
+            this.loadGraph(g);
+            this.spawnNode(event);
+            this.savedGraphs.push(g);
+            this.loadSavesMenu();
+        }).bind(this);
     }
     loadGraph(graph) {
         this.titleHeader.innerText = graph.name;
