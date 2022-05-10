@@ -237,7 +237,7 @@ img.dots {
 
 footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   font-family: 'Raleway', sans-serif;
   font-size: 0.75rem;
   padding: 1rem;
