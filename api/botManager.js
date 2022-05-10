@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import fs from 'fs'
 import { Client, Collection, Intents /* DiscordAPIError */ } from 'discord.js'
+import Discord from 'discord.js'
 dotenv.config({ path: '../.env' })
 import deployCommands from './templates/deployCommands.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
@@ -14,7 +15,13 @@ class Bot {
     console.log('\x1b[43mmaking new bot\x1b[0m')
     this.token = token
     this.running = false
-    this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
+    this.destroyed = false
+
+    this.client = new Discord.Client({
+      intents: new Discord.Intents(32767)
+    })
+    
+    //this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
 
     this.areCommandsLoaded = false
     this.loadCommands().then(() => {
@@ -31,11 +38,7 @@ class Bot {
         .map(async (file) => {
           let num = ++this.loadCommands.num
 
-          //console.log(`Starting import of: ./clients/${this.token}/${file}`)
-
           const imported = await import(`./clients/${this.token}/${file}?foo=${num}`)
-          //console.log('imported:')
-          //console.log(imported)
 
           let generatedCommandData = imported.funcGenerator(this.client)
 
@@ -52,31 +55,18 @@ class Bot {
         })
     )
     this.areCommandsLoaded = true
-
-    /*this.commands = await Promise.all(
-      fs
-        .readdirSync(`./clients/${this.token}`)
-        .map((file) => import(`./clients/${this.token}/${file}`))
-    )
-    this.areCommandsLoaded = true*/
-    //let exCmd = { name: "Command to do stuff", func: () => {/*do stuf */ } }
   }
-
   runCommands() {
+
     this.commands.forEach((command) => {
       if (command.hasChanged && command.isActive) {
         console.log(`Registering command: ${command.name}, to: ${command.event}`)
         console.log(command)
         //command.hasChanged = false //only include this line when we accurately update elsewhere
+        
         this.client.on(eventMap[command.event], command.func)
       }
     })
-
-
-    console.log(`\x1b[33m After registering commands`)
-    console.log(`Current Client events for interactionCreate are:\x1b[0m`)
-    console.log(this.client.listeners('interactionCreate'))
-
   }
 
   async addCommand(name) { }
@@ -93,31 +83,16 @@ class Bot {
   }
 
   async start() {
+    this.client = new Discord.Client({
+      intents: new Discord.Intents(32767)
+    })
+    
     let res = await this.client
       .login(this.token)
       .then(() => console.log(`Bot started: ${this.token}`))
 
-    console.log(`\x1b[33m Starting bot `)
-    console.log(`Current Client events for interactionCreate are:\x1b[0m`)
-    console.log(this.client.listeners('interactionCreate'))
-
-    this.commands.forEach(command => {
-      if (command.hasChanged || !command.isActive) {
-        console.log(`\x1b[31mUn-registering\x1b[0m command: ${command.name}, to: ${command.event}`)
-        console.log(command)
-        this.client.removeListener(eventMap[command.event], command.func)
-      }
-    });
-
-
-    console.log(`\x1b[33m After unregistering events `)
-    console.log(`Current Client events for interactionCreate are:\x1b[0m`)
-    console.log(this.client.listeners('interactionCreate'))
-
     await this.loadCommands()
     this.runCommands()
-    //console.log('after:')
-    //console.log(this.bots[token].commands)
 
     await this.deployCommands()
 
