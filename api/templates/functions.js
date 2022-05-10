@@ -51,7 +51,7 @@ function getFunctions(client) {
     },
 
     node_RandomNumber: (obj) => {
-      return { num: Math.floor(Math.random() * obj.max) + obj.min }
+      return { num: Math.floor(Math.random() * (obj.max-obj.min)) + obj.min }
     },
 
     node_ReplyToMessage: (obj) => {
