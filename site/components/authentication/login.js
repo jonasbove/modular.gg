@@ -6,6 +6,8 @@ export default async function loginUser(req, res) {
   let invalidPassword = false
   const formData = req.body
 
+  formData.email = formData.email.toLowerCase()
+
   const userFound = await db.findOne('users', { email: formData.email })
 
   // hasing the password we've got from the website using the salt

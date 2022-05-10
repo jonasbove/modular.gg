@@ -6,6 +6,8 @@ import crypto from 'crypto'
 export default async function registerUser(req, res) {
   const formData = req.body
 
+  formData.email = formData.email.toLowerCase()
+
   if (!formData.name) {
     return res.status(406).json({ message: 'Invalid name.' })
   }
