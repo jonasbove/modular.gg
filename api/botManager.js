@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import fs from 'fs'
-import { Client, Collection, Intents /* DiscordAPIError */ } from 'discord.js'
-import Discord from 'discord.js'
+import Discord, { Client, Collection, Intents /* DiscordAPIError */ } from 'discord.js'
 dotenv.config({ path: '../.env' })
 import deployCommands from './templates/deployCommands.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
@@ -20,10 +19,8 @@ class Bot {
     this.client = new Discord.Client({
       intents: new Discord.Intents(32767)
     })
-    
     //this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
-
-    this.areCommandsLoaded = false
+    
     this.loadCommands().then(() => {
       console.log('commands are: ')
       console.log(this.commands)
@@ -54,18 +51,14 @@ class Bot {
           return result
         })
     )
-    this.areCommandsLoaded = true
   }
+  
   runCommands() {
-
     this.commands.forEach((command) => {
-      if (command.hasChanged && command.isActive) {
-        console.log(`Registering command: ${command.name}, to: ${command.event}`)
-        console.log(command)
-        //command.hasChanged = false //only include this line when we accurately update elsewhere
+      console.log(`Registering command: ${command.name}, to: ${command.event}`)
+      console.log(command)
         
-        this.client.on(eventMap[command.event], command.func)
-      }
+      this.client.on(eventMap[command.event], command.func)
     })
   }
 
