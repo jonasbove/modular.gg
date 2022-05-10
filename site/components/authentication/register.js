@@ -29,9 +29,14 @@ export default async function registerUser(req, res) {
   }
 
   try {
-    const user = await db.insertOne('users', confirmedData)
+    await db.insertOne('users', confirmedData)
 
-    return authenticateUserWithCookie(res, user)
+    const userData = {
+      name: formData.name,
+      email: formData.email
+    }
+
+    return authenticateUserWithCookie(res, userData)
       .then(res => res.json({ message: 'Succesfully created an account' }))
   } catch (err) {
     res.sendStatus(403)
