@@ -11,7 +11,7 @@ const eventMap = {
 
 class Bot {
   constructor(token) {
-    console.log('making new bot')
+    console.log('\x1b[43mmaking new bot\x1b[0m')
     this.token = token
     this.running = false
     this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
@@ -64,7 +64,6 @@ class Bot {
 
   runCommands() {
     this.commands.forEach((command) => {
-
       if (command.hasChanged && command.isActive) {
         console.log(`Registering command: ${command.name}, to: ${command.event}`)
         console.log(command)
@@ -73,16 +72,21 @@ class Bot {
       }
     })
 
+
+    console.log(`\x1b[33m After registering commands`)
+    console.log(`Current Client events for interactionCreate are:\x1b[0m`)
+    console.log(this.client.listeners('interactionCreate'))
+
   }
 
   async addCommand(name) { }
 
   async deployCommands() {
     console.log("Deploying commands:")
-    await deployCommands( //! May be bad :)
+    await deployCommands( //! May be bad :) returns nothing if it's not a "OnSlashCommand"
       this.commands.map((command) => {
         if (command.event === "OnSlashCommand" && command.isActive)
-          return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.trigger}`)
+          return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.description}`)
       }), this.token)
 
     return true
@@ -93,13 +97,22 @@ class Bot {
       .login(this.token)
       .then(() => console.log(`Bot started: ${this.token}`))
 
+    console.log(`\x1b[33m Starting bot `)
+    console.log(`Current Client events for interactionCreate are:\x1b[0m`)
+    console.log(this.client.listeners('interactionCreate'))
+
     this.commands.forEach(command => {
       if (command.hasChanged || !command.isActive) {
-        console.log(`Un-registering command: ${command.name}, to: ${command.event}`)
+        console.log(`\x1b[31mUn-registering\x1b[0m command: ${command.name}, to: ${command.event}`)
+        console.log(command)
         this.client.removeListener(eventMap[command.event], command.func)
       }
-
     });
+
+
+    console.log(`\x1b[33m After unregistering events `)
+    console.log(`Current Client events for interactionCreate are:\x1b[0m`)
+    console.log(this.client.listeners('interactionCreate'))
 
     await this.loadCommands()
     this.runCommands()
