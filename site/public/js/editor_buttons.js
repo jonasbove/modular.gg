@@ -26,22 +26,28 @@ statusButtons.forEach(button => {
       .then((res) => res.json())
       .then((res) => {
         updateLoader('stop')
+        checkBotStatus()
         return res
       })
       .then((res) => alert(`Result: ${res.result}`))
       .catch(() => {
         updateLoader('stop')
         alert('Cannot connect to the backend - are you sure it has been started or is it the wrong fetch url?')
+        checkBotStatus()
       })
   })
 })
 
-fetch('http://localhost:3001/checkstatus', {
-  method: 'GET',
-  credentials: 'include' // sending cookies with the request
-})
-.then((res) => res.json())
-.then((json) => {
-  document.querySelector('#botstatus').innerHTML = json.result
-})
-.catch(err => console.log(err))
+function checkBotStatus() {
+  fetch('http://localhost:3001/checkstatus', {
+    method: 'GET',
+    credentials: 'include' // sending cookies with the request
+  })
+  .then((res) => res.json())
+  .then((json) => {
+    document.querySelector('#botstatus').innerHTML = json.result
+  })
+  .catch(err => console.log('Checked bot status but backend was offline'))
+}
+
+setInterval(checkBotStatus, 4000)

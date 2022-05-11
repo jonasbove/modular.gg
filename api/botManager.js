@@ -89,11 +89,14 @@ class Bot {
 
     await this.deployCommands(secrets)
 
+    this.running = true
+
     return res
   }
 
   stop() {
     this.client.destroy()
+    this.running = false
     console.log(`Bot stopped: ${this.token}`)
   }
 
@@ -122,12 +125,8 @@ export class botManager {
   }
 
   async isStatusOnline(secrets) {
-    try {
-      const guild = await this.bots[secrets.token].client.guilds.cache.get(secrets.guild_id);
-      return 'online'
-    } catch (e) {
-      return 'offline'
-    }
+    if (this.bots[secrets.token]?.running) return 'online'
+    else return 'offline'
   }
 
   async startBot(secrets) {
