@@ -64,18 +64,18 @@ class Bot {
 
   async addCommand(name) { }
 
-  async deployCommands() {
+  async deployCommands(secrets) {
     console.log("Deploying commands:")
     await deployCommands( //! May be bad :) returns nothing if it's not a "OnSlashCommand"
       this.commands.map((command) => {
         if (command.event === "OnSlashCommand" && command.isActive)
           return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.description}`)
-      }), this.token)
+      }), secrets)
 
     return true
   }
 
-  async start() {
+  async start(secrets) {
     this.client = new Discord.Client({
       intents: new Discord.Intents(32767)
     })
@@ -87,7 +87,7 @@ class Bot {
     await this.loadCommands()
     this.runCommands()
 
-    await this.deployCommands()
+    await this.deployCommands(secrets)
 
     return res
   }
@@ -111,8 +111,6 @@ export class botManager {
   async addBot(token) {
     if (this.bots[token]) return this.bots[token]
 
-
-
     this.bots[token] = new Bot(token)
     await this.bots[token].loadCommands()
     //this.bots[token].runCommands()
@@ -123,15 +121,9 @@ export class botManager {
     delete this.bots[token]
   }
 
-  async startBot(token) {
-    //console.log('before:')
-    //console.log(this.bots[token].commands)
+  async startBot(secrets) {
 
-
-
-
-
-    return this.bots[token]?.start()
+    return this.bots[secrets.token]?.start(secrets)
   }
 
   async stopBot(token) {

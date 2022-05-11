@@ -6,11 +6,13 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: '../../.env' })
 
-export default function deployCommands(commands, token) {
-  const rest = new REST({ version: '9' }).setToken(token);
+export default function deployCommands(commands, secrets) {
+	console.log('Recived these secrets:', secrets)
+
+  const rest = new REST({ version: '9' }).setToken(secrets.token);
   console.log("Commands to deploy: " + JSON.stringify(commands))
 
-	return rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
+	return rest.put(Routes.applicationGuildCommands(secrets.client_id, secrets.guild_id), { body: commands })
 		.then(() => console.log('Successfully registered application commands.'))
 		.catch(console.error);
 }

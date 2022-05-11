@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import verifyToken from '../shared/authentication/verifyJWTToken.js'
 import { botManager } from './botManager.js'
-import { getBotToken } from '../site/components/authentication/verifyUserLogin.js'
+import { getBotSecrets } from '../site/components/authentication/verifyUserLogin.js'
 
 dotenv.config({ path: '../.env' })
 const app = express()
@@ -21,15 +21,15 @@ app.post('/addJSON', async (req, res) => {
   try {
     console.log("Got json request")
     const userData = await verifyToken(req)
-    const botToken = await getBotToken(userData.email)
+    const secrets = await getBotSecrets(userData.email)
 
-    if (!botToken) {
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
     //return console.log(botToken)
 
-    compile(`./clients/${botToken}`, req.body)
+    compile(`./clients/${secrets.token}`, req.body)
     //let bot = await botMan.addBot(botToken)
     //bot.start()
 
@@ -45,27 +45,27 @@ app.post('/addJSON', async (req, res) => {
 app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
   try {
     const userData = await verifyToken(req)
-    const botToken = await getBotToken(userData.email)
+    const secrets = await getBotSecrets(userData.email)
 
-    if (!botToken) {
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    await botMan.addBot(botToken)
+    await botMan.addBot(secrets.token)
 
     let resultMessage
 
     switch (req.path) {
       case '/startbot':
-        await botMan.startBot(botToken)
+        await botMan.startBot(secrets)
         resultMessage = 'Bot has been started'
         break
       case '/stopbot':
-        await botMan.stopBot(botToken)
+        await botMan.stopBot(secrets.token)
         resultMessage = 'Bot has been stopped'
         break
       case '/restartbot':
-        await botMan.restartBot(botToken)
+        await botMan.restartBot(secrets.token)
         resultMessage = 'Bot has been restarted'
         break;
     }
