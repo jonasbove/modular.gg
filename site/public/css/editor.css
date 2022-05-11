@@ -337,8 +337,15 @@ input::placeholder {
   background-color: rgb(237, 73, 73);
 }
 
-.statusButtons input#restartBot {
-  background-color: rgb(244, 165, 46);
+.statusButtons input#save {
+  background-color: #282A36;
+  color: rgb(255, 255, 255);
+  transition: .1s ease-in-out;
+}
+
+.statusButtons input#save:hover {
+  background-color: rgb(255, 255, 255);
+  color: #282A36;
 }
 
 .loader-wrapper {

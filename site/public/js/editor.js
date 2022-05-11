@@ -381,22 +381,6 @@ class GraphEditor {
             setSize(container, editorSize);
             setSize(svgContainer, editorSize);
         });
-        document.addEventListener("keyup", (e) => {
-            e.preventDefault();
-            if (e.key === 'Enter') {
-                download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json');
-            }
-            if (e.key === 'p') {
-                fetch('http://localhost:3001/addJSON', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: this.jsonTranspile()
-                });
-            }
-        });
         let dataNodeMenu = document.createElement("div");
         dataNodeMenu.classList.add("menu");
         dataNodeMenu.style.display = "none";

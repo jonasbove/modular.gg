@@ -29,9 +29,9 @@ app.post('/addJSON', async (req, res) => {
     compile(`./clients/${secrets.token}`, req.body)
 
     console.log("Json added")
-    await botMan.bots[secrets.token].loadCommands()
-    await botMan.bots[secrets.token].deployCommands()
 
+    await botMan.bots[secrets.token]?.loadCommands()
+    await botMan.bots[secrets.token]?.deployCommands()
 
     res.status(200).json({ result: 'JSON added!' })
   }

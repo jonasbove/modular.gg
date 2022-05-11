@@ -287,25 +287,7 @@ class GraphEditor {
             setSize(container, editorSize)
             setSize(svgContainer, editorSize)
         })
-
-        document.addEventListener("keyup", (e) => {
-            e.preventDefault();
-            if (e.key === 'Enter') {
-                download(this.jsonTranspile(), `${this.currentGraph.name}.json`, 'text/json')
-            }
-            if (e.key === 'p') {
-                // fetch('./backend/addJSON', {
-                fetch('http://localhost:3001/addJSON', {
-                    method: 'POST',
-                    credentials: 'include', // sending cookies with the request
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: this.jsonTranspile()
-                })
-            }
-        });
-
+        
         //Load menus
         let dataNodeMenu = document.createElement("div")
         dataNodeMenu.classList.add("menu")

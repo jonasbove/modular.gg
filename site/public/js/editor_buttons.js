@@ -13,16 +13,20 @@ function updateLoader(val) {
 }
 
 statusButtons.forEach(button => {
-  button.addEventListener('click', e => {
-    e.preventDefault()
+  button.addEventListener('click', event => {
+    event.preventDefault()
 
     updateLoader('start')
 
-    // TODO change this to http://localhost:3001/ to ./backend/ when deploying
-    fetch(`http://localhost:3001/${button.getAttribute('id')}`, {
-      method: 'GET',
-      credentials: 'include' // sending cookies with the request
-    })
+    if (button.getAttribute('id') === 'save') {
+      fetch('http://localhost:3001/addJSON', {
+          method: 'POST',
+          credentials: 'include', // sending cookies with the request
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: e.jsonTranspile()
+      })
       .then((res) => res.json())
       .then((res) => {
         updateLoader('stop')
@@ -30,11 +34,26 @@ statusButtons.forEach(button => {
         return res
       })
       .then((res) => alert(`Result: ${res.result}`))
-      .catch(() => {
-        updateLoader('stop')
-        alert('Cannot connect to the backend - are you sure it has been started or is it the wrong fetch url?')
-        checkBotStatus()
+    } else {
+
+      // TODO change this to http://localhost:3001/ to ./backend/ when deploying
+      fetch(`http://localhost:3001/${button.getAttribute('id')}`, {
+        method: 'GET',
+        credentials: 'include' // sending cookies with the request
       })
+        .then((res) => res.json())
+        .then((res) => {
+          updateLoader('stop')
+          checkBotStatus()
+          return res
+        })
+        .then((res) => alert(`Result: ${res.result}`))
+        .catch(() => {
+          updateLoader('stop')
+          alert('Cannot connect to the backend - are you sure it has been started or is it the wrong fetch url?')
+          checkBotStatus()
+        })
+      }
   })
 })
 
