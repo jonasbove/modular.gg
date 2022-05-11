@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  font-family: 'Raleway', sans-serif;
+}
+
+body {
+  background: black;
+  color: white;
+}
+
+.form-group {
+  margin: 20px 0;
+}
+
+.container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.nav {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.container .nav a {
+  color: white;
+  margin: 0 10px;
+  font-size: x-large;
+  font-weight: bold;
+  transition: all .2s;
+}
+
+.container .nav a:hover {
+  color: red;
+}
+
+form input[type="text"] {
+  height: 20px;
+  box-shadow: 0;
+  outline: 0;
+  border-radius: 8px;
+  padding: 8px;
+  width: 300px;
+}
+
+form input[type="submit"] {
+  padding: 10px 30px;
+  border-radius: 8px;
+  color: white;
+  background-color: red;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+form input[type="submit"]:hover {
+  background-color: darkred;
+  color: white;
+}
+
+a {
+  color: white;
+}
+
+p {
+  margin-top: 15px;
+  text-align: center;
+}
