@@ -1,0 +1,113 @@
+[
+    {
+        "humanName": "If Else",
+        "description": "Evaluates an expression, and executes the piece of code corresponding to the result",
+        "name": "IfElse",
+        "ActionPlugs": [
+            {
+                "name": "if"
+            },
+            {
+                "name": "else"
+            }
+        ],
+        "InPlugs": [
+            {
+                "name": "expression",
+                "type": "Bool",
+                "field": false
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Send Message",
+        "description": "Sends a message in a channel",
+        "name": "SendMessage",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "channel",
+                "type": "Channel",
+                "field": false
+            },
+            {
+                "name": "text",
+                "type": "Text",
+                "field": true
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Reply to Command",
+        "description": "Reply with a message in the channel the command has been used",
+        "name": "ReplyToCommand",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "text",
+                "type": "Text",
+                "field": true
+            },
+            {
+                "name": "interaction",
+                "type": "Interaction",
+                "field": false
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Reply to Message",
+        "description": "Reply with a message in the channel the command has been used",
+        "name": "ReplyToMessage",
+        "ActionPlugs": [],
+        "InPlugs": [
+            {
+                "name": "text",
+                "type": "Text",
+                "field": true
+            },
+            {
+                "name": "messageid",
+                "type": "MessageID",
+                "field": false
+            }
+        ],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Sequence",
+        "description": "First does one thing, then does another",
+        "name": "Sequence",
+        "ActionPlugs": [
+            {
+                "name": "first"
+            },
+            {
+                "name": "second"
+            }
+        ],
+        "InPlugs": [],
+        "OutPlugs": []
+    },
+    {
+        "humanName": "Loop",
+        "description": "Loops an action, x amount of times",
+        "name": "Loop",
+        "ActionPlugs": [
+            {
+                "name": "action"
+            }
+        ],
+        "InPlugs": [
+            {
+                "name": "x",
+                "type": "Num",
+                "field": true
+            }
+        ],
+        "OutPlugs": []
+    }
+]

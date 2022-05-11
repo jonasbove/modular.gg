@@ -13,7 +13,7 @@ export default async function verifyToken(req) {
         }
       })
     } else {
-      console.log("Rejected (no token)!")
+      // console.log("The user is not logged in!")
       reject()
     }
   })
