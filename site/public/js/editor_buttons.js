@@ -51,3 +51,5 @@ function checkBotStatus() {
 }
 
 setInterval(checkBotStatus, 4000)
+
+checkBotStatus()
