@@ -11,9 +11,10 @@ const eventMap = {
 }
 
 class Bot {
-  constructor(token) {
+  constructor(secrets) {
     console.log('\x1b[43mmaking new bot\x1b[0m')
-    this.token = token
+    this.token = secrets.token
+    this.secrets = secrets
     this.running = true
     this.destroyed = false
     this.slashCommandsHasChanged = false
@@ -71,7 +72,7 @@ class Bot {
         this.commands.map((command) => {
           if (command.event === "OnSlashCommand" && command.isActive)
             return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.description}`)
-        }), this.token)
+        }), this.secrets)
 
       this.slashCommandsHasChanged = false
     }
@@ -162,6 +163,7 @@ class Bot {
   destroy() {
     this.client.destroy()
     this.destroyed = true //TODO: Use this to error out in other functions
+    this.running = false
     console.log(`Bot destroyed: ${this.token}`)
   }
 }
@@ -171,12 +173,13 @@ export class botManager {
     this.bots = []
   }
 
-  async addBot(token) {
-    if (this.bots[token]) return this.bots[token]
+  async addBot(secrets) {
+    if (this.bots[secrets.token]) return this.bots[secrets.token]
 
-    this.bots[token] = new Bot(token)
-    return this.bots[token]
+    this.bots[secrets.token] = new Bot(secrets)
+    return this.bots[secrets.token]
   }
+
 
   removeBot(token) {
     this.bots[token]?.destroy()

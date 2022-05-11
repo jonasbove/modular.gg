@@ -18,10 +18,10 @@ async function redirectIfLoggedIn(req, res, next) {
     .catch(() => next())
 }
 
-async function getBotToken(email) {
+async function getBotSecrets(email) {
   const userFound = await db.findOne('users', {email: email})
 
-  return userFound.discordBotToken
+  return userFound
 }
 
-export { verifyUserLoggedIn, redirectIfLoggedIn, getBotToken }
+export { verifyUserLoggedIn, redirectIfLoggedIn, getBotSecrets }

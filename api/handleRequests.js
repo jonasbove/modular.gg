@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import verifyToken from '../shared/authentication/verifyJWTToken.js'
 import { botManager } from './botManager.js'
-import { getBotToken } from '../site/components/authentication/verifyUserLogin.js'
+import { getBotSecrets } from '../site/components/authentication/verifyUserLogin.js'
 
 dotenv.config({ path: '../.env' })
 const app = express()
@@ -20,19 +20,18 @@ let botMan = new botManager()
 app.post('/addJSON', async (req, res) => {
   try {
     console.log("Got json request")
-    const userData = await verifyToken(req)
-    const botToken = await getBotToken(userData.email)
+    const secrets = await verifyToken(req)
 
-    if (!botToken) {
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    compile(`./clients/${botToken}`, req.body)
+    compile(`./clients/${secrets.token}`, req.body)
 
     console.log("Json added")
+    await botMan.bots[secrets.token].loadCommands()
+    await botMan.bots[secrets.token].deployCommands()
 
-    await botMan.bots[botToken].loadCommands()
-    await botMan.bots[botToken].deployCommands()
 
     res.status(200).json({ result: 'JSON added!' })
   }
@@ -41,18 +40,28 @@ app.post('/addJSON', async (req, res) => {
   }
 })
 
+app.get('/checkstatus', async (req, res) => {
+  const secrets = await verifyToken(req)
+
+  const result = botMan.bots[secrets.token]?.running ?? false
+
+  res.status(200).json({ result: result ? "online" : "offline" })
+})
+
 app.get('/startbot', async (req, res) => {
   try {
-    const userData = await verifyToken(req)
-    const botToken = await getBotToken(userData.email)
+    const secrets = await verifyToken(req)
 
-    if (!botToken) {
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    await botMan.addBot(botToken)
+    await botMan.addBot(secrets)
+
     res.status(200).json({ result: 'Bot has been started' })
-  } catch (err) {
+
+  }
+  catch (err) {
     console.log(err)
     res.status(500).json({ result: "error... error message is in console" })
   }
@@ -61,17 +70,18 @@ app.get('/startbot', async (req, res) => {
 
 app.get('/stopbot', async (req, res) => {
   try {
-    const userData = await verifyToken(req)
-    const botToken = await getBotToken(userData.email)
 
-    if (!botToken) {
+    const secrets = await verifyToken(req)
+
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    await botMan.stopBot(botToken)
+    await botMan.removeBot(secrets.token)
 
     res.status(200).json({ result: 'Bot has been stopped' })
-  } catch (err) {
+  }
+  catch (err) {
     console.log(err)
     res.status(500).json({ result: "error... error message is in console" })
   }
@@ -79,14 +89,13 @@ app.get('/stopbot', async (req, res) => {
 
 app.get('/enableCommand', async (req, res) => {
   try {
-    const userData = await verifyToken(req)
-    const botToken = await getBotToken(userData.email)
+    const secrets = await verifyToken(req)
 
-    if (!botToken) {
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    botMan.bots[botToken].enableCommandByName(req.body.commandName)
+    botMan.bots[secrets.token].enableCommandByName(req.body.commandName)
 
     res.status(200).json({ result: `Enabled command: ${req.body.commandName}` })
   } catch (err) {
@@ -97,16 +106,14 @@ app.get('/enableCommand', async (req, res) => {
 
 app.get('/disableCommand', async (req, res) => {
   try {
-    const userData = await verifyToken(req)
+    const secrets = await verifyToken(req)
 
-    const botToken = await getBotToken(userData.email)
-
-    if (!botToken) {
+    if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
 
-    botMan.bots[botToken].disableCommandByName(req.body.commandName)
+    botMan.bots[secrets.token].disableCommandByName(req.body.commandName)
 
 
     res.status(200).json({ result: `Disabled command: ${req.body.commandName}` })

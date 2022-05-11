@@ -12,6 +12,10 @@ body {
   color: white;
 }
 
+.form-group {
+  margin: 20px 0;
+}
+
 .container {
   position: absolute;
   left: 50%;
