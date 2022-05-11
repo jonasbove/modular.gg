@@ -24,7 +24,10 @@ async function handleRequest(event) {
     })
     .then((res) => {
       if (formID !== 'settings') window.location.href = './settings'
-      else setResponse(res.message)
+      else {
+        deleteCookie('authorization')
+        //setResponse(res.message)
+      }
     })
     .catch((err) => {
       setResponse(err)
@@ -50,5 +53,21 @@ function checkIfLoggedIn() {
   })
   .catch(err => {
     console.log('Is not logged in')
+  })
+}
+
+function loadUserSettings() {
+  fetch('./userdata', {
+    method: 'GET',
+    credentials: 'include' // sending cookies with the request
+  })
+  .then((res) => res.json())
+  .then((json) => {
+    for (item in json) {
+      const element = document.querySelector(`input[name='${item}'`)
+      if (element) {
+        element.value = json[item]
+      }
+    }
   })
 }
