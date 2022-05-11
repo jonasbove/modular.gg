@@ -27,13 +27,12 @@ app.post('/addJSON', async (req, res) => {
       return res.status(401).json({ result: 'Please insert the bot token first' })
     }
 
-    //return console.log(botToken)
-
     compile(`./clients/${botToken}`, req.body)
-    //let bot = await botMan.addBot(botToken)
-    //bot.start()
 
     console.log("Json added")
+
+    await botMan.bots[botToken].loadCommands()
+    await botMan.bots[botToken].deployCommands()
 
     res.status(200).json({ result: 'JSON added!' })
   }
@@ -42,7 +41,7 @@ app.post('/addJSON', async (req, res) => {
   }
 })
 
-app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
+app.get('/startbot', async (req, res) => {
   try {
     const userData = await verifyToken(req)
     const botToken = await getBotToken(userData.email)
@@ -52,30 +51,72 @@ app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
     }
 
     await botMan.addBot(botToken)
-
-    let resultMessage
-
-    switch (req.path) {
-      case '/startbot':
-        await botMan.startBot(botToken)
-        resultMessage = 'Bot has been started'
-        break
-      case '/stopbot':
-        await botMan.stopBot(botToken)
-        resultMessage = 'Bot has been stopped'
-        break
-      case '/restartbot':
-        await botMan.restartBot(botToken)
-        resultMessage = 'Bot has been restarted'
-        break;
-    }
-
-    res.status(200).json({ result: resultMessage })
+    res.status(200).json({ result: 'Bot has been started' })
   } catch (err) {
     console.log(err)
     res.status(500).json({ result: "error... error message is in console" })
   }
 })
+
+
+app.get('/stopbot', async (req, res) => {
+  try {
+    const userData = await verifyToken(req)
+    const botToken = await getBotToken(userData.email)
+
+    if (!botToken) {
+      return res.status(401).json({ result: 'Please insert the bot token first' })
+    }
+
+    await botMan.stopBot(botToken)
+
+    res.status(200).json({ result: 'Bot has been stopped' })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ result: "error... error message is in console" })
+  }
+})
+
+app.get('/enableCommand', async (req, res) => {
+  try {
+    const userData = await verifyToken(req)
+    const botToken = await getBotToken(userData.email)
+
+    if (!botToken) {
+      return res.status(401).json({ result: 'Please insert the bot token first' })
+    }
+
+    botMan.bots[botToken].enableCommandByName(req.body.commandName)
+
+    res.status(200).json({ result: `Enabled command: ${req.body.commandName}` })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ result: "error... error message is in console" })
+  }
+})
+
+app.get('/disableCommand', async (req, res) => {
+  try {
+    const userData = await verifyToken(req)
+
+    const botToken = await getBotToken(userData.email)
+
+    if (!botToken) {
+      return res.status(401).json({ result: 'Please insert the bot token first' })
+    }
+
+
+    botMan.bots[botToken].disableCommandByName(req.body.commandName)
+
+
+    res.status(200).json({ result: `Disabled command: ${req.body.commandName}` })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ result: "error... error message is in console" })
+  }
+})
+
+
 
 try {
   app.listen(process.env.BACKEND_PORT)

@@ -4,6 +4,7 @@ import Discord, { Client, Collection, Intents /* DiscordAPIError */ } from 'disc
 dotenv.config({ path: '../.env' })
 import deployCommands from './templates/deployCommands.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { runInThisContext } from 'vm'
 
 const eventMap = {
   "OnSlashCommand": "interactionCreate",
@@ -13,23 +14,29 @@ class Bot {
   constructor(token) {
     console.log('\x1b[43mmaking new bot\x1b[0m')
     this.token = token
-    this.running = false
+    this.running = true
     this.destroyed = false
+    this.slashCommandsHasChanged = false
+    this.commands = []
 
-    this.client = new Discord.Client({
-      intents: new Discord.Intents(32767)
-    })
-    //this.client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES], })
-    
-    this.loadCommands().then(() => {
-      console.log('commands are: ')
-      console.log(this.commands)
-    })
+
+    this.client = new Discord.Client({ intents: new Discord.Intents(32767) })
+
+    this.client.login(this.token)
+      .then(() => console.log(`Bot started: ${this.token}`))
+      .then(() => this.loadCommands())
+      .then(() => {
+        console.log('commands are: ')
+        console.log(this.commands)
+        this.deployCommands()
+      })
+
   }
 
+  //Loads commands from js files in the ./clients/BOT_TOKEN folder
   async loadCommands() {
     this.loadCommands.num = this.loadCommands.num ?? 0
-    this.commands = await Promise.all(
+    let results = await Promise.all(
       fs
         .readdirSync(`./clients/${this.token}`)
         .map(async (file) => {
@@ -42,8 +49,7 @@ class Bot {
           let result = {
             name: imported.name,
             event: imported.event,
-            isActive: true,
-            hasChanged: true,
+            isActive: this.commands.find(c => c.name == imported.name)?.isActive ?? true,
             func: generatedCommandData.func,
             data: generatedCommandData.data
           }
@@ -51,55 +57,112 @@ class Bot {
           return result
         })
     )
-  }
-  
-  runCommands() {
-    this.commands.forEach((command) => {
-      console.log(`Registering command: ${command.name}, to: ${command.event}`)
-      console.log(command)
-        
-      this.client.on(eventMap[command.event], command.func)
+
+    results.forEach(command => {
+      this.addOrUpdateCommand(command)
     })
   }
 
-  async addCommand(name) { }
-
+  //Deploys the OnSlashCommands commands to Discord for autocomplete
   async deployCommands() {
-    console.log("Deploying commands:")
-    await deployCommands( //! May be bad :) returns nothing if it's not a "OnSlashCommand"
-      this.commands.map((command) => {
-        if (command.event === "OnSlashCommand" && command.isActive)
-          return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.description}`)
-      }), this.token)
+    if (this.slashCommandsHasChanged == true) {
+      console.log("Deploying commands:")
+      await deployCommands( //! May be bad :) returns nothing if it's not a "OnSlashCommand"
+        this.commands.map((command) => {
+          if (command.event === "OnSlashCommand" && command.isActive)
+            return command = new SlashCommandBuilder().setName(command.data.trigger).setDescription(`${command.data.description}`)
+        }), this.token)
+
+      this.slashCommandsHasChanged = false
+    }
 
     return true
   }
 
-  async start() {
-    this.client = new Discord.Client({
-      intents: new Discord.Intents(32767)
+  addOrUpdateCommand(command) {
+    let index = this.commands.findIndex(c => c.name == command.name) //Check if command with that name already exists
+    if (index != -1) {
+      this._stopCommand(this.commands[index]) //If it does, unregister it before registering the new command
+      this.commands[index] = command
+    } else {
+      this.commands.push(command)
+    }
+
+    if (this.running && command.isActive) {
+      this._startCommand(command)
+    }
+  }
+
+  deleteCommand(command) {
+    let index = this.commands.indexOf(command)
+    if (index != -1) {
+      this._stopCommand(this.commands[index])
+      this.commands.splice(index, 1)
+    }
+  }
+
+  _stopCommand(command) {
+    console.log(`\x1b[31mUn-registering command:\x1b[0m`)
+    console.log(command)
+
+    this.client.removeListener(eventMap[command.event], command.func)
+
+    if (command.event === "OnSlashCommand") {
+      this.slashCommandsHasChanged = true
+    }
+  }
+
+
+  _startCommand(command) {
+    console.log(`\x1b[32mRegistering command:\x1b[0m`)
+    console.log(command)
+
+    this.client.on(eventMap[command.event], command.func)
+
+    if (command.event === "OnSlashCommand") {
+      this.slashCommandsHasChanged = true
+    }
+
+  }
+
+  disableCommandByName(name) {
+    let index = this.commands.findIndex(c => c.name == name)
+    if (index != -1) {
+      this.commands[index].isActive = false
+      this._stopCommand(this.commands[index])
+    }
+  }
+
+  enableCommandByName(name) {
+    let index = this.commands.findIndex(c => c.name == name)
+    if (index != -1) {
+      this.commands[index].isActive = true
+      if (this.running && this.commands[index].isActive)
+        this._startCommand(this.commands[index])
+    }
+  }
+
+  pause() {
+    this.running = false
+
+    this.commands.forEach(command => {
+      this._stopCommand(command)
     })
-    
-    let res = await this.client
-      .login(this.token)
-      .then(() => console.log(`Bot started: ${this.token}`))
-
-    await this.loadCommands()
-    this.runCommands()
-
-    await this.deployCommands()
-
-    return res
   }
 
-  stop() {
+  resume() {
+    this.running = true
+
+    this.commands.forEach(command => {
+      if (command.isActive)
+        this._startCommand(command)
+    })
+  }
+
+  destroy() {
     this.client.destroy()
-    console.log(`Bot stopped: ${this.token}`)
-  }
-
-  async restart() {
-    this.stop()
-    return await this.start()
+    this.destroyed = true //TODO: Use this to error out in other functions
+    console.log(`Bot destroyed: ${this.token}`)
   }
 }
 
@@ -111,34 +174,17 @@ export class botManager {
   async addBot(token) {
     if (this.bots[token]) return this.bots[token]
 
-
-
     this.bots[token] = new Bot(token)
-    await this.bots[token].loadCommands()
-    //this.bots[token].runCommands()
     return this.bots[token]
   }
 
   removeBot(token) {
+    this.bots[token]?.destroy()
     delete this.bots[token]
   }
 
-  async startBot(token) {
-    //console.log('before:')
-    //console.log(this.bots[token].commands)
-
-
-
-
-
-    return this.bots[token]?.start()
-  }
-
-  async stopBot(token) {
-    return this.bots[token]?.stop()
-  }
-
   async restartBot(token) {
-    return this.bots[token]?.restart()
+    this.removeBot(token)
+    return await this.addBot(token)
   }
 }
