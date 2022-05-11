@@ -121,6 +121,15 @@ export class botManager {
     delete this.bots[token]
   }
 
+  async isStatusOnline(secrets) {
+    try {
+      const guild = await this.bots[secrets.token].client.guilds.cache.get(secrets.guild_id);
+      return 'online'
+    } catch (e) {
+      return 'offline'
+    }
+  }
+
   async startBot(secrets) {
 
     return this.bots[secrets.token]?.start(secrets)

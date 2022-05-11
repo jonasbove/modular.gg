@@ -20,8 +20,7 @@ let botMan = new botManager()
 app.post('/addJSON', async (req, res) => {
   try {
     console.log("Got json request")
-    const userData = await verifyToken(req)
-    const secrets = await getBotSecrets(userData.email)
+    const secrets = await verifyToken(req)
 
     if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })
@@ -42,10 +41,17 @@ app.post('/addJSON', async (req, res) => {
   }
 })
 
+app.get('/checkstatus', async (req, res) => {
+  const secrets = await verifyToken(req)
+
+  const result = await botMan.isStatusOnline(secrets)
+  
+  res.status(200).json({ result: result })
+})
+
 app.get(['/startbot', '/stopbot', '/restartbot'], async (req, res) => {
   try {
-    const userData = await verifyToken(req)
-    const secrets = await getBotSecrets(userData.email)
+    const secrets = await verifyToken(req)
 
     if (!secrets.token) {
       return res.status(401).json({ result: 'Please insert the bot token first' })

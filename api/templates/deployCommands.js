@@ -7,8 +7,6 @@ import dotenv from 'dotenv'
 dotenv.config({ path: '../../.env' })
 
 export default function deployCommands(commands, secrets) {
-	console.log('Recived these secrets:', secrets)
-
   const rest = new REST({ version: '9' }).setToken(secrets.token);
   console.log("Commands to deploy: " + JSON.stringify(commands))
 

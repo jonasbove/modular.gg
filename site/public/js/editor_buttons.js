@@ -35,3 +35,13 @@ statusButtons.forEach(button => {
       })
   })
 })
+
+fetch('http://localhost:3001/checkstatus', {
+  method: 'GET',
+  credentials: 'include' // sending cookies with the request
+})
+.then((res) => res.json())
+.then((json) => {
+  document.querySelector('#botstatus').innerHTML = json.result
+})
+.catch(err => console.log(err))
