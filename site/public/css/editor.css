@@ -327,20 +327,31 @@ input::placeholder {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  transition: .1s ease-in-out;
 }
 
 .statusButtons input#startBot {
   background-color: #00ff0d;
 }
 
+.statusButtons input#startBot:hover {
+  background-color: #009007;
+}
+
 .statusButtons input#stopBot {
   background-color: rgb(237, 73, 73);
+}
+
+.statusButtons input#stopBot:hover {
+  background-color: rgb(154, 46, 46);
 }
 
 .statusButtons input#save {
   background-color: #282A36;
   color: rgb(255, 255, 255);
-  transition: .1s ease-in-out;
+  padding-left: 40px;
+  padding-right: 40px;
+  font-size: 15px;
 }
 
 .statusButtons input#save:hover {
