@@ -23,14 +23,13 @@ class Bot {
 
     this.client = new Discord.Client({ intents: new Discord.Intents(32767) })
 
+    this.client.on('ready', () => {
+      console.log('Adding "powered by Modular.gg" to Bot description')
+      this.client.user.setActivity(`Powered by Modular.gg!`, {type: 'WATCHING'})
+    })
+
     this.client.login(this.token)
       .then(() => console.log(`Bot started: ${this.token}`))
-      .then(() => {
-        this.client.once('ready', () => {
-          console.log('Adding "powered by Modular.gg" to Bot description')
-          this.client.user.setActivity(`Powered by Modular.gg!`, {type: 4})
-        })
-      })
       .then(() => this.loadCommands())
       .then(() => {
         console.log('commands are: ')
