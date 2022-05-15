@@ -1,56 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modular.gg | Settings</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modular.gg | Settings</title>
 
-  <link rel="stylesheet" href="./css/settings.css" />
+    <link rel="stylesheet" href="./css/settings.css" />
 
-  <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicons/favicon-16x16.png">
-</head>
-<body>
-  <div class="container">
-    <h1>User & Bot Settings!</h1>
-    <form id="settings">
-      <div class="form-group">
-        <label for="token">Bot Token</label>
-        <input type="text" name="token" />
-      </div>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicons/favicon-16x16.png"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>User & Bot Settings!</h1>
+      <form id="settings">
+        <div class="form-group">
+          <label for="token">Bot Token</label>
+          <input type="text" name="token" />
+        </div>
 
-      <div class="form-group">
-        <label for="client_id">Bot Client ID</label>
-        <input type="text" name="client_id" />
-      </div>
+        <div class="form-group">
+          <label for="client_id">Bot Client ID</label>
+          <input type="text" name="client_id" />
+        </div>
 
-      <div class="form-group">
-        <label for="client_secret">Bot Client Secret</label>
-        <input type="text" name="client_secret" />
-      </div>
+        <div class="form-group">
+          <label for="client_secret">Bot Client Secret</label>
+          <input type="text" name="client_secret" />
+        </div>
 
-      <div class="form-group">
-        <label for="guild_id">Guild ID</label>
-        <input type="text" name="guild_id" />
-      </div>
+        <div class="form-group">
+          <label for="guild_id">Guild ID</label>
+          <input type="text" name="guild_id" />
+        </div>
 
-      <input type="submit" value="Submit and log out" />
+        <input type="submit" value="Submit and log out" />
 
-      <p>Don't have it? Generate your Bot Token right here: <a href="https://discord.com/developers/applications/" target="_blank">click here</a></p>
-      
-      <p style="color: red; font-weight: bold;" id="errorMessage"></p>
-    </form>
-    <nav class="nav">
-      <a href="./">Front page</a>
-      <a href="./editor" id="editor">Editor</a>
-      <a href="./" id="logout">Logout</a>
-    </nav>
-  </div>
+        <p>
+          Don't have it? Generate your Bot Token right here:
+          <a href="https://discord.com/developers/applications/" target="_blank"
+            >click here</a
+          >
+        </p>
 
-  <script src="./js/index.js"></script>
-  <script>loadUserSettings()</script>
-  <script src="./js/logout.js"></script>
-</body>
+        <p style="color: red; font-weight: bold" id="errorMessage"></p>
+      </form>
+      <nav class="nav">
+        <a href="./">Front page</a>
+        <a href="./editor" id="editor">Editor</a>
+        <a href="./" id="logout">Logout</a>
+      </nav>
+    </div>
+
+    <script src="./js/index.js"></script>
+    <script>
+      loadUserSettings();
+    </script>
+    <script src="./js/logout.js"></script>
+  </body>
 </html>

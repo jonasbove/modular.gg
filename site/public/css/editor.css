@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap");
 
 * {
   margin: 0px;
   box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 #wrapper {
@@ -14,20 +14,20 @@
 .popup {
   width: 300px;
   height: 300px;
-  background-color: #44475A;
+  background-color: #44475a;
   color: white;
   border-radius: 1.5em;
-  border: 5px solid #282A36;
+  border: 5px solid #282a36;
   padding: 10px;
 
   position: absolute;
-  top: 50%;  
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
   text-align: center;
   display: flex;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -36,11 +36,11 @@
 }
 
 .popup .button {
-  border: 3px solid #282A36;
+  border: 3px solid #282a36;
 }
 
 .popup .button:hover {
-  background-color: #50FA7B;
+  background-color: #50fa7b;
 }
 
 #top-nav {
@@ -48,14 +48,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #282A36;
+  background-color: #282a36;
   padding: 0.1rem;
   /*
   overflow-y: scroll;
   */
   height: 3.5rem;
   overflow-y: visible;
-  z-index: 500; 
+  z-index: 500;
   display: flex;
   justify-content: center;
 }
@@ -66,18 +66,18 @@
   width: 20%;
 }
 
-.menuWrapper > .button{
+.menuWrapper > .button {
   margin: 10px auto 10px auto;
 }
 
 .menu {
   margin: 10px;
-  flex-wrap:  wrap;
+  flex-wrap: wrap;
   justify-content: center;
   display: flex;
-  z-index: 700; 
-  background-color: #282A36;
-  border: #44475A solid 5px;
+  z-index: 700;
+  background-color: #282a36;
+  border: #44475a solid 5px;
   overflow-y: auto;
   max-height: calc(100vh - 3.5rem); /* top-nav height */
 }
@@ -94,14 +94,14 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #BD93F9;
+  background-color: #bd93f9;
   border-radius: 3rem;
 }
 
-.button { 
+.button {
   border-radius: 3rem;
   width: 10rem;
-  background-color: #44475A;
+  background-color: #44475a;
   padding: 8px;
   text-align: center;
 }
@@ -115,15 +115,14 @@
   margin-right: auto;
 }
 
-#top-nav .menu .button{
+#top-nav .menu .button {
   margin: 10px 10px 10px 10px;
   background-color: #1d1d1d;
 }
 
 #top-nav .button:hover {
-  background-color: #BD93F9;
+  background-color: #bd93f9;
 }
-
 
 #side-nav {
   position: fixed;
@@ -131,11 +130,11 @@
   left: 0;
   width: 13rem;
   min-height: 100%;
-  background-color: #282A36;
-  z-index: 400; 
+  background-color: #282a36;
+  z-index: 400;
   display: flex;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -144,7 +143,7 @@
 }
 
 #side-nav .button:hover {
-  background-color: #50FA7B;
+  background-color: #50fa7b;
 }
 
 #container {
@@ -165,19 +164,18 @@
 }
 
 .actionNode > .header {
-  border-bottom: 0.3rem solid #50FA7B;
+  border-bottom: 0.3rem solid #50fa7b;
 }
 
 .actionConnected > .header {
-  border: 0.3rem solid #50FA7B;
+  border: 0.3rem solid #50fa7b;
 }
-
 
 .header {
   cursor: grab;
   width: 100%;
-  background-color: #282A36;
-  color: #F8F8F2;
+  background-color: #282a36;
+  color: #f8f8f2;
   border-top-left-radius: 1.5em;
   border-top-right-radius: 1.5em;
   min-height: 3rem;
@@ -196,13 +194,14 @@
 .body {
   display: flex;
   justify-content: space-between;
-  background-color: #44475A;
-  color: #F8F8F2;
+  background-color: #44475a;
+  color: #f8f8f2;
   border-bottom-left-radius: 1.5em;
   border-bottom-right-radius: 1.5em;
 }
 
-.inputList, .outputList{
+.inputList,
+.outputList {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   width: 40%;
@@ -210,7 +209,8 @@
   flex-direction: column;
 }
 
-.input, .output {
+.input,
+.output {
   margin-bottom: 0.8rem;
   display: flex;
   align-items: center;
@@ -220,24 +220,24 @@
   flex-direction: row-reverse;
 }
 
-.input p, .output p {
+.input p,
+.output p {
   font-family: sans-serif;
   font-size: 15px;
   font-weight: 600;
 }
 
 input {
-  background-color:#282A36;
+  background-color: #282a36;
   border: 0px;
   border-radius: 1em;
-  color: #F8F8F2;
+  color: #f8f8f2;
   max-width: 100%;
 }
 
 input::placeholder {
-  color:#44475A;
+  color: #44475a;
 }
-
 
 .output > .typeDot {
   margin-right: -0.2rem;
@@ -257,15 +257,13 @@ input::placeholder {
   min-height: 1.3rem;
 }
 
-
 .typeDot.action {
   border-radius: 25%;
-  background-color: #50FA7B;
+  background-color: #50fa7b;
 }
 
-
 .typeDot.num {
-  background-color: #BD93F9;
+  background-color: #bd93f9;
 }
 
 .typeDot.text {
@@ -281,11 +279,11 @@ input::placeholder {
 }
 
 .typeDot.mesage {
-  background-color: #FFB86C;
+  background-color: #ffb86c;
 }
 
 .typeDot.time {
-  background-color: #FF79C6;
+  background-color: #ff79c6;
 }
 
 .typeDot.channel {
@@ -293,20 +291,19 @@ input::placeholder {
 }
 
 .typeDot.interaction {
-  background-color: rgb(238, 141, 233)
+  background-color: rgb(238, 141, 233);
 }
 
 .typeDot.messageid {
-  background-color: rgb(132, 233, 167)
+  background-color: rgb(132, 233, 167);
 }
-
 
 .typeDot.category {
   background-color: rgb(91, 26, 107);
 }
 
 .typeDot.emoji {
-  background-color: #FFB86C;
+  background-color: #ffb86c;
 }
 
 .typeDot.messagetype {
@@ -327,7 +324,7 @@ input::placeholder {
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
-  transition: .1s ease-in-out;
+  transition: 0.1s ease-in-out;
 }
 
 .statusButtons input#startBot {
@@ -347,7 +344,7 @@ input::placeholder {
 }
 
 .statusButtons input#save {
-  background-color: #282A36;
+  background-color: #282a36;
   color: rgb(255, 255, 255);
   padding-left: 40px;
   padding-right: 40px;
@@ -356,7 +353,7 @@ input::placeholder {
 
 .statusButtons input#save:hover {
   background-color: rgb(255, 255, 255);
-  color: #282A36;
+  color: #282a36;
 }
 
 .loader-wrapper {
@@ -369,7 +366,7 @@ input::placeholder {
 }
 
 .loader-wrapper-2 {
-  position:absolute;
+  position: absolute;
   left: 50%;
   top: 50%;
 }
@@ -380,7 +377,7 @@ input::placeholder {
 
 .loader {
   border: 16px solid #424242; /* Light grey */
-  border-top: 16px solid #50FA7B; /* Blue */
+  border-top: 16px solid #50fa7b; /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -388,8 +385,12 @@ input::placeholder {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 #gobacknav {

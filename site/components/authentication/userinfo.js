@@ -6,6 +6,6 @@ export default function userData(req, res) {
     client_id: req.userData.client_id,
     client_secret: req.userData.client_secret,
     guild_id: req.userData.guild_id,
-    token: req.userData.token
-  })
+    token: req.userData.token,
+  });
 }

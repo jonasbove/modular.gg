@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap");
 
 * {
   padding: 0;
   border: 0;
   margin: 0;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
 }
 
 body {
@@ -39,7 +39,7 @@ h1 {
   margin: 0 10px;
   font-size: x-large;
   font-weight: bold;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 .container .nav a:hover {
@@ -61,7 +61,7 @@ form input[type="submit"] {
   color: white;
   background-color: red;
   cursor: pointer;
-  transition: all .2s;
+  transition: all 0.2s;
 }
 
 form input[type="submit"]:hover {

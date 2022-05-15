@@ -7,14 +7,33 @@
     <title>Modular</title>
     <link rel="stylesheet" href="./css/main.css" />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicons/favicon-16x16.png">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicons/favicon-16x16.png"
+    />
   </head>
 
   <body>
     <header>
-      <a href="./" class="logolink"><img src="./assets/modular-logo-full.png" alt="Modular Logo" class="logo"/></a>
+      <a href="./" class="logolink"
+        ><img
+          src="./assets/modular-logo-full.png"
+          alt="Modular Logo"
+          class="logo"
+      /></a>
       <div class="dots"></div>
       <nav class="navigation">
         <ul id="isnotloggedin">
@@ -22,10 +41,16 @@
           <li><a href="./register" class="createaccount">Create account</a></li>
         </ul>
         <ul id="isloggedin">
-          <li><a href="./" id="name"></li>
-          <li><a href="./settings" style="text-decoration: underline;">Settings</a></li>
-          <li><a href="./editor" style="text-decoration: underline;">Editor</a></li>
-          <li><a href="./login" id="logout" class="createaccount">Log out</a></li>
+          <li><a href="./" id="name"></a></li>
+          <li>
+            <a href="./settings" style="text-decoration: underline">Settings</a>
+          </li>
+          <li>
+            <a href="./editor" style="text-decoration: underline">Editor</a>
+          </li>
+          <li>
+            <a href="./login" id="logout" class="createaccount">Log out</a>
+          </li>
         </ul>
       </nav>
     </header>
@@ -34,35 +59,30 @@
         Modular is a <span class="green">cutting-edge</span> framework for
         creating highly customizable <span class="green">Discord bots</span>
       </h1>
-      <img src="./assets/wires.svg" />       
+      <img src="./assets/wires.svg" />
       <button class="getstarted">Get started today</button>
 
       <section id="description">
-        <input type="radio" name="description" id="functionality" checked>
-        <input type="radio" name="description" id="visual_scripting">
-        <input type="radio" name="description" id="open_source">
+        <input type="radio" name="description" id="functionality" checked />
+        <input type="radio" name="description" id="visual_scripting" />
+        <input type="radio" name="description" id="open_source" />
         <nav class="tabs">
           <div class="slider"></div>
           <label class="functionality" for="functionality">Functionality</label>
-          <label class="visual_scripting" for="visual_scripting">Visual scripting</label>
+          <label class="visual_scripting" for="visual_scripting"
+            >Visual scripting</label
+          >
           <label class="open_source" for="open_source">Open source</label>
         </nav>
         <div class="tabs-content">
           <p id="functionality-pane" class="tab-pane">
             Modular is one of the most feature-rich general purpose Discord bots
-            out there. 
-            
-            You can create, update and delete messages, categories,
-            channels, permissions, emoji, reactions, roles and commands.
-
-            We offer modules for embeds, buttons, and much more.
+            out there. You can create, update and delete messages, categories,
+            channels, permissions, emoji, reactions, roles and commands. We
+            offer modules for embeds, buttons, and much more.
           </p>
-          <p id="visual_scripting-pane" class="tab-pane">
-            Visual scripting...
-          </p>
-          <p id="open_source-pane" class="tab-pane">
-            Open source...
-          </p>
+          <p id="visual_scripting-pane" class="tab-pane">Visual scripting...</p>
+          <p id="open_source-pane" class="tab-pane">Open source...</p>
         </div>
         <p>
           Modular started out as a university project at Aalborg University,
@@ -120,11 +140,16 @@
       </section>
     </main>
     <footer id="footer">
-      <p>Copyright &#169; Modular.gg. Made with ♡ by Group A322 - Computer Science AAU 2022</p>
+      <p>
+        Copyright &#169; Modular.gg. Made with ♡ by Group A322 - Computer
+        Science AAU 2022
+      </p>
     </footer>
-    
+
     <script src="./js/index.js"></script>
     <script src="./js/logout.js"></script>
-    <script>checkIfLoggedIn()</script>
+    <script>
+      checkIfLoggedIn();
+    </script>
   </body>
 </html>

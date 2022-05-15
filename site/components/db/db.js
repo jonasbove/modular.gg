@@ -1,39 +1,41 @@
-import { MongoClient } from "mongodb"
-import dotenv from 'dotenv'
-dotenv.config({ path: '../.env' })
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+dotenv.config({ path: "../.env" });
 
 class MongoDB {
   constructor() {
-    this.connectToMongoDB()
+    this.connectToMongoDB();
   }
 
   async connectToMongoDB() {
     try {
-      const client = new MongoClient(`${process.env.DB_URI}`)
-      await client.connect()
-      console.log(`Successful connection to the database: ${process.env.DB_URI}`)
-      this.db = client.db(process.env.DB_NAME)
+      const client = new MongoClient(`${process.env.DB_URI}`);
+      await client.connect();
+      console.log(
+        `Successful connection to the database: ${process.env.DB_URI}`
+      );
+      this.db = client.db(process.env.DB_NAME);
     } catch (err) {
-      throw new Error(err)
+      throw new Error(err);
     }
   }
 
   async findOne(collection, query) {
-    return this.db.collection(collection).findOne(query)
+    return this.db.collection(collection).findOne(query);
   }
 
   async insertOne(collection, query, func) {
-    return this.db.collection(collection).insertOne(query, func)
+    return this.db.collection(collection).insertOne(query, func);
   }
 
   async updateOne(collection, filter, query) {
-    return this.db.collection(collection).updateOne(filter, query)
+    return this.db.collection(collection).updateOne(filter, query);
   }
 
   disconnect() {
-    this.client.close()
+    this.client.close();
   }
 }
 
-const db = new MongoDB('Cluster0')
-export default db
+const db = new MongoDB("Cluster0");
+export default db;

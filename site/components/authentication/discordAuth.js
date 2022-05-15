@@ -1,94 +1,96 @@
 // Certain functions (fetchoAuthDiscordUserToken and authenticateDiscordLogin) within this file is inspired by Discord.js example https://discordjs.guide/oauth2/#authorization-code-grant-flow
 
-import fetch from 'node-fetch'
-import db from '../db/db.js'
-import authenticateUserWithCookie from './authenticate.js'
+import fetch from "node-fetch";
+import db from "../db/db.js";
+import authenticateUserWithCookie from "./authenticate.js";
 
 function uri() {
   switch (process.env.NODE_ENV) {
-    case 'development':
-      return 'https://dev.modular.gg'
-    case 'development/local':
-      return 'http://localhost:3000'
-    case 'production':
-      return 'https://modular.gg'
+    case "development":
+      return "https://dev.modular.gg";
+    case "development/local":
+      return "http://localhost:3000";
+    case "production":
+      return "https://modular.gg";
   }
 }
 
 function askDiscordPermissions(req, res) {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === "production") {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fmodular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email'
-    )
-  } else if (process.env.NODE_ENV === 'development/local') {
+      "https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fmodular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email"
+    );
+  } else if (process.env.NODE_ENV === "development/local") {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthenticate-discord&response_type=code&scope=identify%20email'
-    )
-  } else if (process.env.NODE_ENV === 'development') {
+      "https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauthenticate-discord&response_type=code&scope=identify%20email"
+    );
+  } else if (process.env.NODE_ENV === "development") {
     res.redirect(
-      'https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fdev.modular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email'
-    )
+      "https://discord.com/api/oauth2/authorize?client_id=938051299709190144&redirect_uri=https%3A%2F%2Fdev.modular.gg%2Fauthenticate-discord&response_type=code&scope=identify%20email"
+    );
   }
 }
 
 async function authenticateUserDiscord(req, res) {
-  const code = req.query.code
+  const code = req.query.code;
 
   if (code) {
     try {
-      const oauthResult = await fetchDiscordUserToken(code)
+      const oauthResult = await fetchDiscordUserToken(code);
 
-      console.log(oauthResult)
+      console.log(oauthResult);
 
-      const userInfo = await fetchDiscordUserInfo(oauthResult.token_type, oauthResult.access_token)
+      const userInfo = await fetchDiscordUserInfo(
+        oauthResult.token_type,
+        oauthResult.access_token
+      );
 
-      authenticateDiscordLogin(res, userInfo)
-
+      authenticateDiscordLogin(res, userInfo);
     } catch (err) {
-      console.log(err)
-      return res.status(401)
+      console.log(err);
+      return res.status(401);
     }
   }
 }
 
 async function fetchDiscordUserToken(code) {
-  return fetch('https://discord.com/api/oauth2/token', {
-    method: 'POST',
+  return fetch("https://discord.com/api/oauth2/token", {
+    method: "POST",
     body: new URLSearchParams({
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
       code,
-      grant_type: 'authorization_code',
+      grant_type: "authorization_code",
       redirect_uri: `${uri()}/authenticate-discord`,
-      scope: 'identify',
+      scope: "identify",
     }),
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-  })
-  .then(res => res.json())
+  }).then((res) => res.json());
 }
 
 async function fetchDiscordUserInfo(token_type, access_token) {
-  return fetch('https://discord.com/api/users/@me', {
+  return fetch("https://discord.com/api/users/@me", {
     headers: {
       authorization: `${token_type} ${access_token}`,
     },
-  })
-  .then(res => res.json())
+  }).then((res) => res.json());
 }
 
 async function authenticateDiscordLogin(res, userInfo) {
-
   if (!userInfo.verified)
-    res.status(406).json({ message: 'User is not verified.' })
+    res.status(406).json({ message: "User is not verified." });
 
   // if we know the user by the discord id
-  const alreadyExisting = await db.findOne('users', {discord_id: userInfo.id})
+  const alreadyExisting = await db.findOne("users", {
+    discord_id: userInfo.id,
+  });
 
   if (alreadyExisting) {
-    return authenticateUserWithCookie(res, alreadyExisting)
-      .then(res => res.redirect('./settings'))
+    return authenticateUserWithCookie(res, alreadyExisting).then((res) =>
+      res.redirect("./settings")
+    );
   }
 
   const dbData = {
@@ -96,30 +98,31 @@ async function authenticateDiscordLogin(res, userInfo) {
     name: userInfo.username,
     avatar: userInfo.avatar,
     email: userInfo.email,
-  }
+  };
 
   try {
-    const userExistingMail = await db.findOne('users', {
+    const userExistingMail = await db.findOne("users", {
       email: userInfo.email,
-    })
+    });
 
     if (userExistingMail) {
       // merge already existing mail user with discord.
-      await db.updateOne('users', { email: userInfo.email }, { $set: dbData })
+      await db.updateOne("users", { email: userInfo.email }, { $set: dbData });
 
-      return authenticateUserWithCookie(res, userExistingMail)
-        .then(res => res.redirect('./settings'))
+      return authenticateUserWithCookie(res, userExistingMail).then((res) =>
+        res.redirect("./settings")
+      );
     } else {
-      const user = await db.insertOne('users', dbData)
-      return authenticateUserWithCookie(res, user)
-        .then(res => res.redirect('./settings'))
+      const user = await db.insertOne("users", dbData);
+      return authenticateUserWithCookie(res, user).then((res) =>
+        res.redirect("./settings")
+      );
     }
-
   } catch (err) {
     return res
       .status(500)
-      .json({ message: 'Something very bad happenend. Errorcode: 23984' })
+      .json({ message: "Something very bad happenend. Errorcode: 23984" });
   }
 }
 
-export { askDiscordPermissions, authenticateUserDiscord }
+export { askDiscordPermissions, authenticateUserDiscord };
