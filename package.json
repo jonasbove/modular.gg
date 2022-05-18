@@ -6,7 +6,7 @@
   "scripts": {
     "site": "cd ./site && node server.js",
     "api": "cd ./api && node handleRequests.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
