@@ -24,7 +24,7 @@ function setType(string, type) {
   }
 }
 
-function buildFile(graph) {
+export function buildFile(graph) {
   //Todo: parameterize and shit
   //let importSet = new Set()
   //return ((Array.from(importSet)).reduce((res, func) => { return res += `import { ${func} } from "..\\\\tempFunctions.js;"\n`})) + file
@@ -32,10 +32,10 @@ function buildFile(graph) {
   let startNode = graph.nodes.find((n) => n.type === "EventNode");
 
   return `import getFunctions from "../../templates/functions.js";
-    export let name = "${graph.name}"; 
-    export let event = "${startNode.name}"; 
+    export let name = "${graph.name}";
+    export let event = "${startNode.name}";
     export let funcGenerator = (client) => {
-        let nodeFunctions = getFunctions(client); 
+        let nodeFunctions = getFunctions(client);
         return ${recFillParams(graph.nodes, startNode)}
     };`;
 
