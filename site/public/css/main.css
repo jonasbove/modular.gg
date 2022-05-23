@@ -188,12 +188,15 @@ img.dots {
 
 #functionality:checked ~ .tabs-content p#functionality-pane {
   opacity: 1;
+  pointer-events: none;
 }
 #visual_scripting:checked ~ .tabs-content #visual_scripting-pane {
   opacity: 1;
+  z-index: 10000;
 }
 #open_source:checked ~ .tabs-content p#open_source-pane {
   opacity: 1;
+  pointer-events: none;
 }
 
 #description p {
