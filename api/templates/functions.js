@@ -1,4 +1,4 @@
-function getFunctions(client) {
+export function getFunctions(client) {
   return {
     node_OnSlashCommand: (obj) => {
       //Returns an object with a attribute 'func' which is a function that takes a DiscordJS 'interaction' as the parameter, this function will be the funciton boud to the event on the DiscordJS 'client'

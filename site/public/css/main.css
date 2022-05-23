@@ -178,7 +178,7 @@ img.dots {
   margin-bottom: 6rem;
 }
 
-.tabs-content p.tab-pane {
+.tabs-content .tab-pane {
   grid-column: 1;
   grid-row: 1;
   transition: opacity 0.45s ease;
