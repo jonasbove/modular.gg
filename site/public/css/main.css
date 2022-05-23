@@ -189,7 +189,7 @@ img.dots {
 #functionality:checked ~ .tabs-content p#functionality-pane {
   opacity: 1;
 }
-#visual_scripting:checked ~ .tabs-content p#visual_scripting-pane {
+#visual_scripting:checked ~ .tabs-content #visual_scripting-pane {
   opacity: 1;
 }
 #open_source:checked ~ .tabs-content p#open_source-pane {
