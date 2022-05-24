@@ -191,12 +191,12 @@
       {
         "name": "a",
         "type": "Bool",
-        "field": true
+        "field": false
       },
       {
         "name": "b",
         "type": "Bool",
-        "field": true
+        "field": false
       }
     ],
     "OutPlugs": [
@@ -215,12 +215,12 @@
       {
         "name": "a",
         "type": "Bool",
-        "field": true
+        "field": false
       },
       {
         "name": "b",
         "type": "Bool",
-        "field": true
+        "field": false
       }
     ],
     "OutPlugs": [
@@ -239,7 +239,7 @@
       {
         "name": "a",
         "type": "Bool",
-        "field": true
+        "field": false
       }
     ],
     "OutPlugs": [
