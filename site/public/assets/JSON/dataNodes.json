@@ -181,5 +181,72 @@
         "type": "Num"
       }
     ]
+  },
+  {
+    "humanName": "And",
+    "description": "And bolean",
+    "name": "And",
+    "ActionPlugs": [],
+    "InPlugs": [
+      {
+        "name": "a",
+        "type": "Bool",
+        "field": true
+      },
+      {
+        "name": "b",
+        "type": "Bool",
+        "field": true
+      }
+    ],
+    "OutPlugs": [
+      {
+        "name": "result",
+        "type": "Bool"
+      }
+    ]
+  },
+  {
+    "humanName": "Or",
+    "description": "or bolean",
+    "name": "Or",
+    "ActionPlugs": [],
+    "InPlugs": [
+      {
+        "name": "a",
+        "type": "Bool",
+        "field": true
+      },
+      {
+        "name": "b",
+        "type": "Bool",
+        "field": true
+      }
+    ],
+    "OutPlugs": [
+      {
+        "name": "result",
+        "type": "Bool"
+      }
+    ]
+  },
+  {
+    "humanName": "Not",
+    "description": "Not bolean",
+    "name": "Not",
+    "ActionPlugs": [],
+    "InPlugs": [
+      {
+        "name": "a",
+        "type": "Bool",
+        "field": true
+      }
+    ],
+    "OutPlugs": [
+      {
+        "name": "result",
+        "type": "Bool"
+      }
+    ]
   }
 ]

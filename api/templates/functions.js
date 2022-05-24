@@ -95,6 +95,18 @@ export function getFunctions(client) {
     node_Div: (obj) => {
       return { div: obj.a / obj.b };
     },
+
+    node_And: (obj) => {
+      return { result: obj.a && obj.b};
+    },
+
+    node_Or: (obj) => {
+      return { result: obj.a || obj.b};
+    },
+
+    node_Not: (obj) => {
+      return { result: !obj.a};
+    },
   };
 }
 
