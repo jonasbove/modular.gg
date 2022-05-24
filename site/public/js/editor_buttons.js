@@ -59,7 +59,7 @@ statusButtons.forEach((button) => {
 });
 
 function checkBotStatus() {
-  fetch("http://localhost:3001/checkstatus", {
+  fetch("./backend/checkstatus", {
     method: "GET",
     credentials: "include", // sending cookies with the request
   })
