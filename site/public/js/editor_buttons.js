@@ -19,7 +19,7 @@ statusButtons.forEach((button) => {
     updateLoader("start");
 
     if (button.getAttribute("id") === "save") {
-      fetch("http://localhost:3001/addJSON", {
+      fetch("./backend/addJSON", {
         method: "POST",
         credentials: "include", // sending cookies with the request
         headers: {
@@ -36,7 +36,7 @@ statusButtons.forEach((button) => {
         .then((res) => alert(`Result: ${res.result}`));
     } else {
       // TODO change this to http://localhost:3001/ to ./backend/ when deploying
-      fetch(`http://localhost:3001/${button.getAttribute("id")}`, {
+      fetch(`./backend/${button.getAttribute("id")}`, {
         method: "GET",
         credentials: "include", // sending cookies with the request
       })

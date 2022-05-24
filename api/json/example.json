@@ -1,5 +1,5 @@
 {
-  "name": "TestName",
+  "name": "${console.log('hej')}$",
   "nodes": [
     {
       "id": 0,
