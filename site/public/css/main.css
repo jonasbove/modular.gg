@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Raleway:ital,wght@0,400;0,700;1,400&display=swap");
 
 * {
   padding: 0;
@@ -35,7 +35,7 @@ header nav ul li {
 header nav ul li a {
   text-decoration: none;
   color: white;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 1.6rem;
 }
 
@@ -57,7 +57,8 @@ header nav ul li a {
   width: 50%;
   height: 7rem;
   background-color: transparent;
-  background-image: radial-gradient(circle, white 15%, transparent 10%), radial-gradient(circle, white 15%, transparent 10%);
+  background-image: radial-gradient(circle, white 15%, transparent 10%),
+    radial-gradient(circle, white 15%, transparent 10%);
   background-size: 12px 12px;
   background-position: 0 0, 0 0;
 }
@@ -79,7 +80,7 @@ main h1 {
   color: white;
   font-size: 3rem;
   font-weight: bold;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .green {
@@ -96,7 +97,7 @@ main h1 {
   border-radius: 0.7rem;
   font-size: 1.8rem;
   font-weight: 700;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   border: 2px solid white;
   transition: ease-in-out 0.1s;
   background-color: white;
@@ -124,14 +125,14 @@ img.dots {
 }
 
 #description label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 1.75rem;
   padding: 0.5rem 0;
 }
 
 #description .tabs {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   display: flex;
   width: 100%;
   cursor: pointer;
@@ -175,12 +176,13 @@ img.dots {
 .tabs-content {
   display: grid;
   margin-bottom: 6rem;
+  pointer-events: none;
 }
 
-.tabs-content p.tab-pane {
+.tabs-content .tab-pane {
   grid-column: 1;
   grid-row: 1;
-  transition: opacity .45s ease;
+  transition: opacity 0.45s ease;
   opacity: 0;
   white-space: pre-line;
 }
@@ -188,17 +190,17 @@ img.dots {
 #functionality:checked ~ .tabs-content p#functionality-pane {
   opacity: 1;
 }
-#visual_scripting:checked ~ .tabs-content p#visual_scripting-pane {
+#visual_scripting:checked ~ .tabs-content #visual_scripting-pane {
   opacity: 1;
+  z-index: 10000;
+  pointer-events: all;
 }
 #open_source:checked ~ .tabs-content p#open_source-pane {
   opacity: 1;
 }
 
-
-
 #description p {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 1.25rem;
   padding: 1rem 0;
 }
@@ -226,24 +228,24 @@ img.dots {
 }
 
 #team .person h3 {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-weight: 700;
 }
 
 #team .person p {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-style: italic;
 }
 
 footer {
   display: flex;
   justify-content: center;
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 0.75rem;
   padding: 1rem;
 }
 
-input[type=radio] {
+input[type="radio"] {
   display: none;
 }
 

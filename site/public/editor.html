@@ -1,41 +1,55 @@
 <html>
-
-<head>
+  <head>
     <title>VPL</title>
-    <link rel="stylesheet" href="./css/editor.css">
-</head>
+    <link rel="stylesheet" href="./css/editor.css" />
 
-<body>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./assets/favicons/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./assets/favicons/favicon-16x16.png"
+    />
+  </head>
+
+  <body>
     <div class="loader-wrapper">
-        <div class="loader-wrapper-2">
-            <div class="loader"></div>
-            <h3>Wating for response...</h3>
-        </div>
+      <div class="loader-wrapper-2">
+        <div class="loader"></div>
+        <h3>Wating for response...</h3>
+      </div>
     </div>
     <div id="wrapper">
-        <nav id="top-nav">
-        </nav>
-        <nav id="side-nav">
-        </nav>
-        <div id="editor">
-            <div id="container">
-                <svg id="svgContainer"></svg>
-            </div>
+      <nav id="top-nav"></nav>
+      <nav id="side-nav"></nav>
+      <div id="editor">
+        <div id="container">
+          <svg id="svgContainer"></svg>
         </div>
+      </div>
     </div>
     <div class="statusButtons">
-        <input id="save" type="button" value="💾">
-        <input id="startBot" type="button" value="Start bot">
-        <input id="stopBot" type="button" value="Stop bot">
+      <input id="save" type="button" value="💾" />
+      <input id="startBot" type="button" value="Start bot" />
+      <input id="stopBot" type="button" value="Stop bot" />
     </div>
     <nav id="gobacknav">
-        <p>Bot status: <span id="botstatus">fetching...</span></p>
-        <a href="./">Go back to front page</a>
-        <a href="./settings">Go back to settings</a>
+      <p>Bot status: <span id="botstatus">fetching...</span></p>
+      <a href="./">Go back to front page</a>
+      <a href="./settings">Go back to settings</a>
     </nav>
 
     <script src="./js/editor.js"></script>
     <script src="./js/editor_buttons.js"></script>
-</body>
-
+  </body>
 </html>

@@ -1,0 +1,125 @@
+{ 
+    "name": "CoolExample",
+    "nodes": [ {
+            "id": 1,
+            "name": "OnSlashCommand",
+            "type": "EventNode",
+            "inputs": { 
+                "data": [ {
+                        "name": "trigger",
+                        "type": "Text",
+                        "valueIsPath": false,
+                        "value": "test"
+                    }, {
+                        "name": "description",
+                        "type": "Text",
+                        "valueIsPath": false,
+                        "value": "Is 5 greater than 2?"
+                    }
+                ],
+                "actions": [ {
+                        "name": "next",
+                        "type": "Action",
+                        "valueIsPath": true,
+                        "value": { "node": 2, "plug": "IfElse" }
+                    }
+                ]
+            },
+            "outputs": { 
+                "data": [ 
+                    { "name": "channel", "type": "Channel" }
+                ]
+            }
+        }, {
+            "id": 2,
+            "name": "IfElse",
+            "type": "ActionNode",
+            "inputs": { 
+                "data": [ {
+                        "name": "expression",
+                        "type": "Bool",
+                        "valueIsPath": true,
+                        "value": { "node": 3, "plug": "result" }
+                    }
+                ],
+                "actions": [ {
+                        "name": "if",
+                        "type": "Action",
+                        "valueIsPath": true,
+                        "value": { "node": 4, "plug": "SendMessage" }
+                    }, {
+                        "name": "else",
+                        "type": "Action",
+                        "valueIsPath": true,
+                        "value": { "node": 5, "plug": "SendMessage" }
+                    }
+                ]
+            },
+            "outputs": { "data": [] }
+        }, {
+            "id": 3,
+            "name": "GreaterThan",
+            "type": "DataNode",
+            "inputs": { 
+                "data": [ {
+                        "name": "a",
+                        "type": "Num",
+                        "valueIsPath": false,
+                        "value": 5
+                    }, {
+                        "name": "b",
+                        "type": "Num",
+                        "valueIsPath": false,
+                        "value": 2
+                    }
+                ],
+                "actions": []
+            },
+            "outputs": { 
+                "data": [ 
+                    { "name": "result", "type": "Bool" }
+                ]
+            }
+        }, {
+            "id": 5,
+            "name": "SendMessage",
+            "type": "ActionNode",
+            "inputs": { 
+                "data": [ {
+                        "name": "channel",
+                        "type": "Channel",
+                        "valueIsPath": true,
+                        "value": { "node": 1, "plug": "channel" }
+                    }, {
+                        "name": "text",
+                        "type": "Text",
+                        "valueIsPath": false,
+                        "value": "5 !> 2"
+                    }
+                ],
+                "actions": []
+            },
+            "outputs": { "data": [] }
+        }, {
+            "id": 4,
+            "name": "SendMessage",
+            "type": "ActionNode",
+            "inputs": { 
+                "data": [ {
+                        "name": "channel",
+                        "type": "Channel",
+                        "valueIsPath": true,
+                        "value": { "node": 1, "plug": "channel" }
+                    }, {
+                        "name": "text",
+                        "type": "Text",
+                        "valueIsPath": false,
+                        "value": "5 > 2"
+                    }
+                ],
+                "actions": []
+            },
+            "outputs": { "data": [] }
+        }
+    ]
+}
